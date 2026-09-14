@@ -1,0 +1,8 @@
+.claude/
+
+# Editor / notebook artifacts
+.ipynb_checkpoints/
+.vscode/
+
+# Raw partner data — staged to S3 via data-workflows, not tracked here
+import-data/

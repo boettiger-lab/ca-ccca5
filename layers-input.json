@@ -1,0 +1,46 @@
+{
+    "catalog": "https://s3-west.nrp-nautilus.io/public-data/stac/catalog.json",
+    "titiler_url": "https://titiler.nrp-nautilus.io",
+    "mcp_url": "https://duckdb-mcp.nrp-nautilus.io/mcp",
+    "auto_approve": true,
+    "draw_enabled": true,
+    "sidebar": {
+        "enabled": true,
+        "chat_title": "Chat"
+    },
+    "view": {
+        "center": [
+            -119.4,
+            37.2
+        ],
+        "zoom": 5.4
+    },
+    "collections": [],
+    "llm": {
+        "user_provided": true,
+        "default_endpoint": "https://openrouter.ai/api/v1",
+        "models": [
+            {
+                "value": "anthropic/claude-sonnet-5",
+                "label": "Claude Sonnet 5"
+            },
+            {
+                "value": "google/gemini-flash-latest",
+                "label": "Gemini Flash"
+            },
+            {
+                "value": "z-ai/glm-5.2",
+                "label": "GLM-5.2"
+            }
+        ]
+    },
+    "welcome": {
+        "message": "Map where California plant species may face heat stress under future climate. Pick a species, a thermal tolerance threshold (Tcrit or T50), a climate period and scenario, and a leaf-to-air temperature offset — the map shows the mean annual number of days that exceed the resulting air-temperature threshold across the species' current range.",
+        "examples": [
+            "Where does valley oak exceed its Tcrit by mid-century under SSP3-7.0, assuming leaves run 4 °C warmer than air?",
+            "What share of the giant sequoia range sees at least 5 exceedance days per year at T50?",
+            "Compare exceedance days for coast live oak between the historical baseline and end of century.",
+            "Which of the study species have the largest increase in exceedance days under SSP5-8.5?"
+        ]
+    }
+}
