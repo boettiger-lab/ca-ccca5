@@ -133,7 +133,14 @@ This is the substantial build and the genuinely new product.
 
 - `s3://cadcat/loca2/ucsd/{model}/{experiment}/{member}/day/tasmax/d03/` — Zarr v2, public,
   no credentials. Catalogued in `s3://cadcat/cae-zarr.csv`.
-- Grid `d03`: **495 lat × 559 lon**, `float32`, units **Kelvin**, chunked `1952 × 123 × 139`.
+- Grid `d03`: **495 lat × 559 lon** on a regular **1/32° (0.03125°)** lat-lon grid — decoded from
+  the coordinate arrays, not assumed. Domain **29.578–45.016 °N, −128.422 to −110.984 °E** (California
+  plus Nevada, the margins of Oregon/Idaho/Utah/Arizona, offshore Pacific, and northern Baja).
+  ≈3.5 km N–S × 2.8 km E–W at California latitudes, ≈9.6 km² per cell. `float32`, units **Kelvin**,
+  chunked `1952 × 123 × 139`.
+- The stores' root `.zattrs` are inherited CMIP6 parent-GCM attributes: `nominal_resolution` says
+  `250 km` and `grid` names the GCM's native N96 grid. Those describe the parent model, not the
+  downscaled product — do not propagate them.
 - `historical`: 23,741 days from 1950-01-01 (1950–2014). `ssp*`: 31,411 days from 2015-01-01
   (2015–2100). Calendar `proleptic_gregorian`, leap days included.
 - 199 daily-tasmax stores across 15 GCMs and `historical / ssp245 / ssp370 / ssp585`.
@@ -185,7 +192,7 @@ no reason to copy. Stage the *derived* histograms to NRP instead.
 ### Published product
 
 - `s3://public-caladapt/loca2-hybrid/tasmax-exceedance/`
-- **Hex, native resolution 7** (5.16 km² vs. the ~9 km² source pixel), parents `6, 0`.
+- **Hex, native resolution 7** (5.16 km² vs. the ≈9.6 km² source pixel), parents `6, 0`.
   Res 7 is the finest resolution the 3 km source supports without inventing detail, and it is a
   parent of the res-8 species grid, so the join in A is exact. **This collection cannot carry `h8`** —
   state that in the hex asset description so nobody reads it as broken.
