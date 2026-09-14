@@ -1,13 +1,13 @@
 # LLM config template — NO SECRETS.
 #
 # The upstream LLM proxy key lives only in the nginx config (see
-# `ca-plant-heat-nginx` below), which injects the Authorization header
+# `ca-ccca5-nginx` below), which injects the Authorization header
 # server-side via `proxy_set_header`. The browser only sees a relative
 # `/api/llm` endpoint and never holds the key.
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: ca-plant-heat-config
+  name: ca-ccca5-config
   namespace: biodiversity
 data:
   config.template.json: |
@@ -103,7 +103,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: ca-plant-heat-nginx
+  name: ca-ccca5-nginx
   namespace: biodiversity
 data:
   nginx.conf.template: |

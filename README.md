@@ -1,4 +1,4 @@
-# ca-plant-heat
+# ca-ccca5
 
 An AI-powered interactive map of **thermal exposure for California plant species**: where, within a
 species' current range, projected daily maximum air temperatures approach or exceed its measured
@@ -55,8 +55,8 @@ python -m http.server 8000
 
 ## Deployment
 
-The Kubernetes manifests in `k8s/` deploy to the `biodiversity` namespace as `ca-plant-heat`, served
-at `ca-plant-heat.nrp-nautilus.io`. The pod's init container clones `main` at startup, so **push
+The Kubernetes manifests in `k8s/` deploy to the `biodiversity` namespace as `ca-ccca5`, served
+at `ca-ccca5.nrp-nautilus.io`. The pod's init container clones `main` at startup, so **push
 before restarting**:
 
 ```bash

@@ -1,4 +1,4 @@
-# AI Agent Guide — ca-plant-heat
+# AI Agent Guide — ca-ccca5
 
 This is a **geo-agent client app**, created from
 [`boettiger-lab/geo-agent-template`](https://github.com/boettiger-lab/geo-agent-template). The
@@ -13,7 +13,7 @@ duplicating it here**. Everything below is specific to this app.
 | `geo-agent` | Core library (map, chat, agent, tools), loaded from CDN. Never modified here. |
 | `geo-agent-template` | The starter this repo was created from; authoritative for config schema. |
 | `data-workflows` | Where the datasets this app depends on are built and published. |
-| `ca-plant-heat` (here) | `index.html`, `layers-input.json`, `system-prompt.md`, `k8s/`. |
+| `ca-ccca5` (here) | `index.html`, `layers-input.json`, `system-prompt.md`, `k8s/`. |
 
 **You do not write JavaScript here.**
 
@@ -44,7 +44,7 @@ to them belongs there:
 
 ## Deployment
 
-Namespace and name come from `k8s/deployment.yaml` (`biodiversity` / `ca-plant-heat`) — read them
+Namespace and name come from `k8s/deployment.yaml` (`biodiversity` / `ca-ccca5`) — read them
 from the manifest, never from an example. The init container clones `main` at pod start, so push to
 GitHub **before** restarting, or you serve stale code:
 

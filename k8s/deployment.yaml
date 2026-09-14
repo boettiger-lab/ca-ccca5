@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ca-plant-heat
+  name: ca-ccca5
   namespace: biodiversity
   labels:
-    app: ca-plant-heat
+    app: ca-ccca5
 spec:
   replicas: 1
   strategy:
@@ -14,11 +14,11 @@ spec:
       maxSurge: 1
   selector:
     matchLabels:
-      app: ca-plant-heat
+      app: ca-ccca5
   template:
     metadata:
       labels:
-        app: ca-plant-heat
+        app: ca-ccca5
     spec:
       initContainers:
       - name: git-clone
@@ -28,7 +28,7 @@ spec:
         - -c
         - |
           # Clone the app repo. Whatever is on main is what runs in production.
-          git clone --depth 1 https://github.com/boettiger-lab/ca-plant-heat.git /tmp/repo
+          git clone --depth 1 https://github.com/boettiger-lab/ca-ccca5.git /tmp/repo
           cp /tmp/repo/index.html /usr/share/nginx/html/
           cp /tmp/repo/layers-input.json /usr/share/nginx/html/
           cp /tmp/repo/system-prompt.md /usr/share/nginx/html/
@@ -107,9 +107,9 @@ spec:
         emptyDir: {}
       - name: config-template
         configMap:
-          name: ca-plant-heat-config
+          name: ca-ccca5-config
       - name: nginx-template
         configMap:
-          name: ca-plant-heat-nginx
+          name: ca-ccca5-nginx
       - name: nginx-conf-d
         emptyDir: {}

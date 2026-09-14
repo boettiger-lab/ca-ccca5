@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ca-plant-heat-ingress
+  name: ca-ccca5-ingress
   namespace: biodiversity
   annotations:
     haproxy-ingress.github.io/cors-enable: "true"
@@ -16,15 +16,15 @@ spec:
   ingressClassName: haproxy
   tls:
     - hosts:
-        - ca-plant-heat.nrp-nautilus.io
+        - ca-ccca5.nrp-nautilus.io
   rules:
-    - host: ca-plant-heat.nrp-nautilus.io
+    - host: ca-ccca5.nrp-nautilus.io
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: ca-plant-heat
+                name: ca-ccca5
                 port:
                   number: 80

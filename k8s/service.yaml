@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: ca-plant-heat
+  name: ca-ccca5
   namespace: biodiversity
   labels:
-    app: ca-plant-heat
+    app: ca-ccca5
 spec:
   type: ClusterIP
   selector:
-    app: ca-plant-heat
+    app: ca-ccca5
   ports:
     - protocol: TCP
       port: 80

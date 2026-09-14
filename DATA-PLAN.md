@@ -102,7 +102,7 @@ STAC description. The app's system prompt already requires the cutoff be stated 
 
 ### Proposed ingest
 
-- **Bucket:** `s3://public-ca-plant-heat/`
+- **Bucket:** `s3://public-ca-ccca5/`
 - **Stage raw first** (`raw/`), with the access date recorded — these files came from manual Calflora
   downloads on 2025-06-30/07-01 and there is no stable download URL to re-resolve, so our staged copy
   plus its checksum *is* the provenance.
@@ -143,12 +143,23 @@ This is the substantial build and the genuinely new product.
 
 ### Proposed scope
 
-- **Models: the 12 GCMs that carry all four experiments at a single member**, one member each
-  (first available): ACCESS-CM2, CNRM-ESM2-1, EC-Earth3, EC-Earth3-Veg, FGOALS-g3, GFDL-ESM4,
-  INM-CM5-0, IPSL-CM6A-LR, KACE-1-0-G, MIROC6, MPI-ESM1-2-HR, MRI-ESM2-0.
-  (CESM2-LENS, TaiESM1 and HadGEM3-GC31-LL lack full scenario coverage and are excluded, so every
-  scenario comparison uses an identical model set.)
-- **Scenarios:** `ssp245`, `ssp370` (the State's primary), `ssp585`, plus the historical baseline.
+Built in two phases, so the pipeline is proven before the full ensemble runs.
+
+**Phase 1 — pilot.** Three GCMs at `r1i1p1f1`, `historical` + `ssp370` only:
+**GFDL-ESM4**, **MPI-ESM1-2-HR**, **ACCESS-CM2** — chosen to span low, middle and high
+equilibrium climate sensitivity so the pilot shows real across-model spread rather than three
+near-identical fields. 6 stores, ~270 model-years. Deliverable is a publishable collection with
+`n_models = 3`, plus a validation check against Cal-Adapt's own figures.
+
+**Phase 2 — full ensemble** (separate issue, opened once the pilot validates). The 12 GCMs that
+carry all four experiments at a single member, one member each:
+ACCESS-CM2, CNRM-ESM2-1, EC-Earth3, EC-Earth3-Veg, FGOALS-g3, GFDL-ESM4, INM-CM5-0, IPSL-CM6A-LR,
+KACE-1-0-G, MIROC6, MPI-ESM1-2-HR, MRI-ESM2-0 — across `ssp245`, `ssp370` and `ssp585`.
+(CESM2-LENS, TaiESM1 and HadGEM3-GC31-LL lack full scenario coverage and are excluded, so every
+scenario comparison uses an identical model set.)
+
+- **Scenarios:** phase 1 `ssp370` (the State's primary); phase 2 adds `ssp245` and `ssp585`.
+  The historical baseline is built in both.
 - **Periods:** baseline **1985–2014** (the historical run ends in 2014, so a 1991–2020 baseline is
   not available from it); **mid-century 2040–2069**; **end-century 2070–2099**. A near-term
   2015–2044 window is cheap to add in the same pass if wanted.
@@ -166,8 +177,8 @@ into the 0.5 °C grid, and accumulate a per-period integer histogram of shape
 cumulative sum of that histogram, divided by the number of years. In the same pass accumulate the
 annual maximum per cell, which gives the "maximum exceedance above threshold" metric for free.
 
-Cost is network, not compute: roughly 2,500 model-years of daily California-domain data,
-~1 TB decompressed, spread over 48 jobs. Reads are from AWS `us-west-2` over `https://`, so this
+Cost is network, not compute. Phase 1 is ~270 model-years over 6 jobs (~110 GB decompressed);
+phase 2 is roughly 2,500 model-years, ~1 TB decompressed, spread over 48 jobs. Reads are from AWS `us-west-2` over `https://`, so this
 does **not** follow the usual "stage raw to NRP first" pattern — the raw is 199 Zarr stores we have
 no reason to copy. Stage the *derived* histograms to NRP instead.
 
@@ -213,10 +224,16 @@ data that records what was and was not granted, and link it from the STAC.
 
 ## Order of work
 
-1. Settle the range-definition question (A) and get the corrected/missing rasters.
-2. File the data-workflows issues: one for A, one for B. Record extent, resolutions, reducer,
-   threshold grid, model set, periods, buckets and acceptance criteria in the issue bodies.
-3. Build B — it is the long pole. A is small and can run alongside.
+1. Settle the range-definition question (A) and get the corrected/missing rasters. The build is
+   not blocked on it — the raw 0-9 score is stored and the cutoff is applied at query time — but
+   the STAC description is.
+2. ~~File the data-workflows issues~~ — filed:
+   [data-workflows#668](https://github.com/boettiger-lab/data-workflows/issues/668) (A, Calflora
+   ranges) and [data-workflows#669](https://github.com/boettiger-lab/data-workflows/issues/669)
+   (B phase 1, the 3-model ssp370 pilot). **Those issues are the source of truth for scope** — if
+   this file and an issue disagree, the issue wins.
+3. Build B phase 1 (3-model pilot) and validate it; A is small and can run alongside. Open the
+   phase-2 issue only once the pilot's numbers check out.
 4. Get C, then wire `layers-input.json` and finish `system-prompt.md` against the real collection
    and column names from `list_datasets` / `get_schema`.
 
