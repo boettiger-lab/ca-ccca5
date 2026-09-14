@@ -29,7 +29,7 @@ purpose — nothing is lost except sub-grid threshold precision.
 
 | # | Dataset | Source | Status |
 |---|---|---|---|
-| A | Species current ranges | Calflora climate-model GeoTIFF exports, 107 files, in `import-data/` | in hand, needs cleaning |
+| A | Species current ranges | Calflora climate-model GeoTIFF exports, 107 files, in `import-data/` | **99 cleaned + published** to `s3://public-ca-ccca5/`; hex build pending |
 | B | Daily max air temperature exceedance curves | LOCA2-Hybrid via Cal-Adapt `s3://cadcat/` | public, not yet ingested |
 | C | Species thermal tolerance (Tcrit, T50) | Project team measurements, 100+ species | **not received** |
 
@@ -113,9 +113,10 @@ STAC description. The app's system prompt already requires the cutoff be stated 
   `calflora-ranges/hex/h0={cell}/…` with `species_code`, `h8`, `score`.
   - **Native resolution 8** (0.737 km² vs. the ~0.69 km² source pixel — a near 1:1 match), parents
     `7, 0`. Res 7 is the join key to dataset B.
-  - **Reducer `mode`.** The value is an ordinal class code, not a density or a measurement; `mean`
-    would manufacture fractional scores that mean nothing. Because the hex and pixel sizes are so
-    close this is nearly a relabelling either way.
+  - **Reducer `max`.** `mean` manufactures fractional scores from an ordinal class code. `mode` is
+    also wrong, less obviously: the field is 98% zero, so an h8 cell straddling pixels `{0, 0, 7}`
+    takes the mode `0` and the positive cell vanishes — erasing exactly the cells that define a
+    range. `max` keeps any positive score present.
   - Expected size: ~7.5M non-NaN pixel-cells pooled across species, so single-digit millions of rows.
     This is a small dataset.
 - **Lookup table:** `calflora-ranges/species.parquet` — `species_code`, `scientific_name`, and the
