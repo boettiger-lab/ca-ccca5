@@ -15,7 +15,807 @@
         ],
         "zoom": 5.4
     },
-    "collections": [],
+    "collections": [
+        {
+            "collection_id": "calflora-ranges",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-ca-ccca5/calflora-ranges/stac-collection.json",
+            "group": "Species ranges (Calflora climate model)",
+            "assets": [
+                {
+                    "id": "abibrac-cog",
+                    "display_name": "Abies bracteata (ABIBRAC)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "abicon-cog",
+                    "display_name": "Abies concolor (ABICON)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "abimag-cog",
+                    "display_name": "Abies magnifica (ABIMAG)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "acemac-cog",
+                    "display_name": "Acer macrophyllum (ACEMAC)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "acmgla-cog",
+                    "display_name": "Acmispon glaber (ACMGLA)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "aescal-cog",
+                    "display_name": "Aesculus californica (AESCAL)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "alninc-cog",
+                    "display_name": "Alnus incana (ALNINC)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "alnrho-cog",
+                    "display_name": "Alnus rhombifolia (ALNRHO)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "ambdum-cog",
+                    "display_name": "Ambrosia dumosa (AMBDUM)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "arbmen-cog",
+                    "display_name": "Arbutus menziesii (ARBMEN)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "arcgla-cog",
+                    "display_name": "Arctostaphylos glandulosa (ARCGLA)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "arcglu-cog",
+                    "display_name": "Arctostaphylos glauca (ARCGLU)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "arcman-cog",
+                    "display_name": "Arctostaphylos manzanita (ARCMAN)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "arcpat-cog",
+                    "display_name": "Arctostaphylos patula (ARCPAT)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "arcpri-cog",
+                    "display_name": "Arctostaphylos pringlei (ARCPRI)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "arcvis-cog",
+                    "display_name": "Arctostaphylos viscida (ARCVIS)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "artcal-cog",
+                    "display_name": "Artemisia californica (ARTCAL)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "arttri-cog",
+                    "display_name": "Artemisia tridentata (ARTTRI)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "bebjun-cog",
+                    "display_name": "Bebbia juncea (BEBJUN)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "betocc-cog",
+                    "display_name": "Betula occidentalis (BETOCC)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "caldec-cog",
+                    "display_name": "Calocedrus decurrens (CALDEC)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "ceacor-cog",
+                    "display_name": "Ceanothus cordulatus (CEACOR)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "ceafol-cog",
+                    "display_name": "Ceanothus foliosus (CEAFOL)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "ceainc-cog",
+                    "display_name": "Ceanothus incanus (CEAINC)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "ceaint-cog",
+                    "display_name": "Ceanothus integerrimus (CEAINT)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "ceaoli-cog",
+                    "display_name": "Ceanothus oliganthus (CEAOLI)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "ceavel-cog",
+                    "display_name": "Ceanothus velutinus (CEAVEL)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "cerbet-cog",
+                    "display_name": "Cercocarpus betuloides (CERBET)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "chamil-cog",
+                    "display_name": "Chamaebatiaria millefolium (CHAMIL)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "chilin-cog",
+                    "display_name": "Chilopsis linearis (CHILIN)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "cleoarb-cog",
+                    "display_name": "Cleomella arborea (CLEOARB)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "conemo-cog",
+                    "display_name": "Condea emoryi (CONEMO)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "corcor-cog",
+                    "display_name": "Corylus cornuta (CORCOR)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "cornut-cog",
+                    "display_name": "Cornus nuttallii (CORNUT)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "encact-cog",
+                    "display_name": "Encelia actoni (ENCACT)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "encfar-cog",
+                    "display_name": "Encelia farinosa (ENCFAR)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "erical-cog",
+                    "display_name": "Eriodictyon californicum (ERICAL)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "erifas-cog",
+                    "display_name": "Eriogonum fasciculatum (ERIFAS)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "erinau-cog",
+                    "display_name": "Ericameria nauseosa (ERINAU)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "fracal-cog",
+                    "display_name": "Frangula californica (FRACAL)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "fralat-cog",
+                    "display_name": "Fraxinus latifolia (FRALAT)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "hazsqu-cog",
+                    "display_name": "Hazardia squarrosa (HAZSQU)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "hesmac-cog",
+                    "display_name": "Hesperocyparis macnabiana (HESMAC)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "hessar-cog",
+                    "display_name": "Hesperocyparis sargentii (HESSAR)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "jughin-cog",
+                    "display_name": "Juglans hindsii (JUGHIN)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "juscal-cog",
+                    "display_name": "Justicia californica (JUSCAL)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "lartri-cog",
+                    "display_name": "Larrea tridentata (LARTRI)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "lonint-cog",
+                    "display_name": "Lonicera interrupta (LONINT)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "lonsub-cog",
+                    "display_name": "Lonicera subspicata (LONSUB)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "lupalb-cog",
+                    "display_name": "Lupinus albifrons (LUPALB)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "lyccoo-cog",
+                    "display_name": "Lycium cooperi (LYCCOO)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "mallau-cog",
+                    "display_name": "Malosma laurina (MALLAU)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "monodo-cog",
+                    "display_name": "Monardella odoratissima (MONODO)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "nelodo-cog",
+                    "display_name": "Neltuma odorata (NELODO)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "notden-cog",
+                    "display_name": "Notholithocarpus densiflorus (NOTDEN)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "olntes-cog",
+                    "display_name": "Olneya tesota (OLNTES)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "parflo-cog",
+                    "display_name": "Parkinsonia florida (PARFLO)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "pincou-cog",
+                    "display_name": "Pinus coulteri (PINCOU)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "pinfle-cog",
+                    "display_name": "Pinus flexilis (PINFLE)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "pinlam-cog",
+                    "display_name": "Pinus lambertiana (PINLAM)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "pinlon-cog",
+                    "display_name": "Pinus longaeva (PINLON)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "pinpon-cog",
+                    "display_name": "Pinus ponderosa (PINPON)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "pinsab-cog",
+                    "display_name": "Pinus sabiniana (PINSAB)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "plarac-cog",
+                    "display_name": "Platanus racemosa (PLARAC)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "popfre-cog",
+                    "display_name": "Populus fremontii (POPFRE)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "poptre-cog",
+                    "display_name": "Populus tremuloides (POPTRE)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "poptri-cog",
+                    "display_name": "Populus trichocarpa (POPTRI)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "psemen-cog",
+                    "display_name": "Pseudotsuga menziesii (PSEMEN)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "psosch-cog",
+                    "display_name": "Psorothamnus schottii (PSOSCH)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "purtri-cog",
+                    "display_name": "Purshia tridentata (PURTRI)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "queagr-cog",
+                    "display_name": "Quercus agrifolia (QUEAGR)",
+                    "visible": true,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "queber-cog",
+                    "display_name": "Quercus berberidifolia (QUEBER)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "quechr-cog",
+                    "display_name": "Quercus chrysolepis (QUECHR)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "quedou-cog",
+                    "display_name": "Quercus douglasii (QUEDOU)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "quedur-cog",
+                    "display_name": "Quercus durata (QUEDUR)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "quekel-cog",
+                    "display_name": "Quercus kelloggii (QUEKEL)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "quelob-cog",
+                    "display_name": "Quercus lobata (QUELOB)",
+                    "visible": true,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "quewis-cog",
+                    "display_name": "Quercus wislizeni (QUEWIS)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "rhaili-cog",
+                    "display_name": "Rhamnus ilicifolia (RHAILI)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "rhoocc-cog",
+                    "display_name": "Rhododendron occidentale (RHOOCC)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "ribcer-cog",
+                    "display_name": "Ribes cereum (RIBCER)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "ribser-cog",
+                    "display_name": "Ribes sericeum (RIBSER)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "roscal-cog",
+                    "display_name": "Rosa californica (ROSCAL)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "roswoo-cog",
+                    "display_name": "Rosa woodsii (ROSWOO)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "rubpar-cog",
+                    "display_name": "Rubus parviflorus (RUBPAR)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "saldor-cog",
+                    "display_name": "Salvia dorrii (SALDOR)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "salexi-cog",
+                    "display_name": "Salix exigua (SALEXI)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "salgoo-cog",
+                    "display_name": "Salix gooddingii (SALGOO)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "sallae-cog",
+                    "display_name": "Salix laevigata (SALLAE)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "salleu-cog",
+                    "display_name": "Salvia leucophylla (SALLEU)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "senfla-cog",
+                    "display_name": "Senecio flaccidus (SENFLA)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "sengre-cog",
+                    "display_name": "Senegalia greggii (SENGRE)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "seqgig-cog",
+                    "display_name": "Sequoiadendron giganteum (SEQGIG)",
+                    "visible": true,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "simchi-cog",
+                    "display_name": "Simmondsia chinensis (SIMCHI)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "tetste-cog",
+                    "display_name": "Tetradymia stenolepis (TETSTE)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "umbcal-cog",
+                    "display_name": "Umbellularia californica (UMBCAL)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "vitcal-cog",
+                    "display_name": "Vitis californica (VITCAL)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "wasfil-cog",
+                    "display_name": "Washingtonia filifera (WASFIL)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                },
+                {
+                    "id": "yucsch-cog",
+                    "display_name": "Yucca schidigera (YUCSCH)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                }
+            ]
+        }
+    ],
     "llm": {
         "user_provided": true,
         "default_endpoint": "https://openrouter.ai/api/v1",
@@ -35,12 +835,12 @@
         ]
     },
     "welcome": {
-        "message": "Map where California plant species may face heat stress under future climate. Pick a species, a thermal tolerance threshold (Tcrit or T50), a climate period and scenario, and a leaf-to-air temperature offset — the map shows the mean annual number of days that exceed the resulting air-temperature threshold across the species' current range.",
+        "message": "A first look at the species range data for the California plant heat-vulnerability tool. 99 species are here as separate layers (Calflora climate-model distributions, scored 0-9) - toggle them in the layer menu.\n\nTwo things to note. Cells scoring 0 are drawn pale and cells scoring 1 or above are red; across all 99 species only about 2% of scored cells exceed zero, so ranges look sparse at statewide zoom - zoom in to see them. Whether a species' range should be read as every scored cell, every cell above zero, or every cell above some higher cutoff is exactly the question we have back to the data providers.\n\nThe LOCA2 temperature projections are not loaded yet, so the exceedance-day calculation this tool is ultimately for is not available in this preview.",
         "examples": [
-            "Where does valley oak exceed its Tcrit by mid-century under SSP3-7.0, assuming leaves run 4 °C warmer than air?",
-            "What share of the giant sequoia range sees at least 5 exceedance days per year at T50?",
-            "Compare exceedance days for coast live oak between the historical baseline and end of century.",
-            "Which of the study species have the largest increase in exceedance days under SSP5-8.5?"
+            "Which species are on the map, and how many cells does each one cover?",
+            "Show me the range for giant sequoia.",
+            "What do the 0-9 values in these rasters mean?",
+            "Which species ranges extend outside California?"
         ]
     }
 }

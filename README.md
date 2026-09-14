@@ -8,11 +8,16 @@ Built on [geo-agent](https://github.com/boettiger-lab/geo-agent) from
 [geo-agent-template](https://github.com/boettiger-lab/geo-agent-template) — the map, chat, agent and
 tool modules load from CDN; this repo configures which data to show and how the agent should behave.
 
-> **Status: pre-data.** The app shell is configured but `collections` in `layers-input.json` is empty
-> — the underlying datasets have not been published yet. See [DATA-PLAN.md](DATA-PLAN.md) for what
-> has to be ingested through
-> [`boettiger-lab/data-workflows`](https://github.com/boettiger-lab/data-workflows) first, and the
-> open questions still outstanding with the partner.
+> **Status: data preview.** The 99 usable Calflora species range rasters are cleaned, published to
+> `s3://public-ca-ccca5/` and wired into the map, so the partner can see what we have. The LOCA2
+> temperature projections are **not** ingested yet, so the exceedance-day calculation the tool exists
+> for does not work in this preview. See [DATA-PLAN.md](DATA-PLAN.md) for the remaining ingest and
+> the open questions with the partner.
+>
+> ⚠️ **Calflora redistribution terms are unconfirmed.** The range collection is deliberately *not*
+> registered in the public STAC catalog, and the app reaches it by direct `collection_url`. Resolve
+> the licence before publicising this more widely — see
+> [data-workflows#668](https://github.com/boettiger-lab/data-workflows/issues/668).
 
 ## The idea
 
