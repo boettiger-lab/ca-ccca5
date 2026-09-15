@@ -112,6 +112,11 @@ the provenance of the published preview is reconstructible.
    files existed and **would delete genuine data**; do not use it. Then clip to the remaining valid
    extent.
 
+   This already happened once. The published 99-species preview removed `JUSCAL`'s pixel at 24.09°N,
+   −110.70°E and its staging note recorded it as an equator artefact. `JUSCAL` is byte-identical in
+   both zips, has no sub-1°N pixel at all, and that record — value 1, near La Paz — is inside the
+   accepted range of *Justicia californica*. Corrected on the issue.
+
    ### Out-of-California pixels are real, and must be kept
 
    Justin's understanding was that the Calflora model ignores observations outside California. It does
@@ -381,15 +386,17 @@ users to read two species 0.3 °C apart as meaningfully different.
    all four previously-missing species present). A is unblocked.
 3. ~~File the data-workflows issues~~ — filed:
    [data-workflows#668](https://github.com/boettiger-lab/data-workflows/issues/668) (A, Calflora
-   ranges) and [data-workflows#669](https://github.com/boettiger-lab/data-workflows/issues/669)
-   (B phase 1, the 3-model ssp370 pilot). **Those issues are the source of truth for scope** — if
-   this file and an issue disagree, the issue wins.
+   ranges), [data-workflows#669](https://github.com/boettiger-lab/data-workflows/issues/669)
+   (B phase 1, the 3-model ssp370 pilot) and
+   [data-workflows#673](https://github.com/boettiger-lab/data-workflows/issues/673) (C, thermal
+   tolerance). **Those issues are the source of truth for scope** — if this file and an issue
+   disagree, the issue wins.
 4. Build B phase 1 (3-model pilot) and validate it; A is small and can run alongside once its inputs
    land. Open the phase-2 issue only once the pilot's numbers check out.
-5. ~~Get C~~ — received and cleared to publish. Open a data-workflows issue for it (small: one CSV to
-   one parquet plus a STAC collection and a `LICENSE.md`), then wire `layers-input.json` and finish
-   `system-prompt.md` against the real collection and column names from `list_datasets` /
-   `get_schema`.
+5. ~~Get C~~ — received and cleared to publish; issue filed as
+   [data-workflows#673](https://github.com/boettiger-lab/data-workflows/issues/673). Once A and C
+   land, wire `layers-input.json` and finish `system-prompt.md` against the real collection and
+   column names from `list_datasets` / `get_schema`.
 
 ## Open questions for the partner
 
