@@ -207,33 +207,52 @@ ignored" — is the definition we use.
 Write this definition into the STAC description. The app's system prompt states it in every answer
 that reports a percentage.
 
-### Proposed ingest
+### Ingest — built 2026-09-15
+
+Running in `data-workflows` on the `geo-workflows` namespace; manifests under
+`catalog/calflora/k8s/calflora-ranges/`. Credentials stay in the cluster (the `aws` and
+`rclone-config` secrets are mounted into the job pods), so nothing is materialised on a laptop.
 
 - **Bucket:** `s3://public-ca-ccca5/`
-- **Stage raw first** (`raw/`), with the access date recorded — these files came from manual Calflora
-  downloads on 2025-06-30/07-01 and there is no stable download URL to re-resolve, so our staged copy
-  plus its checksum *is* the provenance.
-- **Preprocess job:** drop the sub-1°N equator pixel, clip to valid extent, set `nodata=nan`, normalise
-  the three seven-letter codes to their six-letter form, and write one clean COG per species to
-  `calflora-ranges/cog/{CODE}.tif`. Ingest only the corrected re-downloads for the eight species in
-  defects 1–2; a `(1)` filename is never an input.
-- **Hex:** one long-form table rather than 107 collections —
-  `calflora-ranges/hex/h0={cell}/…` with `species_code`, `h8`, `n_observations`.
-  - **Native resolution 8** (0.737 km² vs. the ~0.69 km² source pixel — a near 1:1 match), parents
-    `7, 0`. Res 7 is the join key to dataset B.
-  - **Reducer `max`**, over non-NaN pixels only. A cell with no non-NaN pixel emits no row, so **row
-    presence is the range mask** and the reducer only sets the observation count. `mean` would
-    manufacture fractional counts; `sum` would make the count depend on how many source pixels fall
-    in a cell. See the resolved range definition above.
-  - **Keep zero rows.** They are in-range, suitable-but-unobserved cells and carry 98% of the range.
-  - Expected size: ~7.5M non-NaN pixel-cells pooled across species, so single-digit millions of rows.
-    This is a small dataset.
-- **Lookup table:** `calflora-ranges/species.parquet` — `species_code`, `scientific_name`, and the
-  Calflora list/URL, built from `Download_list_SppDist.xlsx`.
-- **Licence:** Calflora's terms need to be checked and recorded; do not assert an SPDX id until a
-  terms page is located. If no grant is locatable, say so plainly in the description.
+- **Raw staged by edition**, since Calflora exports have no stable URL and the staged copy plus its
+  checksum *is* the provenance:
+  `raw/2026-09-15/` (the delivered zip, sha256 `3da13b2a…`, plus the 109 rasters) and
+  `raw/2025-07-01/` for the superseded snapshot.
+- **COGs:** `calflora-ranges/cog/{CODE}.tif`, 109 published. Cleaning is limited to what does not
+  alter modelled values — drop the sub-1°N equator pixel, clip to the valid window, set
+  `nodata=nan`, normalise the two seven-letter codes. Overviews use `NEAREST`; the COG driver
+  defaults to `AVERAGE`, which invents fractional values on a sparse count field.
+- **Species lookup:** `calflora-ranges/species.parquet`, 109 codes reconciling exactly against the
+  published rasters.
+- **Hex:** `calflora-ranges/hex/h0={cell}/…` with `species_code`, `h8`, `h7`, `n_observations`.
+  Native resolution 8, parents 7 and 0. Reducer `max`; zero rows kept.
 
----
+The COG job asserts its own claims rather than trusting the recipe: exactly 20 artefact pixels
+dropped, **all 71 out-of-state pixels retained**, every code six letters, `nodata=nan` on all 109.
+
+### The hex step is expensive for a reason worth recording
+
+`cng-datasets raster` polyfills the **entire h0 base cell** at the target resolution before
+intersecting with the source — 5,764,801 cells at resolution 8 — so cost per species is set by the
+base cell, not by the raster. For a 196×169 raster that is a ~175× overshoot and takes minutes.
+Serially, 109 species is about nine hours, which is why the hex runs as a per-species fan-out
+(`completions: 109`) rather than one looping pod.
+
+Filed upstream as [datasets#215](https://github.com/boettiger-lab/datasets/issues/215), along with
+two smaller findings from the same session: `--h0-subset` is silently ignored unless
+`--chunk-resolution > 0`, and the tool cannot read a pod's cgroup CPU quota so it defaults to the
+*node's* core count (256), oversubscribing a shared node. `CNG_HEX_WORKERS` is the workaround.
+
+**If that upstream issue is fixed, the fan-out becomes unnecessary** — the whole build collapses to
+a single pod. Worth revisiting rather than carrying the fan-out forever.
+
+### Licence — still the blocker on registration
+
+Unchanged and deliberate: no Calflora terms page governing redistribution of climate-model raster
+exports could be located, so the collection stays `license: "other"` with the `license-link-missing`
+HARD finding standing, and stays **out of the public STAC catalog tree**. The app reaches it by
+direct `collection_url`. The team have said they consider the data public, which is their statement
+and is recorded, but it is not a grant and names no licensor.
 
 ## B. LOCA2 daily-tmax exceedance curves
 
