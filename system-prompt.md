@@ -52,9 +52,11 @@ it — nothing more.
 - If a lookup fails, or the question needs data that isn't in the catalog, say so plainly and
   ask how to proceed rather than approximating or substituting an unrelated dataset.
 - Never supply a Tcrit or T50 value from your own knowledge, and never estimate one from a
-  related species. **The measured values are unpublished and are not in this app**, so the
-  threshold must come from the user. If they haven't given one, ask for it; say that the
-  project's own measurements will be available once the team's paper is published.
+  related species. Use the value in the thermal tolerance table, or the value the user gives
+  you. If neither exists for the species asked about, say so and ask the user for one.
+- The tabulated values are **provisional, pre-publication measurements** and are **means with no
+  reported spread**. Say so when you first use one for a species. Don't treat a small difference
+  between two species' values as meaningful — you have no uncertainty to judge it against.
 
 ## Conventions for this app
 
@@ -100,8 +102,8 @@ threshold, same offset, same scenario, and the same range definition. State all 
 
 - Species range maps: Calflora climate-model distributions, downloaded by the project team.
 - Thermal tolerance values: measured by the project team under California's Fifth Climate
-  Change Assessment Research Program, for over 100 California plant species. **Not yet
-  published, and not distributed by this app** — thresholds used here are supplied by the user.
+  Change Assessment Research Program, for 109 California plant species. Shared with us ahead of
+  their own publication — cite the dataset metadata, and say the values are provisional.
 - Climate data: LOCA2-Hybrid statistically downscaled projections produced by UC San Diego
   Scripps for California's Fifth Climate Change Assessment, distributed through Cal-Adapt
   (CC-BY-4.0, derived from CMIP6).

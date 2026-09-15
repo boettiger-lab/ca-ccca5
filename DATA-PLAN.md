@@ -31,15 +31,16 @@ purpose — nothing is lost except sub-grid threshold precision.
 |---|---|---|---|
 | A | Species current ranges | Calflora climate-model GeoTIFF exports, 107 files, in `import-data/` | **99 cleaned + published** to `s3://public-ca-ccca5/`; hex build pending |
 | B | Daily max air temperature exceedance curves | LOCA2-Hybrid via Cal-Adapt `s3://cadcat/` | public, not yet ingested |
-| C | Species thermal tolerance (Tcrit, T50) | Project team measurements, 109 species | **received 2026-09-15**, embargoed until the team's paper publishes |
+| C | Species thermal tolerance (Tcrit, T50) | Project team measurements, 109 species | **received 2026-09-15**, cleared to publish; label provisional until the team's paper appears |
 
 ---
 
 ## A. Calflora species range rasters
 
-### What is actually in `import-data/SppRange_Project/`
+### What is actually in the 2025-07 snapshot
 
-Verified by reading the files directly:
+Now held as `import-data/SppRange_Project-20260915T173903Z-1-001.zip` (git-ignored). Verified by
+reading the files directly:
 
 - **107 GeoTIFFs**, one per species, named by six-letter code (3 letters genus + 3 letters species).
 - EPSG:4326, Float32, DEFLATE, striped (not tiled), **no `nodata` tag set** — NaN is the fill.
@@ -73,10 +74,22 @@ Verified by reading the files directly:
 
 ### Defects — status after the team's 2026-09-15 reply
 
-The team has answered every outstanding question about these files. **The corrected downloads have
-not arrived in `import-data/` yet** — the directory still holds the original 107 files including both
-`(1)` duplicates, and still has no `ERIDIS`. Nothing below is verified against a new file; chase the
-delivery before the preprocess job runs.
+The team has answered every outstanding question about these files, and by their second message of
+2026-09-15 has supplied or re-supplied all of them. **None of those corrections have reached us yet.**
+
+The Google Drive export downloaded 2026-09-15
+(`import-data/SppRange_Project-20260915T173903Z-1-001.zip`) is a **stale snapshot of the original
+2025-07 download**, verified three ways:
+
+- every one of its 107 rasters carries a 2025-06-30/07-02 file date, none from 2026;
+- the three byte-identical pairs are *still* byte-identical (same md5s as before);
+- `ENCFAR(1).tif` and `ERIUMB(1).tif` are still present, `ATRITOR` is still unrenamed, and
+  `ERIDIS`, `HOLDIS`, `QUEGAR`, `SEQSEM` are all absent.
+
+Only the three Office documents in the zip carry a 2026 date (2026-08-19), so the folder has been
+touched since — just not the rasters. Most likely we were pointed at a different Drive folder than the
+one Justin has been editing. **Ask him for the folder link and re-pull before any preprocessing.**
+Nothing below is verified against a corrected file.
 
 1. **Three pairs of byte-identical files** (`HESWHI` = `HETARB`, `ATRITOR` = `BACPIL`,
    `ERIUMB` = `FOUSPL`) — **resolved by re-download.** The team re-pulled all six species rather than
@@ -87,24 +100,27 @@ delivery before the preprocess job runs.
    removed both and re-downloaded `ENCFAR` and `ERIUMB`. *Awaiting the files;* until they land, do not
    ingest a `(1)` filename and do not trust the unsuffixed namesakes either.
 
-3. **17 files carry a single stray pixel near the equator**, which stretches the declared raster to
-   ~5,040–5,055 rows of almost-entirely NaN:
+3. **A single stray pixel near the equator**, which stretches the declared raster to ~5,040–5,055
+   rows of almost-entirely NaN. 17 files in the 2025-07 snapshot:
    `ABICON ALNRHO ARCPAT ARCVIS ARTTRI CALDEC CEACOR CEAINT CORNUT PINLAM PINPON PURTRI QUECHR
-   QUEKEL RHOOCC RIBCER SEQGIG`.
+   QUEKEL RHOOCC RIBCER SEQGIG` — **and the team reports the three newly generated files
+   (`HOLDIS`, `QUEGAR`, `SEQSEM`) have it too.**
    Confirmed as a single valid pixel in the bottom row at lat ≈ 0.008°N — the georeference is
    otherwise correct and the real data sits in the California latitudes. **The team confirmed these
    are artefacts to disregard** and has reported them to Calflora; the Calflora climate model is
-   supposed to ignore observations outside California's borders, so the cause is unexplained. The
-   preprocess job drops any pixel below 25°N and clips to the remaining valid extent.
-   (`ENCFAR(1)` reached 23.3°N and `JUSCAL` reaches 24.1°N — those may be genuine Baja extent; check
-   `JUSCAL` before clipping it, and re-check the new `ENCFAR`.)
+   supposed to ignore observations outside California's borders, so the cause is unexplained.
+   The preprocess job drops any pixel below 25°N and clips to the remaining valid extent — cheap, and
+   no trouble at all to apply.
+   **Treat this as a defect of the exporter affecting an unknown subset: test every input file rather
+   than matching against the list above**, which was only ever the subset present in one snapshot.
+   (`JUSCAL` reaches 24.1°N and the old `ENCFAR(1)` reached 23.3°N — those may be genuine Baja
+   extent; check `JUSCAL` before clipping it, and check the new `ENCFAR` when it arrives.)
 
-4. **Four species on the list had no file** — `ERIDIS` **has been added** (*awaiting delivery*).
-   `HOLDIS`, `QUEGAR` and `SEQSEM` are **still blocked**: Calflora's export will not generate a
-   GeoTIFF for them and the team has filed it as a bug with Calflora. No known reason these three
-   differ from the others, so expect them eventually. `SEQSEM` is coast redwood — a conspicuous
-   omission, but **do not hold the ingest for it**; publish with the species we have and add the
-   remaining three in a later pass.
+4. **Four species on the list had no file** — **all four now exist.** `ERIDIS` was added first;
+   Calflora has since fixed the export bug, and the team has generated `HOLDIS`, `QUEGAR` and
+   `SEQSEM` (with the stray pixel, see 3). *Awaiting delivery along with everything else.* That
+   restores coast redwood and brings the build to the full species list, so the earlier plan to ship
+   99 species and backfill later is unnecessary — wait for the files and do it in one pass.
 
 5. **No `nodata` tag.** Set `nodata=nan` explicitly on the output COGs so downstream tools don't
    read NaN as data.
@@ -310,27 +326,26 @@ species with a raster have tolerance values. The seven CSV species with no raste
 still-missing downloads (`ERIDIS`, `HOLDIS`, `QUEGAR`, `SEQSEM`) and the three code-spelling variants,
 which are not genuinely missing. So the usable species list is governed by dataset A, not C.
 
-### Embargo — this is the binding constraint
+### Publication status — cleared to publish
 
-The team's values are **unpublished until their paper comes out**. We may process them onto NRP but
-**must not distribute the raw data further**. Concretely:
+The team's paper is not out yet, but **Justin has confirmed they are not concerned about these values
+appearing in the public app before publication**; the flag was that official publication is coming
+soon, not a restriction on use. So dataset C is published as the team asked.
 
-- Stage to a **private** NRP bucket. Nothing goes in `s3://public-ca-ccca5/` and no STAC collection
-  for C is published while the embargo holds.
-- **Serving these as defaults in the public app is distribution.** The app is public and unauthenticated;
-  109 Tcrit/T50 pairs rendered into a browser, one query at a time, is the table. Do not read "process
-  on NRP" as permission to ship them to clients.
-- The workable reading, and the one the team's own framing supports — these are "just a starting
-  point", and the proposal always wanted user-supplied values — is that **the app ships no default
-  tolerances until publication.** The user enters Tcrit/T50 (or the app offers the plausible range as
-  a slider without attributing a per-species value), and we hold the real table on NRP for our own
-  validation. That costs little, because the design already treats these as user-settable.
-- **Confirm this reading with the team** before wiring anything. If they are content for per-species
-  defaults to appear in the app pre-publication, that is their call to make explicitly — but it should
-  be in writing, and we should ask whether they want an acknowledgement or a "provisional, unpublished"
-  label attached.
-- Once the paper is out: publish with a `LICENSE.md` beside the data recording what was and was not
-  granted, link it from the STAC, and add the citation.
+- Publish to `s3://public-ca-ccca5/` as `thermal-tolerance/species.parquet` alongside A, and register
+  a STAC collection for it.
+- Publish a `LICENSE.md` beside the data recording what the team granted and what they did not — this
+  is the "data contributed directly to us" case, with no public terms page to point at — and link it
+  from the STAC with `{"rel": "license"}`.
+- **Label the values provisional.** They are pre-publication measurements, so the collection
+  description and the app both say so, and both say the citation will be the team's paper once it
+  appears. Ask Justin for the citation and the expected date so the description can be updated in
+  place rather than left vague.
+- The raw CSV stays in the git-ignored `import-data/`. Publishing the derived parquet to S3 is the
+  distribution channel; a public git repo is not.
+
+Users can still override every value — that was always the design, and it is what makes these
+defaults rather than fixed constants.
 
 ### Still worth asking for
 
@@ -343,36 +358,41 @@ users to read two species 0.3 °C apart as meaningfully different.
 ## Order of work
 
 1. ~~Settle the range-definition question (A)~~ — settled 2026-09-15: range = non-NaN, value =
-   observation count. **Post this to [data-workflows#668](https://github.com/boettiger-lab/data-workflows/issues/668)**,
-   which still specifies the `score` column and the old reducer rationale. Chase the corrected and
-   added rasters (defects 1, 2, 4); they have not arrived in `import-data/`.
-2. ~~File the data-workflows issues~~ — filed:
+   observation count. ~~Post this to data-workflows#668~~ — **the issue body has been corrected in
+   place** (2026-09-15), following that repo's convention of amending the body and recording the
+   change in a trailing note rather than leaving a contradicting comment.
+2. **Get the real corrected rasters.** The Drive export we have is a stale 2025-07 snapshot — see the
+   defects section. This is the one thing actually blocking A.
+3. ~~File the data-workflows issues~~ — filed:
    [data-workflows#668](https://github.com/boettiger-lab/data-workflows/issues/668) (A, Calflora
    ranges) and [data-workflows#669](https://github.com/boettiger-lab/data-workflows/issues/669)
    (B phase 1, the 3-model ssp370 pilot). **Those issues are the source of truth for scope** — if
    this file and an issue disagree, the issue wins.
-3. Build B phase 1 (3-model pilot) and validate it; A is small and can run alongside. Open the
-   phase-2 issue only once the pilot's numbers check out.
-4. ~~Get C~~ — received. Wire `layers-input.json` and finish `system-prompt.md` against the real
-   collection and column names from `list_datasets` / `get_schema`, with **no per-species tolerance
-   defaults in the client** until the embargo lifts or the team says otherwise.
+4. Build B phase 1 (3-model pilot) and validate it; A is small and can run alongside once its inputs
+   land. Open the phase-2 issue only once the pilot's numbers check out.
+5. ~~Get C~~ — received and cleared to publish. Open a data-workflows issue for it (small: one CSV to
+   one parquet plus a STAC collection and a `LICENSE.md`), then wire `layers-input.json` and finish
+   `system-prompt.md` against the real collection and column names from `list_datasets` /
+   `get_schema`.
 
 ## Open questions for the partner
 
-Answered 2026-09-15 and kept only as a record: the meaning of the raster values and the range
-definition; which files needed re-downloading; the `(1)` duplicates; the stray equatorial pixels; and
-the Tcrit / T50 table itself.
+Answered across the two 2026-09-15 messages and kept only as a record: the meaning of the raster
+values and the range definition; which files needed re-downloading; the `(1)` duplicates; the stray
+equatorial pixels; the four missing species (all now generated, Calflora having fixed the export bug);
+the Tcrit / T50 table; and whether the tolerance values may appear in the public app before
+publication (yes).
 
 Still open:
 
-1. **Publication timing and what the embargo permits.** Does "don't distribute further" rule out
-   showing per-species Tcrit / T50 as defaults in the public app? Our reading is that it does, so we
-   plan to require user-entered values until the paper is out — please confirm, and tell us the
-   expected publication date and the citation to use.
-2. **Sample size, variance and method behind the Tcrit / T50 means**, so the app can say how well
-   constrained a value is instead of presenting a bare mean.
-3. **`HOLDIS`, `QUEGAR`, `SEQSEM`** — still blocked on the Calflora export bug. We will publish
-   without them and add them later; no need to hold anything up, just let us know when they generate.
+1. **Which Drive folder holds the corrected files?** What we downloaded on 2026-09-15 is the original
+   2025-07 snapshot — no re-downloads, no `ERIDIS`, no `HOLDIS`/`QUEGAR`/`SEQSEM`, `(1)` duplicates
+   still present. A link to the folder you have been updating would sort it out.
+2. **Expected publication date and the citation to use** for the Tcrit / T50 values, so the collection
+   description and the app can name it rather than saying "forthcoming".
+3. **Sample size, variance and method behind the Tcrit / T50 means**, so the app can say how well
+   constrained a value is instead of presenting a bare mean. Two species 0.3 °C apart currently look
+   distinguishable and may not be.
 4. **What leaf-to-air offset range should the control span, and what default (if any)?** Georgia was
    named as the person to advise. *(Unanswered across two rounds — worth asking directly.)*
 5. **Scenarios and periods:** does SSP2-4.5 / SSP3-7.0 / SSP5-8.5 with 1985–2014, 2040–2069 and
