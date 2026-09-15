@@ -27,7 +27,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "abicon-cog",
@@ -35,7 +35,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "abimag-cog",
@@ -43,7 +43,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "acemac-cog",
@@ -51,7 +51,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "acmgla-cog",
@@ -59,7 +59,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "aescal-cog",
@@ -67,7 +67,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "alninc-cog",
@@ -75,7 +75,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "alnrho-cog",
@@ -83,7 +83,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "ambdum-cog",
@@ -91,7 +91,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "arbmen-cog",
@@ -99,7 +99,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "arcgla-cog",
@@ -107,7 +107,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "arcglu-cog",
@@ -115,7 +115,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "arcman-cog",
@@ -123,7 +123,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "arcpat-cog",
@@ -131,7 +131,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "arcpri-cog",
@@ -139,7 +139,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "arcvis-cog",
@@ -147,7 +147,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "artcal-cog",
@@ -155,7 +155,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "arttri-cog",
@@ -163,7 +163,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "bebjun-cog",
@@ -171,7 +171,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "betocc-cog",
@@ -179,7 +179,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "caldec-cog",
@@ -187,7 +187,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "ceacor-cog",
@@ -195,7 +195,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "ceafol-cog",
@@ -203,7 +203,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "ceainc-cog",
@@ -211,7 +211,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "ceaint-cog",
@@ -219,7 +219,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "ceaoli-cog",
@@ -227,7 +227,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "ceavel-cog",
@@ -235,7 +235,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "cerbet-cog",
@@ -243,7 +243,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "chamil-cog",
@@ -251,7 +251,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "chilin-cog",
@@ -259,7 +259,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "cleoarb-cog",
@@ -267,7 +267,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "conemo-cog",
@@ -275,7 +275,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "corcor-cog",
@@ -283,7 +283,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "cornut-cog",
@@ -291,7 +291,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "encact-cog",
@@ -299,7 +299,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "encfar-cog",
@@ -307,7 +307,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "erical-cog",
@@ -315,7 +315,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "erifas-cog",
@@ -323,7 +323,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "erinau-cog",
@@ -331,7 +331,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "fracal-cog",
@@ -339,7 +339,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "fralat-cog",
@@ -347,7 +347,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "hazsqu-cog",
@@ -355,7 +355,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "hesmac-cog",
@@ -363,7 +363,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "hessar-cog",
@@ -371,7 +371,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "jughin-cog",
@@ -379,7 +379,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "juscal-cog",
@@ -387,7 +387,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "lartri-cog",
@@ -395,7 +395,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "lonint-cog",
@@ -403,7 +403,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "lonsub-cog",
@@ -411,7 +411,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "lupalb-cog",
@@ -419,7 +419,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "lyccoo-cog",
@@ -427,7 +427,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "mallau-cog",
@@ -435,7 +435,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "monodo-cog",
@@ -443,7 +443,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "nelodo-cog",
@@ -451,7 +451,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "notden-cog",
@@ -459,7 +459,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "olntes-cog",
@@ -467,7 +467,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "parflo-cog",
@@ -475,7 +475,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "pincou-cog",
@@ -483,7 +483,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "pinfle-cog",
@@ -491,7 +491,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "pinlam-cog",
@@ -499,7 +499,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "pinlon-cog",
@@ -507,7 +507,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "pinpon-cog",
@@ -515,7 +515,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "pinsab-cog",
@@ -523,7 +523,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "plarac-cog",
@@ -531,7 +531,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "popfre-cog",
@@ -539,7 +539,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "poptre-cog",
@@ -547,7 +547,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "poptri-cog",
@@ -555,7 +555,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "psemen-cog",
@@ -563,7 +563,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "psosch-cog",
@@ -571,7 +571,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "purtri-cog",
@@ -579,7 +579,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "queagr-cog",
@@ -587,7 +587,7 @@
                     "visible": true,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "queber-cog",
@@ -595,7 +595,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "quechr-cog",
@@ -603,7 +603,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "quedou-cog",
@@ -611,7 +611,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "quedur-cog",
@@ -619,7 +619,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "quekel-cog",
@@ -627,7 +627,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "quelob-cog",
@@ -635,7 +635,7 @@
                     "visible": true,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "quewis-cog",
@@ -643,7 +643,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "rhaili-cog",
@@ -651,7 +651,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "rhoocc-cog",
@@ -659,7 +659,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "ribcer-cog",
@@ -667,7 +667,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "ribser-cog",
@@ -675,7 +675,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "roscal-cog",
@@ -683,7 +683,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "roswoo-cog",
@@ -691,7 +691,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "rubpar-cog",
@@ -699,7 +699,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "saldor-cog",
@@ -707,7 +707,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "salexi-cog",
@@ -715,7 +715,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "salgoo-cog",
@@ -723,7 +723,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "sallae-cog",
@@ -731,7 +731,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "salleu-cog",
@@ -739,7 +739,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "senfla-cog",
@@ -747,7 +747,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "sengre-cog",
@@ -755,7 +755,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "seqgig-cog",
@@ -763,7 +763,7 @@
                     "visible": true,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "simchi-cog",
@@ -771,7 +771,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "tetste-cog",
@@ -779,7 +779,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "umbcal-cog",
@@ -787,7 +787,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "vitcal-cog",
@@ -795,7 +795,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "wasfil-cog",
@@ -803,7 +803,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "yucsch-cog",
@@ -811,7 +811,7 @@
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
-                    "legend_label": "Calflora climate-model score (0 = pale, 3+ = saturated)"
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 }
             ]
         }
@@ -835,12 +835,12 @@
         ]
     },
     "welcome": {
-        "message": "A first look at the species range data for the California plant heat-vulnerability tool. 99 species are here as separate layers (Calflora climate-model distributions, scored 0-9) - toggle them in the layer menu.\n\nTwo things to note. Cells scoring 0 are drawn pale and cells scoring 1 or above are red; across all 99 species only about 2% of scored cells exceed zero, so ranges look sparse at statewide zoom - zoom in to see them. Whether a species' range should be read as every scored cell, every cell above zero, or every cell above some higher cutoff is exactly the question we have back to the data providers.\n\nThe LOCA2 temperature projections are not loaded yet, so the exceedance-day calculation this tool is ultimately for is not available in this preview.",
+        "message": "A first look at the species range data for the California plant heat-vulnerability tool. 99 species are here as separate layers, from Calflora's climate-model distributions - toggle them in the layer menu.\n\nHow to read a layer: a cell's value is the number of times the species has been **observed** there. A cell the climate model finds suitable but where nobody has recorded the plant is **0**, and it is still inside the range - it is drawn pale rather than omitted. Cells outside the modelled climatic tolerance carry no value and are transparent. Across all 99 species only about 2% of in-range cells have ever been observed in, so a range reads as a broad pale extent with scattered red where the records are. That pattern is survey effort, not abundance.\n\nThe LOCA2 temperature projections are not loaded yet, so the exceedance-day calculation this tool is ultimately for is not available in this preview. The measured Tcrit and T50 values are unpublished and are not in the app - thresholds will be entered by the user.",
         "examples": [
-            "Which species are on the map, and how many cells does each one cover?",
+            "Which species are on the map, and how large is each one's range?",
             "Show me the range for giant sequoia.",
-            "What do the 0-9 values in these rasters mean?",
-            "Which species ranges extend outside California?"
+            "What do the cell values in these rasters mean?",
+            "For coast live oak, how much of the range has it actually been observed in?"
         ]
     }
 }

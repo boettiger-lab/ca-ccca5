@@ -31,7 +31,7 @@ purpose — nothing is lost except sub-grid threshold precision.
 |---|---|---|---|
 | A | Species current ranges | Calflora climate-model GeoTIFF exports, 107 files, in `import-data/` | **99 cleaned + published** to `s3://public-ca-ccca5/`; hex build pending |
 | B | Daily max air temperature exceedance curves | LOCA2-Hybrid via Cal-Adapt `s3://cadcat/` | public, not yet ingested |
-| C | Species thermal tolerance (Tcrit, T50) | Project team measurements, 100+ species | **not received** |
+| C | Species thermal tolerance (Tcrit, T50) | Project team measurements, 109 species | **received 2026-09-15**, embargoed until the team's paper publishes |
 
 ---
 
@@ -45,60 +45,130 @@ Verified by reading the files directly:
 - EPSG:4326, Float32, DEFLATE, striped (not tiled), **no `nodata` tag set** — NaN is the fill.
 - Pixel ≈ 0.00833° (30 arcsec, ~1/120°); the x-scale varies slightly file to file (0.00829–0.00833),
   so **the rasters are not on a shared grid**. Each is clipped to its own bounding box.
-- Values are NaN or integers 0–9. Pooled across all 107 files: 7,525,075 non-NaN pixels, of which
-  only **162,396 (2.2%) are greater than zero**.
+- Values are NaN or integers 0–9 — **observation counts**, not a suitability rank (see the resolved
+  range definition below). Pooled across all 107 files: 7,525,075 non-NaN pixels, of which only
+  **162,396 (2.16%) are greater than zero**. The full distribution:
+
+  | value | pixels | share of non-NaN |
+  |---|---:|---:|
+  | 0 | 7,362,679 | 97.842% |
+  | 1 | 115,088 | 1.529% |
+  | 2 | 27,847 | 0.370% |
+  | 3 | 7,870 | 0.105% |
+  | 4 | 4,939 | 0.066% |
+  | 5 | 1,966 | 0.026% |
+  | 6 | 1,520 | 0.020% |
+  | 7 | 822 | 0.011% |
+  | 8 | 604 | 0.008% |
+  | 9 | 1,740 | 0.023% |
+
+  **9 is a saturating bin, not a count of nine.** The counts fall monotonically from 1 to 8 and then
+  jump — 1,740 nines against 604 eights — which is what a "9 or more" clamp looks like, and no file
+  anywhere exceeds 9. Treat the top class as censored: the app may say "9 or more observations", never
+  "9 observations", and must not average the raw values across cells as if the scale were linear at
+  the top. Confirm with Calflora when the team next writes.
 - `Download_list_SppDist.xlsx` lists 109 species; the protocol document (`Protocol_SppDis_20250627`)
   documents the manual Calflora download procedure — Plant Range → by Climate Model → download as
   GeoTIFF → rename to the species code.
 
-### Defects to resolve before ingest
+### Defects — status after the team's 2026-09-15 reply
 
-1. **Three pairs of byte-identical files under different species codes** — the same raster was saved
-   twice under two names, so one species in each pair has the wrong data:
-   `HESWHI` = `HETARB`, `ATRITOR` = `BACPIL`, `ERIUMB` = `FOUSPL`.
-   The extents suggest which member is the impostor (e.g. `ERIUMB.tif` covers 29–36°N / −117 to
-   −112°E, a Sonoran desert footprint that fits *Fouquieria splendens*, not montane
-   *Eriogonum umbellatum*) — but **do not guess**; ask the team to re-download the three affected
-   species.
+The team has answered every outstanding question about these files. **The corrected downloads have
+not arrived in `import-data/` yet** — the directory still holds the original 107 files including both
+`(1)` duplicates, and still has no `ERIDIS`. Nothing below is verified against a new file; chase the
+delivery before the preprocess job runs.
 
-2. **Two `(1)` duplicate-download files** — `ENCFAR(1).tif` and `ERIUMB(1).tif`. Neither is identical
-   to its unsuffixed namesake; they are different downloads with different extents. `ERIUMB(1)` has a
-   plausible *E. umbellatum* footprint, which reinforces (1) above. Ask which file is authoritative
-   for each; do not ingest a `(1)` filename.
+1. **Three pairs of byte-identical files** (`HESWHI` = `HETARB`, `ATRITOR` = `BACPIL`,
+   `ERIUMB` = `FOUSPL`) — **resolved by re-download.** The team re-pulled all six species rather than
+   adjudicating which member of each pair was the impostor, which is the right call. `ATRITOR` was
+   also renamed to the correct six-letter code `ATRTOR`. *Awaiting the files.*
+
+2. **Two `(1)` duplicate-download files** (`ENCFAR(1).tif`, `ERIUMB(1).tif`) — **resolved.** The team
+   removed both and re-downloaded `ENCFAR` and `ERIUMB`. *Awaiting the files;* until they land, do not
+   ingest a `(1)` filename and do not trust the unsuffixed namesakes either.
 
 3. **17 files carry a single stray pixel near the equator**, which stretches the declared raster to
    ~5,040–5,055 rows of almost-entirely NaN:
    `ABICON ALNRHO ARCPAT ARCVIS ARTTRI CALDEC CEACOR CEAINT CORNUT PINLAM PINPON PURTRI QUECHR
    QUEKEL RHOOCC RIBCER SEQGIG`.
    Confirmed as a single valid pixel in the bottom row at lat ≈ 0.008°N — the georeference is
-   otherwise correct and the real data sits in the California latitudes. The preprocess job drops
-   any pixel below 25°N and clips to the remaining valid extent.
-   (`ENCFAR(1)` reaches 23.3°N and `JUSCAL` 24.1°N — those may be genuine Baja extent; check before
-   clipping them.)
+   otherwise correct and the real data sits in the California latitudes. **The team confirmed these
+   are artefacts to disregard** and has reported them to Calflora; the Calflora climate model is
+   supposed to ignore observations outside California's borders, so the cause is unexplained. The
+   preprocess job drops any pixel below 25°N and clips to the remaining valid extent.
+   (`ENCFAR(1)` reached 23.3°N and `JUSCAL` reaches 24.1°N — those may be genuine Baja extent; check
+   `JUSCAL` before clipping it, and re-check the new `ENCFAR`.)
 
-4. **Four species on the list have no file**: `ERIDIS` (marked downloaded), and `HOLDIS`, `QUEGAR`,
-   `SEQSEM` (marked not downloaded). `SEQSEM` is coast redwood — a conspicuous omission for this app.
+4. **Four species on the list had no file** — `ERIDIS` **has been added** (*awaiting delivery*).
+   `HOLDIS`, `QUEGAR` and `SEQSEM` are **still blocked**: Calflora's export will not generate a
+   GeoTIFF for them and the team has filed it as a bug with Calflora. No known reason these three
+   differ from the others, so expect them eventually. `SEQSEM` is coast redwood — a conspicuous
+   omission, but **do not hold the ingest for it**; publish with the species we have and add the
+   remaining three in a later pass.
 
 5. **No `nodata` tag.** Set `nodata=nan` explicitly on the output COGs so downstream tools don't
    read NaN as data.
 
-### The unresolved question: what do 0–9 mean, and what counts as "the range"?
+6. **Species codes are not consistently six letters.** The download list and the raster filenames use
+   seven-letter codes for three species where the tolerance table (C) uses the strict 3+3 form:
 
-The proposal says the map covers "the species' current range". The raster does not carry a range
-mask — it carries an ordinal 0–9 score from Calflora's climate model, and 98% of the evaluated
-(non-NaN) area scores 0. Taken literally, "score > 0" gives *Quercus agrifolia* about 4,600 pixels
-(~3,000 km²), which is far smaller than the species' accepted range.
+   | raster / xlsx | tolerance table | species |
+   |---|---|---|
+   | `ABIBRAC` | `ABIBRA` | *Abies bracteata* |
+   | `ATRITOR` | `ATRTOR` | *Atriplex torreyi* |
+   | `CLEOARB` | `CLEARB` | *Cleomella arborea* |
 
-So one of these is true and we need the team (or Calflora) to say which:
+   The protocol document and the team's own correction of `ATRITOR` → `ATRTOR` both make the
+   **six-letter form canonical**. Normalise filenames through this three-entry map in the preprocess
+   job so A and C join cleanly, and carry `scientific_name` in both tables as a check — the codes are
+   a convenience, the binomial is the real key.
 
-- the score is a suitability rank and the intended range is `score ≥ some cutoff`;
-- 0 means "modelled, not suitable" and NaN means "not modelled", so the range is `score > 0` and it
-  is genuinely this restrictive;
-- the export is at a coarser effective resolution than its pixel grid implies.
+### Resolved: the values are observation counts, and the range is every non-NaN cell
 
-**This is the single decision that most changes the app's answers**, because the range is the
-denominator for every summary percentage. It must be settled before ingest and written into the
-STAC description. The app's system prompt already requires the cutoff be stated in every answer.
+Calflora's own documentation of these climate-modelled range maps, relayed by the team 2026-09-15:
+
+> If the plant has been observed inside the cell, then the value of the cell is number of
+> observations. If the plant has not been observed inside the cell, but the climate factors of the
+> cell are within the plant's tolerances, then the value of the cell is 0. Otherwise the value of the
+> cell is NaN.
+
+So the field is **not an ordinal suitability score** — it is a count, and the range is defined by the
+NaN mask, not by the magnitude:
+
+```
+in range   ⟺  value is not NaN            (value ≥ 0)
+value > 0  ⟺  observed, and the value is the observation count
+value = 0  ⟺  climatically suitable, not observed
+NaN        ⟺  outside modelled climatic tolerance
+```
+
+The team's reading — "anything that is 0 or higher is part of the plant range, while NaNs are
+ignored" — is the definition we use.
+
+**Consequences, and they are large:**
+
+- **The denominator is the non-NaN area, ~45× the `score > 0` area.** Pooled over 107 files there are
+  7,525,075 non-NaN pixels and only 162,396 positive ones. Every summary percentage the app reports
+  changes by more than an order of magnitude versus the `> 0` reading. The earlier worry that
+  *Quercus agrifolia*'s range looked implausibly small was an artefact of that wrong reading; the
+  non-NaN footprint is the modelled range and is the right size.
+- **The 98%-zero field is no longer a problem to work around** — zeros are signal ("suitable,
+  unobserved"), not absence.
+- **The reducer stays `max`**, but for a new reason. Presence is now carried by *row existence* (NaN
+  pixels produce no row), so the reducer no longer decides range membership at all; it only sets the
+  observation count. `max` reports the best-sampled source pixel in the cell. Do not switch to `sum`:
+  at res 8 (0.737 km²) against a ~0.69 km² source pixel the aggregation is near 1:1, and summing
+  would manufacture counts that vary with how many pixels happen to fall in a cell.
+- **Rename the column.** `score` misdescribes a count — publish it as `n_observations`, and say in the
+  asset description that 0 means suitable-but-unobserved.
+- **Do not zero-suppress this table.** Zero rows are in-range cells and dropping them would delete
+  98% of the range. (The suppression note in dataset B applies only to B.)
+- **Observation count is sampling effort, not abundance.** It reflects where botanists have looked.
+  The app may use it to distinguish observed from modelled-only cells, but must never present it as
+  density, cover, or population size.
+
+Write this definition into the STAC description. The app's system prompt states it in every answer
+that reports a percentage.
 
 ### Proposed ingest
 
@@ -106,17 +176,19 @@ STAC description. The app's system prompt already requires the cutoff be stated 
 - **Stage raw first** (`raw/`), with the access date recorded — these files came from manual Calflora
   downloads on 2025-06-30/07-01 and there is no stable download URL to re-resolve, so our staged copy
   plus its checksum *is* the provenance.
-- **Preprocess job:** drop sub-25°N stray pixels, clip to valid extent, set `nodata=nan`, drop the
-  `(1)` files and the three impostor duplicates, and write one clean COG per species to
-  `calflora-ranges/cog/{CODE}.tif`.
+- **Preprocess job:** drop sub-25°N stray pixels, clip to valid extent, set `nodata=nan`, normalise
+  the three seven-letter codes to their six-letter form, and write one clean COG per species to
+  `calflora-ranges/cog/{CODE}.tif`. Ingest only the corrected re-downloads for the eight species in
+  defects 1–2; a `(1)` filename is never an input.
 - **Hex:** one long-form table rather than 107 collections —
-  `calflora-ranges/hex/h0={cell}/…` with `species_code`, `h8`, `score`.
+  `calflora-ranges/hex/h0={cell}/…` with `species_code`, `h8`, `n_observations`.
   - **Native resolution 8** (0.737 km² vs. the ~0.69 km² source pixel — a near 1:1 match), parents
     `7, 0`. Res 7 is the join key to dataset B.
-  - **Reducer `max`.** `mean` manufactures fractional scores from an ordinal class code. `mode` is
-    also wrong, less obviously: the field is 98% zero, so an h8 cell straddling pixels `{0, 0, 7}`
-    takes the mode `0` and the positive cell vanishes — erasing exactly the cells that define a
-    range. `max` keeps any positive score present.
+  - **Reducer `max`**, over non-NaN pixels only. A cell with no non-NaN pixel emits no row, so **row
+    presence is the range mask** and the reducer only sets the observation count. `mean` would
+    manufacture fractional counts; `sum` would make the count depend on how many source pixels fall
+    in a cell. See the resolved range definition above.
+  - **Keep zero rows.** They are in-range, suitable-but-unobserved cells and carry 98% of the range.
   - Expected size: ~7.5M non-NaN pixel-cells pooled across species, so single-digit millions of rows.
     This is a small dataset.
 - **Lookup table:** `calflora-ranges/species.parquet` — `species_code`, `scientific_name`, and the
@@ -215,26 +287,65 @@ This is a derived product with a custom reduction, not a plain raster ingest, so
 
 ## C. Thermal tolerance table
 
-Not received. The proposal says it was attached to the email; it is not in `import-data/`.
+**Received 2026-09-15** as `import-data/species_T50_Tcrit_means.csv` (gitignored — see the embargo
+below).
 
-Needed shape: one row per species — `species_code`, `scientific_name`, `tcrit_c`, `t50_c`, and
-whatever the team can give on sample size, population/site, and method. The app treats these as
-**defaults only**: users can enter their own values, which the proposal explicitly asks for.
+### What is in it
 
-The partner says these are unpublished until the manuscript is submitted but that they intend to
-share them publicly, and that no login wall is needed. If we publish them before there is any public
-terms page, that is the "data contributed directly to us" case: publish a `LICENSE.md` beside the
-data that records what was and was not granted, and link it from the STAC.
+109 rows, one per species, no duplicates, no missing values:
 
-**Confirm the publication timing with the team before anything goes in a public bucket.**
+| column | content |
+|---|---|
+| `species` | scientific binomial |
+| `species_code` | six-letter code, strict 3+3 — the canonical spelling (see defect 6) |
+| `origin` | `native` for all 109 rows; no variation, so not a useful facet yet |
+| `T50` | °C, 44.72–56.85, mean ≈ 50.8 |
+| `Tcrit` | °C, 40.26–55.92, mean ≈ 47.1 |
+
+These are **means only** — no sample size, no standard deviation, no population or site, no method.
+`Tcrit < T50` holds for every row, as it must.
+
+**Coverage against the rasters is complete**: after normalising the three seven-letter codes, all 107
+species with a raster have tolerance values. The seven CSV species with no raster are the four
+still-missing downloads (`ERIDIS`, `HOLDIS`, `QUEGAR`, `SEQSEM`) and the three code-spelling variants,
+which are not genuinely missing. So the usable species list is governed by dataset A, not C.
+
+### Embargo — this is the binding constraint
+
+The team's values are **unpublished until their paper comes out**. We may process them onto NRP but
+**must not distribute the raw data further**. Concretely:
+
+- Stage to a **private** NRP bucket. Nothing goes in `s3://public-ca-ccca5/` and no STAC collection
+  for C is published while the embargo holds.
+- **Serving these as defaults in the public app is distribution.** The app is public and unauthenticated;
+  109 Tcrit/T50 pairs rendered into a browser, one query at a time, is the table. Do not read "process
+  on NRP" as permission to ship them to clients.
+- The workable reading, and the one the team's own framing supports — these are "just a starting
+  point", and the proposal always wanted user-supplied values — is that **the app ships no default
+  tolerances until publication.** The user enters Tcrit/T50 (or the app offers the plausible range as
+  a slider without attributing a per-species value), and we hold the real table on NRP for our own
+  validation. That costs little, because the design already treats these as user-settable.
+- **Confirm this reading with the team** before wiring anything. If they are content for per-species
+  defaults to appear in the app pre-publication, that is their call to make explicitly — but it should
+  be in writing, and we should ask whether they want an acknowledgement or a "provisional, unpublished"
+  label attached.
+- Once the paper is out: publish with a `LICENSE.md` beside the data recording what was and was not
+  granted, link it from the STAC, and add the citation.
+
+### Still worth asking for
+
+Sample size and variance per species, and the measurement method. Without them the app can report a
+species' Tcrit but can say nothing about how well constrained it is — and a mean with no spread invites
+users to read two species 0.3 °C apart as meaningfully different.
 
 ---
 
 ## Order of work
 
-1. Settle the range-definition question (A) and get the corrected/missing rasters. The build is
-   not blocked on it — the raw 0-9 score is stored and the cutoff is applied at query time — but
-   the STAC description is.
+1. ~~Settle the range-definition question (A)~~ — settled 2026-09-15: range = non-NaN, value =
+   observation count. **Post this to [data-workflows#668](https://github.com/boettiger-lab/data-workflows/issues/668)**,
+   which still specifies the `score` column and the old reducer rationale. Chase the corrected and
+   added rasters (defects 1, 2, 4); they have not arrived in `import-data/`.
 2. ~~File the data-workflows issues~~ — filed:
    [data-workflows#668](https://github.com/boettiger-lab/data-workflows/issues/668) (A, Calflora
    ranges) and [data-workflows#669](https://github.com/boettiger-lab/data-workflows/issues/669)
@@ -242,19 +353,31 @@ data that records what was and was not granted, and link it from the STAC.
    this file and an issue disagree, the issue wins.
 3. Build B phase 1 (3-model pilot) and validate it; A is small and can run alongside. Open the
    phase-2 issue only once the pilot's numbers check out.
-4. Get C, then wire `layers-input.json` and finish `system-prompt.md` against the real collection
-   and column names from `list_datasets` / `get_schema`.
+4. ~~Get C~~ — received. Wire `layers-input.json` and finish `system-prompt.md` against the real
+   collection and column names from `list_datasets` / `get_schema`, with **no per-species tolerance
+   defaults in the client** until the embargo lifts or the team says otherwise.
 
 ## Open questions for the partner
 
-1. What do the Calflora 0–9 values mean, and what defines "within the species' current range"?
-2. `HESWHI`/`HETARB`, `ATRITOR`/`BACPIL`, `ERIUMB`/`FOUSPL` are byte-identical pairs — which of each
-   pair needs re-downloading? And which of `ENCFAR` / `ENCFAR(1)` and `ERIUMB` / `ERIUMB(1)` is
-   authoritative?
-3. Can we get `ERIDIS`, `HOLDIS`, `QUEGAR` and `SEQSEM` (coast redwood)?
-4. Could you send the Tcrit / T50 table, and confirm when it may be published?
-5. What leaf-to-air offset range should the control span, and what default (if any)? Georgia was
-   named as the person to advise.
-6. Scenarios and periods: does SSP2-4.5 / SSP3-7.0 / SSP5-8.5 with 1985–2014, 2040–2069 and
-   2070–2099 windows match what the assessment used?
-7. The mockup mentioned in the email did not come through — can you resend it?
+Answered 2026-09-15 and kept only as a record: the meaning of the raster values and the range
+definition; which files needed re-downloading; the `(1)` duplicates; the stray equatorial pixels; and
+the Tcrit / T50 table itself.
+
+Still open:
+
+1. **Publication timing and what the embargo permits.** Does "don't distribute further" rule out
+   showing per-species Tcrit / T50 as defaults in the public app? Our reading is that it does, so we
+   plan to require user-entered values until the paper is out — please confirm, and tell us the
+   expected publication date and the citation to use.
+2. **Sample size, variance and method behind the Tcrit / T50 means**, so the app can say how well
+   constrained a value is instead of presenting a bare mean.
+3. **`HOLDIS`, `QUEGAR`, `SEQSEM`** — still blocked on the Calflora export bug. We will publish
+   without them and add them later; no need to hold anything up, just let us know when they generate.
+4. **What leaf-to-air offset range should the control span, and what default (if any)?** Georgia was
+   named as the person to advise. *(Unanswered across two rounds — worth asking directly.)*
+5. **Scenarios and periods:** does SSP2-4.5 / SSP3-7.0 / SSP5-8.5 with 1985–2014, 2040–2069 and
+   2070–2099 windows match what the assessment used? *(Also unanswered twice.)*
+6. **The mockup** mentioned in the first email still has not come through — can you resend it?
+7. **Is the Calflora observation count capped at 9?** No pixel in any of the 107 files exceeds 9, and
+   nines are commoner than eights — which reads as a "9 or more" clamp. If so we will label the top
+   class as censored. One for Calflora, alongside the stray-pixel report.

@@ -14,6 +14,11 @@ tool modules load from CDN; this repo configures which data to show and how the 
 > for does not work in this preview. See [DATA-PLAN.md](DATA-PLAN.md) for the remaining ingest and
 > the open questions with the partner.
 >
+> The range rasters in this preview predate the team's 2026-09-15 corrections. Seven species —
+> `HESWHI HETARB ATRTOR BACPIL ERIUMB FOUSPL ENCFAR` — were re-downloaded and `ERIDIS` added, but the
+> corrected files have not reached us yet, so **some of the seven are showing another species' range
+> right now**. Rebuild the collection before the preview goes to anyone new.
+>
 > ⚠️ **Calflora redistribution terms are unconfirmed.** The range collection is deliberately *not*
 > registered in the public STAC catalog, and the app reaches it by direct `collection_url`. Resolve
 > the licence before publicising this more widely — see
@@ -28,9 +33,11 @@ annual number of days on which daily maximum air temperature exceeds the resulti
 threshold, across the species' current range — plus summary metrics: the share of the range seeing
 at least 1, 5 or 10 exceedance days per year, and the largest exceedance.
 
-Thermal tolerance values for 100+ California species are supplied as defaults, but users can enter
-their own — the proposal is explicit that different populations, experiments and sources will yield
-different values.
+Thresholds are entered by the user. The project team has measured Tcrit and T50 for 109 California
+species, but those values are unpublished and the app does not distribute them; they will become
+defaults once the team's paper is out. The proposal is explicit in any case that different
+populations, experiments and sources yield different values, so user-supplied thresholds are the
+design, not a stopgap.
 
 ## Data
 

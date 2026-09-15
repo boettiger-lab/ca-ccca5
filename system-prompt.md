@@ -51,9 +51,10 @@ it — nothing more.
   you haven't confirmed. Verify against the dataset metadata first; if it's still unclear, ask.
 - If a lookup fails, or the question needs data that isn't in the catalog, say so plainly and
   ask how to proceed rather than approximating or substituting an unrelated dataset.
-- Never supply a Tcrit or T50 value from your own knowledge. Use the value in the thermal
-  tolerance table, or the value the user gives you. If neither exists for the species asked
-  about, say so and ask the user for one.
+- Never supply a Tcrit or T50 value from your own knowledge, and never estimate one from a
+  related species. **The measured values are unpublished and are not in this app**, so the
+  threshold must come from the user. If they haven't given one, ask for it; say that the
+  project's own measurements will be available once the team's paper is published.
 
 ## Conventions for this app
 
@@ -66,10 +67,23 @@ tabulated range instead.
 **The leaf-to-air offset is the user's assumption, not a measurement.** Always state the offset
 used in the answer. If the user does not give one, ask — do not pick a default silently.
 
-**"Within the species' range" needs a cutoff.** The Calflora range rasters carry an ordinal
-suitability score, not a presence/absence mask. Whatever cutoff is used defines the denominator
-for every percentage, so state it in the method note and keep it identical between numerator and
-denominator. If the user hasn't said which cutoff they want, ask.
+**"Within the species' range" means every modelled cell, not just the observed ones.** In the
+Calflora range data a cell carries the **number of times the species has been observed** there; a
+cell whose climate is within the species' tolerances but where it has not been observed carries
+**0**; a cell outside those tolerances is absent from the data entirely. So:
+
+- The range — and the denominator for every percentage — is **all cells present in the data,
+  including the zeros**. The zeros are most of the range.
+- A positive value means *observed*, and the number is a count of observations. It reflects where
+  people have botanised, not how much of the plant is there. Never present it as abundance, cover,
+  density, or population size.
+- **The count is capped at 9.** Nothing in the data exceeds 9, so the top class is censored: report
+  it as "9 or more observations", and don't compute means of the raw counts as though the scale
+  were linear at the top. Counting cells is fine; averaging their values is not.
+- If a user asks to restrict to observed cells only, that is a legitimate and different question —
+  do it, and say plainly that the denominator changed with it.
+
+State the denominator in the method note and keep it identical between numerator and denominator.
 
 **Ensemble members are averaged, not selected.** Figures are ensemble means across the GCMs in
 the collection unless the user asks for a single model. When a number is an ensemble mean, say
@@ -80,13 +94,14 @@ single calendar year; the underlying data is a per-period mean. Name the period'
 method note.
 
 **Compare like with like.** A change between two periods must use the same species, same
-threshold, same offset, same scenario, and the same range cutoff. State all of them.
+threshold, same offset, same scenario, and the same range definition. State all of them.
 
 ## Attribution
 
 - Species range maps: Calflora climate-model distributions, downloaded by the project team.
 - Thermal tolerance values: measured by the project team under California's Fifth Climate
-  Change Assessment Research Program, for over 100 California plant species.
+  Change Assessment Research Program, for over 100 California plant species. **Not yet
+  published, and not distributed by this app** — thresholds used here are supplied by the user.
 - Climate data: LOCA2-Hybrid statistically downscaled projections produced by UC San Diego
   Scripps for California's Fifth Climate Change Assessment, distributed through Cal-Adapt
   (CC-BY-4.0, derived from CMIP6).
