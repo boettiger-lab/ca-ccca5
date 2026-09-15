@@ -22,8 +22,8 @@
             "group": "Species ranges (Calflora climate model)",
             "assets": [
                 {
-                    "id": "abibrac-cog",
-                    "display_name": "Abies bracteata (ABIBRAC)",
+                    "id": "abibra-cog",
+                    "display_name": "Abies bracteata (ABIBRA)",
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
@@ -166,6 +166,22 @@
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
+                    "id": "atrtor-cog",
+                    "display_name": "Atriplex torreyi (ATRTOR)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
+                },
+                {
+                    "id": "bacpil-cog",
+                    "display_name": "Baccharis pilularis (BACPIL)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
+                },
+                {
                     "id": "bebjun-cog",
                     "display_name": "Bebbia juncea (BEBJUN)",
                     "visible": false,
@@ -262,8 +278,8 @@
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
-                    "id": "cleoarb-cog",
-                    "display_name": "Cleomella arborea (CLEOARB)",
+                    "id": "clearb-cog",
+                    "display_name": "Cleomella arborea (CLEARB)",
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
@@ -278,16 +294,16 @@
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
-                    "id": "corcor-cog",
-                    "display_name": "Corylus cornuta (CORCOR)",
+                    "id": "cornut-cog",
+                    "display_name": "Cornus nuttallii (CORNUT)",
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
-                    "id": "cornut-cog",
-                    "display_name": "Cornus nuttallii (CORNUT)",
+                    "id": "corcor-cog",
+                    "display_name": "Corylus cornuta (CORCOR)",
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
@@ -310,6 +326,22 @@
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
+                    "id": "eridis-cog",
+                    "display_name": "Ericameria discoidea (ERIDIS)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
+                },
+                {
+                    "id": "erinau-cog",
+                    "display_name": "Ericameria nauseosa (ERINAU)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
+                },
+                {
                     "id": "erical-cog",
                     "display_name": "Eriodictyon californicum (ERICAL)",
                     "visible": false,
@@ -326,8 +358,16 @@
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
-                    "id": "erinau-cog",
-                    "display_name": "Ericameria nauseosa (ERINAU)",
+                    "id": "eriumb-cog",
+                    "display_name": "Eriogonum umbellatum (ERIUMB)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
+                },
+                {
+                    "id": "fouspl-cog",
+                    "display_name": "Fouquieria splendens (FOUSPL)",
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
@@ -368,6 +408,30 @@
                 {
                     "id": "hessar-cog",
                     "display_name": "Hesperocyparis sargentii (HESSAR)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
+                },
+                {
+                    "id": "heswhi-cog",
+                    "display_name": "Hesperoyucca whipplei (HESWHI)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
+                },
+                {
+                    "id": "hetarb-cog",
+                    "display_name": "Heteromeles arbutifolia (HETARB)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
+                },
+                {
+                    "id": "holdis-cog",
+                    "display_name": "Holodiscus discolor (HOLDIS)",
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
@@ -584,7 +648,7 @@
                 {
                     "id": "queagr-cog",
                     "display_name": "Quercus agrifolia (QUEAGR)",
-                    "visible": true,
+                    "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
@@ -622,6 +686,14 @@
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
+                    "id": "quegar-cog",
+                    "display_name": "Quercus garryana (QUEGAR)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
+                },
+                {
                     "id": "quekel-cog",
                     "display_name": "Quercus kelloggii (QUEKEL)",
                     "visible": false,
@@ -632,7 +704,7 @@
                 {
                     "id": "quelob-cog",
                     "display_name": "Quercus lobata (QUELOB)",
-                    "visible": true,
+                    "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
@@ -702,14 +774,6 @@
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
-                    "id": "saldor-cog",
-                    "display_name": "Salvia dorrii (SALDOR)",
-                    "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
-                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
-                },
-                {
                     "id": "salexi-cog",
                     "display_name": "Salix exigua (SALEXI)",
                     "visible": false,
@@ -728,6 +792,14 @@
                 {
                     "id": "sallae-cog",
                     "display_name": "Salix laevigata (SALLAE)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
+                },
+                {
+                    "id": "saldor-cog",
+                    "display_name": "Salvia dorrii (SALDOR)",
                     "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
@@ -758,9 +830,17 @@
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
+                    "id": "seqsem-cog",
+                    "display_name": "Sequoia sempervirens (SEQSEM)",
+                    "visible": false,
+                    "colormap": "reds",
+                    "rescale": "0,3",
+                    "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
+                },
+                {
                     "id": "seqgig-cog",
                     "display_name": "Sequoiadendron giganteum (SEQGIG)",
-                    "visible": true,
+                    "visible": false,
                     "colormap": "reds",
                     "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
@@ -835,12 +915,12 @@
         ]
     },
     "welcome": {
-        "message": "A first look at the species range data for the California plant heat-vulnerability tool. 99 species are here as separate layers, from Calflora's climate-model distributions - toggle them in the layer menu.\n\nHow to read a layer: a cell's value is the number of times the species has been **observed** there. A cell the climate model finds suitable but where nobody has recorded the plant is **0**, and it is still inside the range - it is drawn pale rather than omitted. Cells outside the modelled climatic tolerance carry no value and are transparent. Across all 99 species only about 2% of in-range cells have ever been observed in, so a range reads as a broad pale extent with scattered red where the records are. That pattern is survey effort, not abundance.\n\nThe LOCA2 temperature projections are not loaded yet, so the exceedance-day calculation this tool is ultimately for is not available in this preview. The measured Tcrit and T50 values are not wired in yet either; they will arrive as provisional defaults ahead of the team's own publication, and will always be user-overridable.",
+        "message": "Species range data for the California plant heat-vulnerability tool. All 109 species from the study are here as separate layers, from Calflora's climate-model distributions - toggle them in the layer menu.\n\nHow to read a layer: a cell's value is the number of times the species has been **observed** there. A cell the climate model finds suitable but where nobody has recorded the plant is **0**, and it is still inside the range - it is drawn pale rather than omitted. Cells outside the modelled climatic tolerance carry no value and are transparent. Only about 2% of in-range cells have ever been observed in, so a range reads as a broad pale extent with scattered red where the records are. That pattern is survey effort, not abundance, and the count tops out at 9 meaning nine or more.\n\nRanges are not clipped to California: several species have genuine records in Baja California, including a white fir population in the Sierra San Pedro Martir.\n\nThe LOCA2 temperature projections are not loaded yet, so the exceedance-day calculation this tool is ultimately for is not available. The measured Tcrit and T50 values are not wired in yet either; they will arrive as provisional defaults ahead of the team's own publication, and will always be user-overridable.",
         "examples": [
             "Which species are on the map, and how large is each one's range?",
             "Show me the range for giant sequoia.",
-            "What do the cell values in these rasters mean?",
-            "For coast live oak, how much of the range has it actually been observed in?"
+            "For coast live oak, how much of the range has it actually been observed in?",
+            "Which species have records outside California?"
         ]
     }
 }

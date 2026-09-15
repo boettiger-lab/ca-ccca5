@@ -29,7 +29,7 @@ purpose — nothing is lost except sub-grid threshold precision.
 
 | # | Dataset | Source | Status |
 |---|---|---|---|
-| A | Species current ranges | Calflora climate-model GeoTIFF exports, **109 corrected files** in `import-data/` | preview of 99 published from the old snapshot; **rebuild from the corrected set** |
+| A | Species current ranges | Calflora climate-model GeoTIFF exports, **109 corrected files** | **built and published** 2026-09-15 — 109 COGs + 8.35M-row hex + species lookup |
 | B | Daily max air temperature exceedance curves | LOCA2-Hybrid via Cal-Adapt `s3://cadcat/` | public, not yet ingested |
 | C | Species thermal tolerance (Tcrit, T50) | Project team measurements, 109 species | **received 2026-09-15**, cleared to publish; label provisional until the team's paper appears |
 
@@ -225,7 +225,14 @@ Running in `data-workflows` on the `geo-workflows` namespace; manifests under
 - **Species lookup:** `calflora-ranges/species.parquet`, 109 codes reconciling exactly against the
   published rasters.
 - **Hex:** `calflora-ranges/hex/h0={cell}/…` with `species_code`, `h8`, `h7`, `n_observations`.
-  Native resolution 8, parents 7 and 0. Reducer `max`; zero rows kept.
+  Native resolution 8, parents 7 and 0. Reducer `max`; zero rows kept. Published: **8,354,979 rows**
+  over 109 species, 7,814,655 of them zeros (93.5%), no duplicate `(species_code, h8)` pair.
+
+**The hex reports a larger observed share than the rasters, and that is expected.** A cell takes the
+max over every source pixel it overlaps — which is what stops an isolated record vanishing when the
+grids do not line up — so one record can mark more than one cell: **6.5% of hex cells carry an
+observation against 2.2% of source pixels**. Measure survey coverage on the COGs, not on the hex.
+Stated in the hex asset description so the two are not read as contradicting each other.
 
 The COG job asserts its own claims rather than trusting the recipe: exactly 20 artefact pixels
 dropped, **all 71 out-of-state pixels retained**, every code six letters, `nodata=nan` on all 109.
@@ -410,12 +417,17 @@ users to read two species 0.3 °C apart as meaningfully different.
    [data-workflows#673](https://github.com/boettiger-lab/data-workflows/issues/673) (C, thermal
    tolerance). **Those issues are the source of truth for scope** — if this file and an issue
    disagree, the issue wins.
-4. Build B phase 1 (3-model pilot) and validate it; A is small and can run alongside once its inputs
-   land. Open the phase-2 issue only once the pilot's numbers check out.
-5. ~~Get C~~ — received and cleared to publish; issue filed as
-   [data-workflows#673](https://github.com/boettiger-lab/data-workflows/issues/673). Once A and C
-   land, wire `layers-input.json` and finish `system-prompt.md` against the real collection and
-   column names from `list_datasets` / `get_schema`.
+4. ~~Build A~~ — done 2026-09-15, published and verified
+   ([data-workflows#676](https://github.com/boettiger-lab/data-workflows/pull/676)): 109 COGs, an
+   8,354,979-row hex table over 109 species, and `species.parquet`. `verify-stac.py` reports only
+   the expected `license-link-missing`.
+5. **Build B phase 1** (3-model `ssp370` pilot) and validate it against Cal-Adapt's own figures.
+   Open the phase-2 issue only once the pilot's numbers check out. **This is the critical path** —
+   the app cannot answer the question it exists for until the exceedance curves exist.
+6. ~~Get C~~ — received and cleared to publish; issue filed as
+   [data-workflows#673](https://github.com/boettiger-lab/data-workflows/issues/673). Build it (one
+   CSV to one parquet, a STAC collection and a `LICENSE.md`), then finish `system-prompt.md` against
+   the real collection and column names from `list_datasets` / `get_schema`.
 
 ## Open questions for the partner
 

@@ -8,17 +8,11 @@ Built on [geo-agent](https://github.com/boettiger-lab/geo-agent) from
 [geo-agent-template](https://github.com/boettiger-lab/geo-agent-template) — the map, chat, agent and
 tool modules load from CDN; this repo configures which data to show and how the agent should behave.
 
-> **Status: data preview.** The 99 usable Calflora species range rasters are cleaned, published to
-> `s3://public-ca-ccca5/` and wired into the map, so the partner can see what we have. The LOCA2
-> temperature projections are **not** ingested yet, so the exceedance-day calculation the tool exists
-> for does not work in this preview. See [DATA-PLAN.md](DATA-PLAN.md) for the remaining ingest and
-> the open questions with the partner.
->
-> The range rasters in this preview predate the team's 2026-09-15 corrections. Seven species —
-> `HESWHI HETARB ATRTOR BACPIL ERIUMB FOUSPL ENCFAR` — were re-downloaded, and `ERIDIS`, `HOLDIS`,
-> `QUEGAR` and `SEQSEM` now exist too. **None of those files have reached us yet** — the Drive export
-> we pulled is a stale 2025-07 snapshot — so some of the seven are currently showing another species'
-> range. Rebuild the collection before the preview goes to anyone new.
+> **Status: species ranges published, climate data pending.** All **109** Calflora species range
+> rasters are cleaned, published to `s3://public-ca-ccca5/` and wired into the map, as COGs plus a
+> single hex table (8,354,979 rows). The LOCA2 temperature projections are **not** ingested yet, so
+> the exceedance-day calculation the tool exists for does not work yet. See
+> [DATA-PLAN.md](DATA-PLAN.md) for the remaining ingest and the open questions with the partner.
 >
 > ⚠️ **Calflora redistribution terms are unconfirmed.** The range collection is deliberately *not*
 > registered in the public STAC catalog, and the app reaches it by direct `collection_url`. Resolve
@@ -43,7 +37,7 @@ different values.
 
 | Dataset | Source |
 |---|---|
-| Species current ranges | Calflora climate-model distributions (GeoTIFF), downloaded by the project team |
+| Species current ranges | Calflora climate-model distributions (109 species), downloaded by the project team |
 | Thermal tolerance (Tcrit, T50) | Measured by the project team under California's Fifth Climate Change Assessment |
 | Daily max air temperature | LOCA2-Hybrid downscaled projections, UC San Diego Scripps, via [Cal-Adapt](https://analytics.cal-adapt.org/data/catalog/) (CC-BY-4.0) |
 
