@@ -29,7 +29,7 @@ purpose — nothing is lost except sub-grid threshold precision.
 
 | # | Dataset | Source | Status |
 |---|---|---|---|
-| A | Species current ranges | Calflora climate-model GeoTIFF exports, 107 files, in `import-data/` | **99 cleaned + published** to `s3://public-ca-ccca5/`; hex build pending |
+| A | Species current ranges | Calflora climate-model GeoTIFF exports, **109 corrected files** in `import-data/` | preview of 99 published from the old snapshot; **rebuild from the corrected set** |
 | B | Daily max air temperature exceedance curves | LOCA2-Hybrid via Cal-Adapt `s3://cadcat/` | public, not yet ingested |
 | C | Species thermal tolerance (Tcrit, T50) | Project team measurements, 109 species | **received 2026-09-15**, cleared to publish; label provisional until the team's paper appears |
 
@@ -74,68 +74,84 @@ reading the files directly:
 
 ### Defects — status after the team's 2026-09-15 reply
 
-The team has answered every outstanding question about these files, and by their second message of
-2026-09-15 has supplied or re-supplied all of them. **None of those corrections have reached us yet.**
+The team has answered every outstanding question about these files and delivered the corrected set.
 
-The Google Drive export downloaded 2026-09-15
-(`import-data/SppRange_Project-20260915T173903Z-1-001.zip`) is a **stale snapshot of the original
-2025-07 download**, verified three ways:
+**Current input: `import-data/SppRange_Project-20260915T185722Z-1-001.zip`** — 109 rasters, one per
+species on the list, verified 2026-09-15:
 
-- every one of its 107 rasters carries a 2025-06-30/07-02 file date, none from 2026;
-- the three byte-identical pairs are *still* byte-identical (same md5s as before);
-- `ENCFAR(1).tif` and `ERIUMB(1).tif` are still present, `ATRITOR` is still unrenamed, and
-  `ERIDIS`, `HOLDIS`, `QUEGAR`, `SEQSEM` are all absent.
+- **no byte-identical pairs remain** (all six of the affected species re-downloaded);
+- both `(1)` filenames gone, `ENCFAR` and `ERIUMB` re-downloaded;
+- `ERIDIS`, `HOLDIS`, `QUEGAR` and `SEQSEM` all present — Calflora fixed the export bug;
+- `ATRITOR` renamed to `ATRTOR`;
+- 11 files carry a 2026-09-15 date, matching exactly the set the team said they touched.
 
-Only the three Office documents in the zip carry a 2026 date (2026-08-19), so the folder has been
-touched since — just not the rasters. Most likely we were pointed at a different Drive folder than the
-one Justin has been editing. **Ask him for the folder link and re-pull before any preprocessing.**
-Nothing below is verified against a corrected file.
+The earlier zip (`…T173903Z…`) was a stale 2025-07 snapshot and should be ignored; it is kept only so
+the provenance of the published preview is reconstructible.
 
 1. **Three pairs of byte-identical files** (`HESWHI` = `HETARB`, `ATRITOR` = `BACPIL`,
    `ERIUMB` = `FOUSPL`) — **resolved by re-download.** The team re-pulled all six species rather than
    adjudicating which member of each pair was the impostor, which is the right call. `ATRITOR` was
-   also renamed to the correct six-letter code `ATRTOR`. *Awaiting the files.*
+   also renamed to the correct six-letter code `ATRTOR`. **Delivered and verified** — no two rasters
+   in the corrected set share an md5.
 
 2. **Two `(1)` duplicate-download files** (`ENCFAR(1).tif`, `ERIUMB(1).tif`) — **resolved.** The team
-   removed both and re-downloaded `ENCFAR` and `ERIUMB`. *Awaiting the files;* until they land, do not
-   ingest a `(1)` filename and do not trust the unsuffixed namesakes either.
+   removed both and re-downloaded `ENCFAR` and `ERIUMB`. **Delivered.** The new `ENCFAR` has the
+   footprint the old `ENCFAR(1)` had (reaching 23.3°N), so `(1)` was the good copy of that pair.
 
-3. **A single stray pixel near the equator**, which stretches the declared raster to ~5,040–5,055
-   rows of almost-entirely NaN. 17 files in the 2025-07 snapshot:
+3. **A single stray pixel at the equator.** Exactly one valid pixel at lat 0.0042°N, in **20 of the
+   109 corrected files**:
    `ABICON ALNRHO ARCPAT ARCVIS ARTTRI CALDEC CEACOR CEAINT CORNUT PINLAM PINPON PURTRI QUECHR
-   QUEKEL RHOOCC RIBCER SEQGIG` — **and the team reports the three newly generated files
-   (`HOLDIS`, `QUEGAR`, `SEQSEM`) have it too.**
-   Confirmed as a single valid pixel in the bottom row at lat ≈ 0.008°N — the georeference is
-   otherwise correct and the real data sits in the California latitudes. **The team confirmed these
-   are artefacts to disregard** and has reported them to Calflora; the Calflora climate model is
-   supposed to ignore observations outside California's borders, so the cause is unexplained.
-   The preprocess job drops any pixel below 25°N and clips to the remaining valid extent — cheap, and
-   no trouble at all to apply.
-   **Treat this as a defect of the exporter affecting an unknown subset: test every input file rather
-   than matching against the list above**, which was only ever the subset present in one snapshot.
-   (`JUSCAL` reaches 24.1°N and the old `ENCFAR(1)` reached 23.3°N — those may be genuine Baja
-   extent; check `JUSCAL` before clipping it, and check the new `ENCFAR` when it arrives.)
+   QUEKEL RHOOCC RIBCER SEQGIG` plus the three newly generated `HOLDIS QUEGAR SEQSEM`, as the team
+   predicted. The pixel's value is 1 or 2 — it is an observation record whose **latitude failed to
+   decode and became ~0**. In the 17 older files the longitude survives (≈ −121.49°E, a plausible
+   California value); in the three new ones **the longitude is zeroed too** (−0.0042°E, Null Island),
+   which is why those rasters are 14,929 px wide and span −124.4°E to 0°E.
+   The team confirmed these are artefacts to disregard and has reported them to Calflora.
+
+   **Fix: drop pixels below 1°N — not 25°N.** The earlier 25°N rule was written before the corrected
+   files existed and **would delete genuine data**; do not use it. Then clip to the remaining valid
+   extent.
+
+   ### Out-of-California pixels are real, and must be kept
+
+   Justin's understanding was that the Calflora model ignores observations outside California. It does
+   not. Across the corrected set there are **71 valid pixels between 0.1°N and 32°N** — south of the
+   state line and well clear of the equator artefact — spread over 31 species, and **every one has a
+   value ≥ 1**, i.e. they are observation records, not modelled-suitable zeros.
+
+   They are also biogeographically coherent, which is the strongest evidence they are not noise:
+
+   - `ABICON` (*Abies concolor*) has four pixels near 31.0°N, −115.5°E — the **Sierra San Pedro
+     Mártir**, a well-known disjunct white fir population in Baja California.
+   - `ARTCAL` and `MALLAU` share a pixel at 31.80°N, −116.80°E, coastal Baja near Ensenada.
+   - `NELODO` and `SIMCHI` share one at 26.90°N, −111.98°E, in Baja California Sur.
+   - `ENCFAR`'s southernmost pixel (23.34°N) and `JUSCAL`'s (24.09°N) are both in Baja Sur, within
+     the accepted ranges of brittlebush and chuparosa.
+
+   Species repeatedly co-occurring at the same out-of-state coordinate is what a shared herbarium
+   locality looks like, not what a georeferencing bug looks like. **Keep them**, keep the instruction
+   not to clip to the California state line, and tell Justin — it contradicts what he was told about
+   the model, and it is the kind of thing Calflora will want in the same bug report.
 
 4. **Four species on the list had no file** — **all four now exist.** `ERIDIS` was added first;
    Calflora has since fixed the export bug, and the team has generated `HOLDIS`, `QUEGAR` and
-   `SEQSEM` (with the stray pixel, see 3). *Awaiting delivery along with everything else.* That
-   restores coast redwood and brings the build to the full species list, so the earlier plan to ship
-   99 species and backfill later is unnecessary — wait for the files and do it in one pass.
+   `SEQSEM` (with the stray pixel, see 3). **All delivered.** That restores coast redwood and brings
+   the build to the full 109-species list, so the earlier plan to ship 99 species and backfill later
+   is dropped — build the whole thing in one pass.
 
 5. **No `nodata` tag.** Set `nodata=nan` explicitly on the output COGs so downstream tools don't
    read NaN as data.
 
-6. **Species codes are not consistently six letters.** The download list and the raster filenames use
-   seven-letter codes for three species where the tolerance table (C) uses the strict 3+3 form:
+6. **Species codes are not consistently six letters.** `ATRITOR` was fixed upstream in the corrected
+   set; **two seven-letter filenames remain**, against the strict 3+3 form the tolerance table (C) uses:
 
    | raster / xlsx | tolerance table | species |
    |---|---|---|
    | `ABIBRAC` | `ABIBRA` | *Abies bracteata* |
-   | `ATRITOR` | `ATRTOR` | *Atriplex torreyi* |
    | `CLEOARB` | `CLEARB` | *Cleomella arborea* |
 
    The protocol document and the team's own correction of `ATRITOR` → `ATRTOR` both make the
-   **six-letter form canonical**. Normalise filenames through this three-entry map in the preprocess
+   **six-letter form canonical**. Normalise filenames through this two-entry map in the preprocess
    job so A and C join cleanly, and carry `scientific_name` in both tables as a check — the codes are
    a convenience, the binomial is the real key.
 
@@ -192,7 +208,7 @@ that reports a percentage.
 - **Stage raw first** (`raw/`), with the access date recorded — these files came from manual Calflora
   downloads on 2025-06-30/07-01 and there is no stable download URL to re-resolve, so our staged copy
   plus its checksum *is* the provenance.
-- **Preprocess job:** drop sub-25°N stray pixels, clip to valid extent, set `nodata=nan`, normalise
+- **Preprocess job:** drop the sub-1°N equator pixel, clip to valid extent, set `nodata=nan`, normalise
   the three seven-letter codes to their six-letter form, and write one clean COG per species to
   `calflora-ranges/cog/{CODE}.tif`. Ingest only the corrected re-downloads for the eight species in
   defects 1–2; a `(1)` filename is never an input.
@@ -361,8 +377,8 @@ users to read two species 0.3 °C apart as meaningfully different.
    observation count. ~~Post this to data-workflows#668~~ — **the issue body has been corrected in
    place** (2026-09-15), following that repo's convention of amending the body and recording the
    change in a trailing note rather than leaving a contradicting comment.
-2. **Get the real corrected rasters.** The Drive export we have is a stale 2025-07 snapshot — see the
-   defects section. This is the one thing actually blocking A.
+2. ~~Get the real corrected rasters~~ — delivered and verified 2026-09-15 (109 files, no duplicates,
+   all four previously-missing species present). A is unblocked.
 3. ~~File the data-workflows issues~~ — filed:
    [data-workflows#668](https://github.com/boettiger-lab/data-workflows/issues/668) (A, Calflora
    ranges) and [data-workflows#669](https://github.com/boettiger-lab/data-workflows/issues/669)
@@ -385,9 +401,9 @@ publication (yes).
 
 Still open:
 
-1. **Which Drive folder holds the corrected files?** What we downloaded on 2026-09-15 is the original
-   2025-07 snapshot — no re-downloads, no `ERIDIS`, no `HOLDIS`/`QUEGAR`/`SEQSEM`, `(1)` duplicates
-   still present. A link to the folder you have been updating would sort it out.
+1. **The Calflora model does keep out-of-California observations** — 71 pixels across 31 species sit
+   south of the state line, including *Abies concolor* in the Sierra San Pedro Mártir. Worth adding to
+   the Calflora bug report, and worth knowing since it contradicts what you were told.
 2. **Expected publication date and the citation to use** for the Tcrit / T50 values, so the collection
    description and the app can name it rather than saying "forthcoming".
 3. **Sample size, variance and method behind the Tcrit / T50 means**, so the app can say how well
