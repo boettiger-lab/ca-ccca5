@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About — California Plant Heat Vulnerability</title>
+    <style>
+        :root {
+            --bg: #fbfaf8;
+            --panel: #ffffff;
+            --ink: #1c1b19;
+            --muted: #5d5a54;
+            --rule: #e2ded7;
+            --accent: #8c3a1f;
+            --accent-soft: #fdf3ee;
+            --warn-bg: #fff8e8;
+            --warn-rule: #e6c980;
+            --code-bg: #f4f2ee;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                --bg: #16151a;
+                --panel: #1e1d23;
+                --ink: #eceaf0;
+                --muted: #a7a2b0;
+                --rule: #33313b;
+                --accent: #f0956d;
+                --accent-soft: #2a201c;
+                --warn-bg: #2a2317;
+                --warn-rule: #6b5624;
+                --code-bg: #26252c;
+            }
+        }
+
+        :root[data-theme="dark"] {
+            --bg: #16151a;
+            --panel: #1e1d23;
+            --ink: #eceaf0;
+            --muted: #a7a2b0;
+            --rule: #33313b;
+            --accent: #f0956d;
+            --accent-soft: #2a201c;
+            --warn-bg: #2a2317;
+            --warn-rule: #6b5624;
+            --code-bg: #26252c;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .wrap {
+            max-width: 46rem;
+            margin: 0 auto;
+            padding-block: 2.5rem 5rem;
+            padding-left: 1.25rem;
+            padding-right: 1.25rem;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: .875rem;
+            font-weight: 600;
+            letter-spacing: .01em;
+        }
+        .back:hover { text-decoration: underline; }
+
+        h1 {
+            font-size: clamp(1.7rem, 4.5vw, 2.3rem);
+            line-height: 1.2;
+            margin: 0 0 .6rem;
+            letter-spacing: -.02em;
+        }
+
+        .standfirst {
+            font-size: 1.1rem;
+            color: var(--muted);
+            margin: 0 0 2.5rem;
+        }
+
+        h2 {
+            font-size: 1.15rem;
+            margin: 2.75rem 0 .75rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid var(--rule);
+            letter-spacing: -.01em;
+        }
+
+        h3 {
+            font-size: .95rem;
+            margin: 1.75rem 0 .4rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+        }
+
+        p, li { color: var(--ink); }
+        li { margin-bottom: .4rem; }
+        a { color: var(--accent); }
+
+        .formula {
+            background: var(--accent-soft);
+            border-left: 3px solid var(--accent);
+            padding: 1rem 1.1rem;
+            margin: 1.25rem 0;
+            font-size: 1.02rem;
+        }
+        .formula code {
+            font-size: 1.02rem;
+            background: none;
+            padding: 0;
+        }
+
+        .note {
+            background: var(--warn-bg);
+            border: 1px solid var(--warn-rule);
+            border-radius: 6px;
+            padding: 1rem 1.15rem;
+            margin: 1.5rem 0;
+        }
+        .note p:first-child { margin-top: 0; }
+        .note p:last-child { margin-bottom: 0; }
+        .note strong { color: var(--ink); }
+
+        code {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: .875em;
+            background: var(--code-bg);
+            padding: .12em .38em;
+            border-radius: 3px;
+        }
+
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            padding: 1rem;
+            overflow-x: auto;
+            font-size: .82rem;
+            line-height: 1.55;
+        }
+        pre code { background: none; padding: 0; font-size: inherit; }
+
+        .table-scroll { overflow-x: auto; margin: 1.25rem 0; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: .9rem;
+            min-width: 30rem;
+        }
+        th, td {
+            text-align: left;
+            padding: .55rem .7rem;
+            border-bottom: 1px solid var(--rule);
+            vertical-align: top;
+        }
+        th {
+            font-size: .78rem;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .status {
+            display: inline-block;
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            padding: .16em .5em;
+            border-radius: 3px;
+            white-space: nowrap;
+        }
+        .status.live { background: #1f6b3a; color: #fff; }
+        .status.pending { background: #8a6d1f; color: #fff; }
+        .status.interim { background: #2f5d8a; color: #fff; }
+
+        .askbox {
+            background: var(--panel);
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            padding: .85rem 1rem;
+            margin: .6rem 0;
+            font-size: .95rem;
+        }
+        .askbox em { color: var(--muted); font-style: normal; font-size: .82rem; display: block; margin-top: .3rem; }
+
+        footer {
+            margin-top: 3.5rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid var(--rule);
+            font-size: .85rem;
+            color: var(--muted);
+        }
+        footer a { color: var(--accent); }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <a class="back" href="./">&larr; Back to the map</a>
+
+        <h1>California Plant Heat Vulnerability</h1>
+        <p class="standfirst">
+            Where, within a plant species' current range, do projected air temperatures reach the point
+            at which its photosynthesis is measurably impaired?
+        </p>
+
+        <h2>The question</h2>
+        <p>
+            Plant heat tolerance is measured in the lab as two leaf temperatures. <strong>Tcrit</strong>
+            is where photosynthetic capacity is first impaired; <strong>T50</strong> is where performance
+            falls by half. They are properties of the leaf, measured on the leaf.
+        </p>
+        <p>
+            Climate projections, however, give <em>air</em> temperature. A sunlit leaf is usually warmer
+            than the air around it, by an amount that depends on leaf size, wind, and how much water the
+            plant is transpiring. So the two cannot be compared directly. This tool asks you for that
+            difference — the <strong>leaf-to-air offset</strong> — and does the comparison in air
+            temperature:
+        </p>
+
+        <div class="formula">
+            <code>air-temperature threshold = (Tcrit or T50) &minus; leaf-to-air offset</code>
+        </div>
+
+        <p>
+            The offset is your assumption, not a measurement, and it matters enormously. Across the 109
+            species in this study the median Tcrit is about 47&nbsp;°C. Assume no offset and almost
+            nowhere in California qualifies; assume 10&nbsp;°C and much of the Central Valley and the
+            deserts do. Every answer states the offset it used, so two results can be compared.
+        </p>
+
+        <div class="note">
+            <p>
+                <strong>Exceedance is exposure, not death.</strong> A cell above the threshold is a place
+                where the species would experience temperatures past a measured physiological limit. It is
+                not a prediction of mortality, dieback, or range loss, and nothing here should be read that
+                way.
+            </p>
+        </div>
+
+        <h2>The data</h2>
+        <div class="table-scroll">
+            <table>
+                <thead>
+                    <tr><th>Dataset</th><th>Source</th><th>Status</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Species ranges</strong><br>109 California species</td>
+                        <td>Calflora climate-model distributions, downloaded by the study team</td>
+                        <td><span class="status live">Published</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Air temperature</strong><br>warmest-month maximum</td>
+                        <td>CHELSA 2.1 bioclimate, observed baseline and three future scenarios</td>
+                        <td><span class="status interim">Interim</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Air temperature</strong><br>daily maxima</td>
+                        <td>LOCA2-Hybrid downscaled projections, via Cal-Adapt</td>
+                        <td><span class="status pending">Being built</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Thermal tolerance</strong><br>Tcrit and T50</td>
+                        <td>Measured by the project team for California's Fifth Climate Change Assessment</td>
+                        <td><span class="status pending">Being added</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>What the range layers show</h3>
+        <p>
+            A species' range here is <em>every cell the Calflora climate model finds suitable</em> — not
+            only the places the plant has been seen. The number in a cell is how many times the species
+            has actually been <em>recorded</em> there: a cell that is climatically suitable but has no
+            record carries a zero, and is still inside the range. Zeros are about 98% of it, which is why
+            a range reads as a broad pale extent with scattered darker cells where the herbarium records
+            are.
+        </p>
+        <p>
+            That scatter is <strong>survey effort</strong> — where botanists have looked — not abundance.
+            The count stops at 9, meaning nine or more. Ranges are not clipped to the state line: several
+            species have genuine records in Baja California, including a white fir population in the
+            Sierra San Pedro Mártir.
+        </p>
+
+        <h3>What the interim climate data can and cannot tell you</h3>
+        <p>
+            The tool is designed around <strong>mean annual days above the threshold</strong> — a
+            frequency. That needs daily projections, and the LOCA2 build is not finished.
+        </p>
+        <p>
+            In the meantime the map uses CHELSA's <strong>maximum air temperature of the warmest
+            month</strong>, which happens to be published on exactly the same hexagonal cells as the
+            species ranges, so the two join directly. It answers <em>whether</em> a place gets that hot and
+            <em>by how much</em> — but never <em>how often</em>, or <em>for how long</em>. Treat a result
+            as a flag for where to look, not as a dose.
+        </p>
+
+        <div class="note">
+            <p>
+                <strong>Thermal tolerance values are not loaded yet.</strong> The project team's
+                measurements are cleared for publication but have not been added, so you will need to give
+                a Tcrit or T50 value yourself. That is how the tool was always meant to work — different
+                populations, experiments and sources give different numbers — but until the table lands
+                there is no default to fall back on.
+            </p>
+        </div>
+
+        <h2>Running the computation</h2>
+        <p>Ask in plain language. A question that works today:</p>
+
+        <div class="askbox">
+            Where does <em>Artemisia californica</em>'s range get hotter than its Tcrit of 44.6&nbsp;°C,
+            assuming leaves run 10&nbsp;°C above air?
+            <em>Gives the share of the range above threshold, the largest exceedance, and a map.</em>
+        </div>
+        <div class="askbox">
+            Same species and offset, but under SSP3-7.0 at end of century — how much more of the range is
+            affected?
+            <em>On the observed baseline 2.4% of the range is above threshold; by 2071–2100 under
+            SSP3-7.0 it is 28.1%.</em>
+        </div>
+        <div class="askbox">
+            Sweep the leaf-to-air offset from 0 to 15&nbsp;°C and chart how the exposed share changes.
+            <em>Shows how much the answer depends on the assumption.</em>
+        </div>
+
+        <p>Underneath, that is a join between the two datasets on a shared hexagonal grid:</p>
+        <pre><code>WITH r AS (
+  SELECT h8 FROM read_parquet(
+    's3://public-ca-ccca5/calflora-ranges/hex/h0=*/data_0.parquet',
+    hive_partitioning = true)
+  WHERE species_code = 'ARTCAL'
+)
+SELECT count(*)                                        AS range_cells,
+       sum(CASE WHEN c.bio5 &gt; 34.57 THEN 1 ELSE 0 END) AS cells_over,
+       round(max(c.bio5) - 34.57, 1)                   AS max_margin_c
+FROM r JOIN read_parquet(
+  's3://public-bioclimate/chelsa-2-1/baseline-1981-2010/hex/h0=*/data_0.parquet') c
+  USING (h8)</code></pre>
+
+        <p>
+            The denominator is the species' whole range, zeros included, and it is stated in every answer
+            alongside the offset — a percentage means nothing without knowing what it is a percentage of.
+        </p>
+
+        <h2>Credits and caveats</h2>
+        <ul>
+            <li>
+                <strong>Species ranges:</strong> <a href="https://www.calflora.org/">Calflora</a>
+                climate-model distributions, exported by the study team. Redistribution terms for these
+                exports are unconfirmed, so the collection is not registered in the public data catalog.
+            </li>
+            <li>
+                <strong>Thermal tolerance:</strong> measured by G. G. Hernández, G. Bucciarelli,
+                J. L. Funk and J. M. Valliere under
+                <a href="https://climateassessment.ca.gov/">California's Fifth Climate Change Assessment</a>.
+                Provisional and unpublished; a citation will be added when their paper appears.
+            </li>
+            <li>
+                <strong>Interim climate:</strong> CHELSA 2.1 bioclimate (CC-BY-4.0).
+            </li>
+            <li>
+                <strong>Planned climate:</strong> LOCA2-Hybrid downscaled projections produced by UC San
+                Diego Scripps for California's Fifth Climate Change Assessment, distributed through
+                <a href="https://analytics.cal-adapt.org/data/catalog/">Cal-Adapt</a> (CC-BY-4.0, derived
+                from CMIP6).
+            </li>
+        </ul>
+
+        <footer>
+            Built on <a href="https://github.com/boettiger-lab/geo-agent">geo-agent</a>. Source and
+            working notes: <a href="https://github.com/boettiger-lab/ca-ccca5">boettiger-lab/ca-ccca5</a>.
+            Answers are generated by a language model from live queries — check anything you intend to
+            rely on.
+        </footer>
+    </div>
+</body>
+
+</html>
