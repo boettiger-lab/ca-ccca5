@@ -73,15 +73,20 @@
         }
         #map.maplibregl-map #boot-status { display: none; }
 
-        /* About link — plain anchor, bottom-left of the map. Sits above the
-           MapLibre canvas but clear of the zoom/draw controls (top-left) and
-           the attribution (bottom-right). No JS, nothing for the core modules
-           to coordinate with. */
+        /* About link — plain anchor. Bottom-RIGHT, above the MapLibre
+           attribution, and shifted by the sidebar width the same way the chart
+           panels are.
+
+           Not bottom-left: four core components already anchor there (#legend,
+           #h3-toggle, #h3-res-badge and the reactive-control slider), and they
+           already collide with each other in sidebar mode (geo-agent#359).
+           There is no shared layout contract for these floating elements, so an
+           app adding one has to pick a corner by inspecting the core CSS. */
         #about-link {
             position: absolute;
-            bottom: 10px;
-            left: 10px;
-            z-index: 5;
+            bottom: 34px;
+            right: calc(var(--sidebar-width, 0px) + 10px);
+            z-index: 4;
             padding: 5px 10px;
             border-radius: 4px;
             background: rgba(255, 255, 255, .92);
