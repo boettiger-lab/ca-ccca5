@@ -67,8 +67,8 @@ The real metric is **mean annual days with daily maximum air temperature above t
 needs the LOCA2 daily projections, which are not built yet. Until they are, answer with the stand-in
 below and be explicit that it is one.
 
-**The stand-in.** CHELSA 2.1 bioclimate carries `bio5`, the **maximum air temperature of the warmest
-month**, on the same H3 resolution 8 cells as the species ranges, so it joins directly on `h8`:
+**The stand-in.** CHELSA 2.1 bioclimate carries `bio5`, the maximum air temperature of the warmest
+month, on the same H3 resolution 8 cells as the species ranges, so it joins directly on `h8`:
 
 | period | collection | temperature column |
 |---|---|---|
@@ -80,7 +80,16 @@ month**, on the same H3 resolution 8 cells as the species ranges, so it joins di
 The future collections also carry `bio5_min` and `bio5_max` across five climate models — use them when
 asked how robust a result is. Confirm the exact columns with the dataset metadata before querying.
 
-**What changes, and what you must say.** `bio5` is a single monthly maximum, not a count of days. So
+**`bio5` is a monthly average, so it runs cooler than the days that matter.** It is the *mean* daily
+maximum across the warmest month, not the hottest day: the hottest cell anywhere near California is
+45.4 °C, where Death Valley's July mean daily maximum is about 47 °C and its record daily maximum is
+about 57 °C. Individual days therefore run well above `bio5` — by something like 5 to 10 °C at the
+extreme. **Every exceedance figure from this stand-in is a floor, not an estimate.** A cell that does
+not clear the threshold on `bio5` may still clear it on its hottest days. Say this whenever you
+report a share of range; it is the difference between "not exposed" and "not exposed on an average
+warm-month day".
+
+**What else changes, and what you must say.** `bio5` is a single monthly figure, not a count of days. So
 the answer becomes *"what share of the range reaches a warmest-month maximum above the threshold, and
 by how much"* — a yes/no per cell plus a margin, not a frequency. It cannot tell you how often, how
 many days, or how long. State that limitation whenever you use it, in one plain sentence, and say the
