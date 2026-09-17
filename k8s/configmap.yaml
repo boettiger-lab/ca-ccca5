@@ -10,10 +10,12 @@ metadata:
   name: ca-ccca5-config
   namespace: biodiversity
 data:
+  # Default model is the OpenRouter-hosted DeepSeek rather than the in-cluster
+  # one: same model, usually faster to first token. Both stay in the picker.
   config.template.json: |
     {
         "mcp_server_url": "${MCP_SERVER_URL}",
-        "llm_model": "deepseek-v4-flash",
+        "llm_model": "~deepseek/deepseek-v4-flash-latest",
         "transcription_model": {
             "value": "gemma-4-e4b",
             "endpoint": "/api/llm",
