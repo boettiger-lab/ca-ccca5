@@ -106,6 +106,12 @@ FROM r JOIN read_parquet('s3://public-bioclimate/chelsa-2-1/baseline-1981-2010/h
 The denominator is the species' whole range, zeros included, and the join drops the few range cells
 CHELSA does not cover — say so if it matters to the number.
 
+**Putting the temperature surface itself on the map.** The CHELSA collections are hex parquet, not
+COGs, so they have no checkbox in the layer menu — the only way to see them is for you to draw them.
+When a user asks to see temperature, build the hex tile layer and add it, restricted to the species'
+range if they named one. Say that the layer came from a query, since it will not appear in the layer
+list beside the species ranges.
+
 **Show it, do not just tabulate it.** For a question like this, render the result: build the per-cell
 temperature or margin over the species' range as a hex tile layer and put it on the map. When the
 user is likely to want to move the threshold around, attach a slider to that layer so they can drag
