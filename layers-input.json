@@ -915,12 +915,15 @@
         ]
     },
     "welcome": {
-        "message": "Species range data for the California plant heat-vulnerability tool. All 109 species from the study are here as separate layers, from Calflora's climate-model distributions - toggle them in the layer menu.\n\nHow to read a layer: a cell's value is the number of times the species has been **observed** there. A cell the climate model finds suitable but where nobody has recorded the plant is **0**, and it is still inside the range - it is drawn pale rather than omitted. Cells outside the modelled climatic tolerance carry no value and are transparent. Only about 2% of in-range cells have ever been observed in, so a range reads as a broad pale extent with scattered red where the records are. That pattern is survey effort, not abundance, and the count tops out at 9 meaning nine or more.\n\nRanges are not clipped to California: several species have genuine records in Baja California, including a white fir population in the Sierra San Pedro Martir.\n\nThe LOCA2 temperature projections are not loaded yet, so the exceedance-day calculation this tool is ultimately for is not available. The measured Tcrit and T50 values are not wired in yet either; they will arrive as provisional defaults ahead of the team's own publication, and will always be user-overridable.",
+        "message": "**Where might a California plant species be exposed to air temperatures above its measured heat tolerance?**\n\nYou give a species, a thermal tolerance (**Tcrit**, where photosynthetic capacity is first impaired, or **T50**, where performance halves), and an assumption about how much hotter leaves run than the surrounding air. Both tolerances are *leaf* temperatures and the climate data is *air* temperature, so the comparison is made at `threshold = Tcrit - offset`. The answer is mapped across that species' current range, with the share of the range affected and the largest exceedance.\n\n**Two things are still missing, and they change what you can ask today.** The LOCA2 daily projections are not built yet, so I cannot yet count *days above* a threshold. In the meantime I can use CHELSA's warmest-month maximum temperature, which answers *whether* a place gets that hot and by how much, but not how often. And the project team's measured Tcrit and T50 values are not loaded yet, so you will need to give me a number - which the tool was always meant to let you do.\n\nAll 109 species ranges are here and can be mapped on their own. A range is every cell the climate model finds suitable; the value in a cell is how many times the plant has actually been recorded there, so most of a range reads as pale.",
         "examples": [
-            "Which species are on the map, and how large is each one's range?",
-            "Show me the range for giant sequoia.",
-            "For coast live oak, how much of the range has it actually been observed in?",
-            "Which species have records outside California?"
+            "Where does Artemisia californica's range get hotter than its Tcrit of 44.6 C, assuming leaves run 10 C above air?",
+            "Same species and offset, but under SSP3-7.0 at end of century - how much more of the range is affected?",
+            "For coast live oak with Tcrit 47.3 C, sweep the leaf-to-air offset from 0 to 15 C and chart how the exposed share changes.",
+            "Across all 109 species, which ranges are hottest - the largest share above 35 C in the warmest month?"
         ]
+    },
+    "charts": {
+        "enabled": true
     }
 }
