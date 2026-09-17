@@ -429,6 +429,25 @@ users to read two species 0.3 °C apart as meaningfully different.
    CSV to one parquet, a STAC collection and a `LICENSE.md`), then finish `system-prompt.md` against
    the real collection and column names from `list_datasets` / `get_schema`.
 
+## App shape — the threshold controls
+
+The app now presents the task rather than three layers, and the interim CHELSA path makes the whole
+computation work end to end (see `system-prompt.md`). What is still missing is a way to *move* the
+two user assumptions without a chat round trip per step.
+
+geo-agent's `control` slider binds only to `filter`, a MapLibre predicate over vector feature
+properties; `style` and `query` binds are documented as reserved. Our layers are COGs and hex parquet,
+so no config expresses "recompute exceedance at a new threshold". Filed as
+[geo-agent#362](https://github.com/boettiger-lab/geo-agent/issues/362), with two parts:
+
+- a slider bound to a **query parameter** (Tcrit, or the leaf-to-air offset) rather than a filter;
+- a smaller, separable `>=` slider mode — today `cumulative` is `<=` and `step` is `==`, so a
+  threshold slider needs an inverted helper column.
+
+Until that lands the usable path is: the agent computes the join, renders it with
+`add_hex_tile_layer`, and attaches `create_slider` to the materialised layer. That is in the system
+prompt. It works, but the slider reaches the computation second-hand.
+
 ## Open questions for the partner
 
 Answered across the two 2026-09-15 messages and kept only as a record: the meaning of the raster
