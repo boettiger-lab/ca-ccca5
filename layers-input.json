@@ -3,6 +3,27 @@
     "titiler_url": "https://titiler.nrp-nautilus.io",
     "mcp_url": "https://duckdb-mcp.nrp-nautilus.io/mcp",
     "auto_approve": true,
+    "header": {
+        "title": "California Plant Heat Vulnerability",
+        "nav": [
+            {
+                "label": "About",
+                "href": "about.html",
+                "external": false,
+                "icon": "info"
+            },
+            {
+                "label": "Heat exposure explorer",
+                "href": "explorer/",
+                "external": false
+            },
+            {
+                "label": "GitHub",
+                "href": "https://github.com/boettiger-lab/ca-ccca5",
+                "icon": "github"
+            }
+        ]
+    },
     "draw_enabled": true,
     "sidebar": {
         "enabled": true,
