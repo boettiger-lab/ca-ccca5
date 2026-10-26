@@ -350,8 +350,8 @@ This is a derived product with a custom reduction, not a plain raster ingest, so
 
 ## C. Thermal tolerance table
 
-**Received 2026-09-15** as `import-data/species_T50_Tcrit_means.csv` (gitignored — see the embargo
-below).
+**Received 2026-09-15**; a copy was supplied again on 2026-10-26 and is committed at
+`data/species_T50_Tcrit_means.csv` (see the publication decision below).
 
 ### What is in it
 
@@ -373,23 +373,24 @@ species with a raster have tolerance values. The seven CSV species with no raste
 still-missing downloads (`ERIDIS`, `HOLDIS`, `QUEGAR`, `SEQSEM`) and the three code-spelling variants,
 which are not genuinely missing. So the usable species list is governed by dataset A, not C.
 
-### Publication status — cleared to publish
+### Publication status — cleared to publish, served from this repository
 
 The team's paper is not out yet, but **Justin has confirmed they are not concerned about these values
 appearing in the public app before publication**; the flag was that official publication is coming
 soon, not a restriction on use. So dataset C is published as the team asked.
 
-- Publish to `s3://public-ca-ccca5/` as `thermal-tolerance/species.parquet` alongside A, and register
-  a STAC collection for it.
-- Publish a `LICENSE.md` beside the data recording what the team granted and what they did not — this
-  is the "data contributed directly to us" case, with no public terms page to point at — and link it
-  from the STAC with `{"rel": "license"}`.
-- **Label the values provisional.** They are pre-publication measurements, so the collection
-  description and the app both say so, and both say the citation will be the team's paper once it
-  appears. Ask Justin for the citation and the expected date so the description can be updated in
-  place rather than left vague.
-- The raw CSV stays in the git-ignored `import-data/`. Publishing the derived parquet to S3 is the
-  distribution channel; a public git repo is not.
+**Decision 2026-10-26: served from this repository, not data-workflows.** The table is specific to
+this app, and at 109 rows (about 4 KB) it is small enough to serve straight from GitHub. Carl made
+this exception to the usual S3 route, so data-workflows#673 is superseded.
+
+- The CSV is committed as delivered at `data/species_T50_Tcrit_means.csv` (columns `species`,
+  `species_code`, `origin`, `T50`, `Tcrit`; °C). Queries read it from
+  `https://raw.githubusercontent.com/boettiger-lab/ca-ccca5/main/data/species_T50_Tcrit_means.csv`.
+- Its `species_code` values match the published `calflora-ranges/species.parquet` exactly
+  (109 of 109; the seven-letter codes are already normalised), and `Tcrit < T50` in every row.
+- **Label the values provisional.** They are pre-publication measurements, so the app says so, and
+  says the citation will be the team's paper once it appears. Ask Justin for the citation and the
+  expected date so the app can name it rather than say "forthcoming".
 
 Users can still override every value — that was always the design, and it is what makes these
 defaults rather than fixed constants.
@@ -421,13 +422,12 @@ users to read two species 0.3 °C apart as meaningfully different.
    ([data-workflows#676](https://github.com/boettiger-lab/data-workflows/pull/676)): 109 COGs, an
    8,354,979-row hex table over 109 species, and `species.parquet`. `verify-stac.py` reports only
    the expected `license-link-missing`.
-5. **Build B phase 1** (3-model `ssp370` pilot) and validate it against Cal-Adapt's own figures.
-   Open the phase-2 issue only once the pilot's numbers check out. **This is the critical path** —
-   the app cannot answer the question it exists for until the exceedance curves exist.
-6. ~~Get C~~ — received and cleared to publish; issue filed as
-   [data-workflows#673](https://github.com/boettiger-lab/data-workflows/issues/673). Build it (one
-   CSV to one parquet, a STAC collection and a `LICENSE.md`), then finish `system-prompt.md` against
-   the real collection and column names from `list_datasets` / `get_schema`.
+5. ~~Build B phase 1~~ — published 2026-10-26 as `loca2-hybrid-tasmax-exceedance` and
+   `loca2-hybrid-tasmax-annual-max` (three models, `ssp370`), and in use in both apps. Phase 2 (the
+   full ensemble and SSP2-4.5 / SSP5-8.5) is next.
+6. ~~Get C~~ — served from this repository (`data/species_T50_Tcrit_means.csv`) by decision on
+   2026-10-26, superseding
+   [data-workflows#673](https://github.com/boettiger-lab/data-workflows/issues/673).
 
 ## App shape — the threshold controls
 

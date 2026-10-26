@@ -7,9 +7,6 @@
 # Raw partner data — staged to S3 via data-workflows, not tracked here
 import-data/
 
-# Partner tolerance table: published to S3 via data-workflows#673, never committed here
-species_T50_Tcrit_means.csv
-
 # Local glen-charts test harness
 explorer/_glen
 explorer/index-local.html
