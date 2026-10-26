@@ -9,6 +9,9 @@
           and the per-cell lowest (`days_lo`) and highest (`days_hi`) model.
           Exceedance rows of zero are not stored, so a missing row is 0 days.
   amax    the mean annual maximum air temperature per range cell and period.
+  w       (conserved-area queries only) each range cell's share in GAP status 1 to 4,
+          from the 30x30 conserved areas; cells with no row (outside California land)
+          count as not conserved.
 
 The threshold is TLEAF − OFFSET. Both are whole degrees, so it always falls on the
 0.5 °C grid of the exceedance table and no interpolation is needed.
@@ -19,8 +22,9 @@ import re
 from pathlib import Path
 
 RANGE = "s3://public-ca-ccca5/calflora-ranges/hex/h0=*/data_0.parquet"
-EXCEED = "s3://public-caladapt/loca2-hybrid/tasmax-exceedance/hex/h0=*/*.parquet"
-AMAX = "s3://public-caladapt/loca2-hybrid/tasmax-annual-max/hex/h0=*/*.parquet"
+EXCEED = "s3://public-caladapt/loca2-hybrid/tasmax-exceedance/hex/h0=*/data_0.parquet"
+AMAX = "s3://public-caladapt/loca2-hybrid/tasmax-annual-max/hex/h0=*/data_0.parquet"
+GAPW = "s3://public-ca30x30/conserved-areas-terrestrial-2025/hex-weights-res8/h0=*/data_0.parquet"
 PERIODS = [  # key, scenario, period, label
     ("hist", "historical", "1985-2014", "Historical 1985–2014"),
     ("ssp370-mid", "ssp370", "2040-2069", "SSP3-7.0 2040–2069"),
@@ -98,11 +102,42 @@ SELECT period_label,
 FROM c GROUP BY period_label, ord ORDER BY ord
 """,
     "exposure/map.sql": """
--- Per res-6 cell: area-weighted mean days a year above the threshold over the species'
--- range cells in it, selected period.
-SELECT h3_h3_to_string(h3_cell_to_parent(h8, 6)) AS h6,
+-- Per res-7 cell, the LOCA2 grid: area-weighted mean days a year above the threshold
+-- over the species' range cells in it, selected period.
+SELECT h3_h3_to_string(h7) AS h7,
        sum(km2 * days) / sum(km2) AS mean_days
 FROM c WHERE period_key = '{{PERIOD}}'
+GROUP BY 1
+""",
+    "conserved/by-gap.sql": """
+-- Share of the whole range in each GAP status, by area.
+SELECT * FROM (VALUES
+  ('GAP 1', 1, (SELECT sum(r.km2 * coalesce(w.w1, 0)) / sum(r.km2) FROM r LEFT JOIN w USING (h0, h8))),
+  ('GAP 2', 2, (SELECT sum(r.km2 * coalesce(w.w2, 0)) / sum(r.km2) FROM r LEFT JOIN w USING (h0, h8))),
+  ('GAP 3', 3, (SELECT sum(r.km2 * coalesce(w.w3, 0)) / sum(r.km2) FROM r LEFT JOIN w USING (h0, h8))),
+  ('GAP 4', 4, (SELECT sum(r.km2 * coalesce(w.w4, 0)) / sum(r.km2) FROM r LEFT JOIN w USING (h0, h8))),
+  ('Not conserved', 5, (SELECT sum(r.km2 * (1 - coalesce(w.w1 + w.w2 + w.w3 + w.w4, 0))) / sum(r.km2) FROM r LEFT JOIN w USING (h0, h8)))
+) t(gap, ord, share) ORDER BY ord
+""",
+    "conserved/summary.sql": """
+-- Share of the whole range in GAP 1 or 2, the land California's 30x30 goal counts.
+SELECT sum(r.km2 * coalesce(w.w1 + w.w2, 0)) / sum(r.km2) AS share_gap12,
+       sum(r.km2 * coalesce(w.w1 + w.w2, 0)) AS km2_gap12
+FROM r LEFT JOIN w USING (h0, h8)
+""",
+    "conserved/days.sql": """
+-- Mean days a year above the threshold on GAP 1-2 land and on the rest of the range, per period.
+SELECT period_label,
+       sum(km2 * g12 * days) / nullif(sum(km2 * g12), 0) AS days_gap12,
+       sum(km2 * (1 - g12) * days) / nullif(sum(km2 * (1 - g12)), 0) AS days_other
+FROM (SELECT c.*, coalesce(w.w1 + w.w2, 0) AS g12 FROM c LEFT JOIN w USING (h8))
+GROUP BY period_label, ord ORDER BY ord
+""",
+    "conserved/map.sql": """
+-- Per res-7 cell: share of the species' range cells in it that is GAP 1 or 2.
+SELECT h3_h3_to_string(r.h7) AS h7,
+       sum(r.km2 * coalesce(w.w1 + w.w2, 0)) / sum(r.km2) AS share_gap12
+FROM r LEFT JOIN w USING (h0, h8)
 GROUP BY 1
 """,
     "models/spread.sql": """
@@ -139,7 +174,15 @@ GROUP BY o.o ORDER BY o.o
 root = Path(__file__).resolve().parent.parent / "config" / "themes"
 for f in root.glob("*/*.sql"):
     f.unlink()
-outputs = {name: PRELUDE + body.lstrip("\n") for name, body in QUERIES.items()}
+W_CTE = f""",
+w AS (
+  SELECT h0, h8, w1, w2, w3, w4
+  FROM read_parquet('{GAPW}', hive_partitioning = true)
+  SEMI JOIN r USING (h0, h8)
+)
+"""
+outputs = {name: (PRELUDE.rstrip("\n") + W_CTE if name.startswith("conserved/") else PRELUDE) + body.lstrip("\n")
+           for name, body in QUERIES.items()}
 outputs["exposure/by-offset.sql"] = BY_OFFSET
 for name, sql in outputs.items():
     # a filtered sum over no rows is NULL; for a numerator that means none, so 0

@@ -915,6 +915,115 @@
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 }
             ]
+        },
+        {
+            "collection_id": "ca30x30-conserved-areas-terrestrial-2025",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-ca30x30/conserved-areas-terrestrial-2025/stac-collection.json",
+            "assets": [
+                {
+                    "id": "conserved-areas-terrestrial-2025-pmtiles",
+                    "display_name": "Conserved areas, terrestrial (2025)",
+                    "group": "Conserved areas",
+                    "visible": false,
+                    "default_style": {
+                        "fill-color": [
+                            "match",
+                            [
+                                "get",
+                                "reGAP"
+                            ],
+                            1,
+                            "#26633A",
+                            2,
+                            "#3E9C47",
+                            3,
+                            "#7EB3D3",
+                            4,
+                            "#BDBDBD",
+                            "#888888"
+                        ],
+                        "fill-opacity": 0.7
+                    },
+                    "outline_style": {
+                        "line-color": "#4A4A4A",
+                        "line-width": 0.3,
+                        "line-opacity": 0.5
+                    },
+                    "tooltip_fields": [
+                        "UNIT_NAME",
+                        "MNG_AGENCY",
+                        "MNG_AG_LEV",
+                        "reGAP",
+                        "ACCESS_TYP",
+                        "Acres"
+                    ],
+                    "legend_type": "categorical",
+                    "legend_classes": [
+                        {
+                            "label": "GAP 1 — managed for biodiversity (strict)",
+                            "color": "#26633A"
+                        },
+                        {
+                            "label": "GAP 2 — managed for biodiversity",
+                            "color": "#3E9C47"
+                        },
+                        {
+                            "label": "GAP 3 — multiple use",
+                            "color": "#7EB3D3"
+                        },
+                        {
+                            "label": "GAP 4 — no protection mandate",
+                            "color": "#BDBDBD"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "collection_id": "calfire-2025-firep",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-fire/calfire-2025/firep/stac-collection.json",
+            "assets": [
+                {
+                    "id": "firep-pmtiles",
+                    "display_name": "Historic fire perimeters (1878–2025)",
+                    "group": "Fire history",
+                    "visible": false,
+                    "default_style": {
+                        "fill-color": [
+                            "interpolate",
+                            [
+                                "linear"
+                            ],
+                            [
+                                "get",
+                                "YEAR_"
+                            ],
+                            1878,
+                            "#fee5d9",
+                            1950,
+                            "#fcae91",
+                            1990,
+                            "#fb6a4a",
+                            2010,
+                            "#de2d26",
+                            2025,
+                            "#a50f15"
+                        ],
+                        "fill-opacity": 0.55
+                    },
+                    "outline_style": {
+                        "line-color": "#7f0000",
+                        "line-width": 0.3,
+                        "line-opacity": 0.5
+                    },
+                    "tooltip_fields": [
+                        "FIRE_NAME",
+                        "YEAR_",
+                        "GIS_ACRES",
+                        "AGENCY"
+                    ]
+                }
+            ]
         }
     ],
     "llm": {
@@ -936,13 +1045,13 @@
         ]
     },
     "welcome": {
-        "message": "Ask where a California plant species meets air temperatures above its measured heat tolerance. Give me a species, a Tcrit or T50 in degrees C, and how much hotter you assume leaves run than the air; I will map the share of its range above that threshold. You will need to supply the tolerance value, as the measurements are not loaded yet, and for now I can tell you whether a place gets that hot but not how often. See About, below, for the data behind this.",
+        "message": "Ask how often air temperatures across a California plant species' range reach its measured heat tolerance. Give me a species, a Tcrit or T50 in degrees C, and how much hotter you assume leaves run than the air; I will report the mean days a year its range reaches that threshold, from the LOCA2 climate projections. You will need to supply the tolerance value, as the team's measurements are not loaded yet. To move the threshold with sliders, open the Heat exposure explorer in the header.",
         "examples": [
-            "Where does Artemisia californica's range get hotter than its Tcrit of 44.6 C, assuming leaves run 10 C above air?",
-            "Put CHELSA's warmest-month maximum temperature on the map for Larrea tridentata's range.",
-            "Same species and offset, but under SSP3-7.0 at end of century - how much more of the range is affected?",
-            "For coast live oak with Tcrit 47.3 C, sweep the leaf-to-air offset from 0 to 15 C and chart how the exposed share changes.",
-            "Across all 109 species, which ranges are hottest - the largest share above 35 C in the warmest month?"
+            "How many days a year does Artemisia californica's range reach its Tcrit of 44.6 C, assuming leaves run 10 C above air?",
+            "Map the days a year above 35 C across Larrea tridentata's range for 2070-2099 under SSP3-7.0.",
+            "For coast live oak with Tcrit 47.3 C, sweep the leaf-to-air offset from 0 to 15 C and chart the mean days above threshold.",
+            "How much of Pinus ponderosa's range is in GAP 1 or 2 conserved areas, and does that land reach 37 C less often than the rest?",
+            "What share of Quercus douglasii's range has burned since 2000? Show the fire perimeters with the range."
         ]
     },
     "charts": {

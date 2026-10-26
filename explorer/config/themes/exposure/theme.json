@@ -130,7 +130,7 @@
   ],
   "map": {
     "query": "map",
-    "id_field": "h6",
+    "id_field": "h7",
     "value_field": "mean_days",
     "label": "Mean days a year above threshold",
     "format": "num1",
@@ -147,6 +147,6 @@
       "#e6550d",
       "#a63603"
     ],
-    "note": "H3 resolution 6 cells, coloured by the area-weighted mean over the species' range cells within each, in the selected period."
+    "note": "H3 resolution 7 cells, the LOCA2 grid, coloured by the area-weighted mean over the species' range cells within each, in the selected period."
   }
 }

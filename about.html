@@ -265,14 +265,19 @@
                         <td><span class="status live">Published</span></td>
                     </tr>
                     <tr>
-                        <td><strong>Air temperature</strong><br>warmest-month maximum</td>
-                        <td>CHELSA 2.1 bioclimate, observed baseline and three future scenarios</td>
-                        <td><span class="status interim">Interim</span></td>
+                        <td><strong>Air temperature</strong><br>days a year above each threshold</td>
+                        <td>LOCA2-Hybrid downscaled projections, via Cal-Adapt; three models, SSP3-7.0</td>
+                        <td><span class="status interim">Pilot</span></td>
                     </tr>
                     <tr>
-                        <td><strong>Air temperature</strong><br>daily maxima</td>
-                        <td>LOCA2-Hybrid downscaled projections, via Cal-Adapt</td>
-                        <td><span class="status pending">Being built</span></td>
+                        <td><strong>Conserved areas</strong><br>GAP status 1 to 4</td>
+                        <td>California 30x30 terrestrial conserved areas, 2025</td>
+                        <td><span class="status live">Published</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fire history</strong><br>perimeters 1878–2025</td>
+                        <td>CAL FIRE wildfire perimeters</td>
+                        <td><span class="status live">Published</span></td>
                     </tr>
                     <tr>
                         <td><strong>Thermal tolerance</strong><br>Tcrit and T50</td>
@@ -299,26 +304,26 @@
             Sierra San Pedro Mártir.
         </p>
 
-        <h3>What the interim climate data can and cannot tell you</h3>
+        <h3>What the climate data shows</h3>
         <p>
-            The tool is designed around <strong>mean annual days above the threshold</strong> — a
-            frequency. That needs daily projections, and the LOCA2 build is not finished.
+            The measure is <strong>mean days a year on which the daily maximum air temperature reaches
+            the threshold</strong>, from the LOCA2-Hybrid projections that California's Fifth Climate
+            Change Assessment uses. For every cell and every half degree from 20 to 60&nbsp;°C, the days
+            at or above that temperature are counted in each year of a 30-year period and averaged. A
+            threshold between two half degrees is interpolated.
         </p>
         <p>
-            In the meantime the map uses CHELSA's maximum air temperature of the warmest month, which
-            happens to be published on exactly the same hexagonal cells as the species ranges, so the two
-            join directly. It answers <em>whether</em> a place gets that hot and <em>by how much</em> —
-            but never <em>how often</em>, or <em>for how long</em>. Treat a result as a flag for where to
-            look, not as a dose.
+            The periods are 1985–2014 from the historical runs, and 2040–2069 and 2070–2099 under the
+            SSP3-7.0 emissions scenario. This is a pilot built from three climate models (GFDL-ESM4,
+            MPI-ESM1-2-HR and ACCESS-CM2), chosen to span low to high climate sensitivity; figures are
+            their mean, and the spread between them is shown alongside. More models and the SSP2-4.5 and
+            SSP5-8.5 scenarios are planned.
         </p>
         <p>
-            It also runs <strong>cooler than the days that actually matter</strong>. That figure is the
-            <em>mean</em> daily maximum across the warmest month, not the hottest day of it: the hottest
-            cell anywhere near California is 45.4&nbsp;°C, while Death Valley's July mean daily maximum is
-            about 47&nbsp;°C and its record daily maximum is about 57&nbsp;°C. Individual days run well
-            above it. So an exceedance figure from the interim data is a <strong>floor</strong> — a place
-            that looks unexposed here may still cross the threshold on its hottest days. The LOCA2 daily
-            data is what closes that gap.
+            The climate grid is coarser than the ranges: about 2.6&nbsp;km across (H3 resolution 7),
+            against 0.9&nbsp;km for a range cell, so every range cell inside one climate cell gets the same
+            count. The climate domain ends near 29.6&nbsp;°N, so the few range cells further south in Baja
+            California have no climate data and are left out.
         </p>
 
         <div class="note">
@@ -332,37 +337,48 @@
         </div>
 
         <h2>Running the computation</h2>
-        <p>Ask in plain language. A question that works today:</p>
+        <p>
+            The <a href="explorer/">Heat exposure explorer</a> answers the basic question with sliders:
+            pick a species, a leaf threshold, an offset and a period. The chat answers anything else in
+            plain language, for example:
+        </p>
 
         <div class="askbox">
-            Where does <em>Artemisia californica</em>'s range get hotter than its Tcrit of 44.6&nbsp;°C,
-            assuming leaves run 10&nbsp;°C above air?
-            <em>Gives the share of the range above threshold, the largest exceedance, and a map.</em>
+            How many days a year does <em>Artemisia californica</em>'s range reach its Tcrit of
+            44.6&nbsp;°C, assuming leaves run 10&nbsp;°C above air?
+            <em>The air threshold is 34.6&nbsp;°C. Over the range that is 19.4 days a year in
+            1985–2014, 35.1 in 2040–2069 and 49.9 in 2070–2099 under SSP3-7.0.</em>
         </div>
         <div class="askbox">
-            Same species and offset, but under SSP3-7.0 at end of century — how much more of the range is
-            affected?
-            <em>On the observed baseline 2.4% of the range is above threshold; by 2071–2100 under
-            SSP3-7.0 it is 28.1%.</em>
+            How much of <em>Pinus ponderosa</em>'s range is in GAP 1 or 2 conserved areas, and does that
+            land reach the threshold less often than the rest?
+            <em>Combines the range, the conserved areas and the day counts.</em>
         </div>
         <div class="askbox">
-            Sweep the leaf-to-air offset from 0 to 15&nbsp;°C and chart how the exposed share changes.
+            Sweep the leaf-to-air offset from 0 to 15&nbsp;°C and chart the mean days above threshold.
             <em>Shows how much the answer depends on the assumption.</em>
         </div>
 
-        <p>Underneath, that is a join between the two datasets on a shared hexagonal grid:</p>
+        <p>Underneath, each range cell takes the day count of the climate cell that contains it:</p>
         <pre><code>WITH r AS (
-  SELECT h8 FROM read_parquet(
+  SELECT h0, h8, h3_cell_to_parent(h8, 7) AS h7, h3_cell_area(h8, 'km^2') AS km2
+  FROM read_parquet(
     's3://public-ca-ccca5/calflora-ranges/hex/h0=*/data_0.parquet',
     hive_partitioning = true)
   WHERE species_code = 'ARTCAL'
 )
-SELECT count(*)                                        AS range_cells,
-       sum(CASE WHEN c.bio5 &gt; 34.57 THEN 1 ELSE 0 END) AS cells_over,
-       round(max(c.bio5) - 34.57, 1)                   AS max_margin_c
+SELECT e.scenario, e.period,
+       sum(r.km2 * e.days_mean) / sum(r.km2) AS mean_days   -- at 34.5 °C, on the grid
 FROM r JOIN read_parquet(
-  's3://public-bioclimate/chelsa-2-1/baseline-1981-2010/hex/h0=*/data_0.parquet') c
-  USING (h8)</code></pre>
+  's3://public-caladapt/loca2-hybrid/tasmax-exceedance/hex/h0=*/data_0.parquet',
+  hive_partitioning = true) e USING (h0, h7)
+WHERE e.threshold_c = 34.5
+GROUP BY ALL</code></pre>
+        <p>
+            That sketch skips two details the app handles: a cell with no row at a threshold has zero
+            days there, and range cells outside the climate domain are left out of both the numerator and
+            the denominator.
+        </p>
 
         <p>
             The denominator is the species' whole range, zeros included, and it is stated in every answer
@@ -383,13 +399,17 @@ FROM r JOIN read_parquet(
                 Provisional and unpublished; a citation will be added when their paper appears.
             </li>
             <li>
-                <strong>Interim climate:</strong> CHELSA 2.1 bioclimate (CC-BY-4.0).
-            </li>
-            <li>
-                <strong>Planned climate:</strong> LOCA2-Hybrid downscaled projections produced by UC San
+                <strong>Climate:</strong> LOCA2-Hybrid downscaled projections produced by UC San
                 Diego Scripps for California's Fifth Climate Change Assessment, distributed through
                 <a href="https://analytics.cal-adapt.org/data/catalog/">Cal-Adapt</a> (CC-BY-4.0, derived
                 from CMIP6).
+            </li>
+            <li>
+                <strong>Conserved areas:</strong> California 30x30 terrestrial conserved areas, 2025,
+                California Natural Resources Agency (CC-BY-4.0).
+            </li>
+            <li>
+                <strong>Fire history:</strong> CAL FIRE wildfire perimeters, 1878–2025 (CC-BY-4.0).
             </li>
         </ul>
 

@@ -1,0 +1,91 @@
+{
+  "label": "Conserved areas",
+  "color": "#2f7d3c",
+  "blurb": "How much of the range lies in California's conserved areas, and how often that land reaches the threshold compared with the rest of the range.",
+  "method": "Conserved areas are the 30x30 terrestrial conserved areas for 2025 (California Natural Resources Agency, CC-BY-4.0) as each resolution-8 cell's share of California land in GAP status 1 to 4. California's 30x30 goal counts GAP 1 and 2. Shares are by area over the species' whole range; range cells outside California have no conserved-area data and count as not conserved. The day counts weight each range cell by its GAP 1–2 share and by the remainder.",
+  "queries": {
+    "summary": {
+      "file": "summary.sql"
+    },
+    "by_gap": {
+      "file": "by-gap.sql"
+    },
+    "days": {
+      "file": "days.sql"
+    },
+    "map": {
+      "file": "map.sql"
+    }
+  },
+  "headlines": [
+    {
+      "query": "summary",
+      "field": "share_gap12",
+      "label": "Share of range in GAP 1 or 2",
+      "format": "pct"
+    },
+    {
+      "query": "summary",
+      "field": "km2_gap12",
+      "label": "Range area in GAP 1 or 2",
+      "format": "km2"
+    }
+  ],
+  "charts": [
+    {
+      "title": "Range by GAP status",
+      "query": "by_gap",
+      "category": "gap",
+      "format": "pct",
+      "label_width": 200,
+      "series": [
+        {
+          "field": "share",
+          "label": "Share of range",
+          "color": "#2f7d3c"
+        }
+      ]
+    },
+    {
+      "title": "Mean days above threshold on conserved land",
+      "subtitle": "GAP 1 and 2 land is compared with the rest of the range in each period.",
+      "query": "days",
+      "category": "period_label",
+      "format": "num1",
+      "label_width": 200,
+      "series": [
+        {
+          "field": "days_gap12",
+          "label": "GAP 1 or 2",
+          "color": "#2f7d3c"
+        },
+        {
+          "field": "days_other",
+          "label": "Rest of range",
+          "color": "#c2410c"
+        }
+      ]
+    }
+  ],
+  "map": {
+    "query": "map",
+    "id_field": "h7",
+    "value_field": "share_gap12",
+    "label": "Share of range in GAP 1 or 2",
+    "format": "pct",
+    "breaks": [
+      0.01,
+      0.25,
+      0.5,
+      0.75
+    ],
+    "ramp": [
+      "#e7e1d6",
+      "#c7e9c0",
+      "#74c476",
+      "#31a354",
+      "#006d2c"
+    ],
+    "note": "H3 resolution 7 cells, coloured by the share of the species' range within each that is conserved under GAP 1 or 2."
+  }
+}

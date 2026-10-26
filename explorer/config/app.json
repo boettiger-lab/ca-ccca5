@@ -12,6 +12,7 @@
   "basemap": "light-gray",
   "themes": [
     "exposure",
+    "conserved",
     "models"
   ],
   "labels": {
@@ -107,25 +108,85 @@
       "aoi": "SELECT h0, h8 FROM read_parquet('s3://public-ca-ccca5/calflora-ranges/hex/h0=*/data_0.parquet', hive_partitioning = true) WHERE species_code = '{{ID}}'",
       "list": "WITH r AS (SELECT species_code, h3_cell_to_lng(h7) AS x, h3_cell_to_lat(h7) AS y FROM read_parquet('s3://public-ca-ccca5/calflora-ranges/hex/h0=*/data_0.parquet', hive_partitioning = true)) SELECT s.species_code AS id, s.scientific_name || ' (' || s.species_code || ')' AS name, min(x) - 0.1 AS xmin, min(y) - 0.1 AS ymin, max(x) + 0.1 AS xmax, max(y) + 0.1 AS ymax FROM r JOIN read_parquet('s3://public-ca-ccca5/calflora-ranges/species.parquet') s USING (species_code) GROUP BY ALL ORDER BY name",
       "boundary": {
-        "url": "data/species-ranges.pmtiles",
-        "source_layer": "species-ranges",
-        "id_prop": "species_code",
-        "name_prop": "scientific_name",
-        "style": {
-          "opacity": 0,
-          "hover_opacity": 0,
-          "line_opacity": 0,
-          "selected": "#3b2f2a",
-          "selected_width": 1.6
-        }
+        "url": "data/h7-grid.pmtiles",
+        "source_layer": "h7-grid",
+        "id_prop": "h7",
+        "filter": [
+          "==",
+          [
+            "get",
+            "h7"
+          ],
+          "none"
+        ]
       }
     }
   ],
+  "default_area": {
+    "jurisdiction": "species",
+    "id": "PINPON"
+  },
   "tracts": {
-    "url": "data/h6-grid.pmtiles",
-    "source_layer": "h6-grid",
-    "id_prop": "h6"
+    "url": "data/h7-grid.pmtiles",
+    "source_layer": "h7-grid",
+    "id_prop": "h7",
+    "line_width": [
+      "interpolate",
+      [
+        "linear"
+      ],
+      [
+        "zoom"
+      ],
+      6,
+      0,
+      9,
+      0.5
+    ]
   },
   "project_url": "https://github.com/boettiger-lab/ca-ccca5/tree/main/explorer",
-  "intro": "<p>Pick a species to see how often air temperatures across its modelled range reach a heat tolerance threshold. Set the leaf threshold to the species' Tcrit or T50 and choose how much warmer than the air you assume leaves run; the air threshold is the difference. The period switches between the historical climate and SSP3-7.0 at mid and end of century.</p><p class=\"tile-note\">The measure is the mean number of days a year on which the daily maximum air temperature reaches the air threshold, from the LOCA2-Hybrid downscaled projections. Figures are means over each 30-year period and across three climate models.</p><p class=\"tile-note\"><strong>Preview.</strong> The LOCA2 tables are a three-model pilot (GFDL-ESM4, MPI-ESM1-2-HR and ACCESS-CM2) with SSP3-7.0 only. More models and scenarios are planned.</p><p class=\"tile-note\">Exceeding a threshold is exposure to temperatures above a measured physiological limit. It is not predicted mortality, dieback or range loss.</p><p class=\"tile-note\">Data: Calflora climate-model range maps (109 species, H3 resolution 8); LOCA2-Hybrid daily maximum temperature, UC San Diego Scripps for California's Fifth Climate Change Assessment via Cal-Adapt (CC-BY-4.0), summarised to H3 resolution 7.</p>"
+  "intro": "<p>Pick a species to see how often air temperatures across its modelled range reach a heat tolerance threshold. Set the leaf threshold to the species' Tcrit or T50 and choose how much warmer than the air you assume leaves run; the air threshold is the difference. The period switches between the historical climate and SSP3-7.0 at mid and end of century.</p><p class=\"tile-note\">The measure is the mean number of days a year on which the daily maximum air temperature reaches the air threshold, from the LOCA2-Hybrid downscaled projections. Figures are means over each 30-year period and across three climate models.</p><p class=\"tile-note\"><strong>Preview.</strong> The LOCA2 tables are a three-model pilot (GFDL-ESM4, MPI-ESM1-2-HR and ACCESS-CM2) with SSP3-7.0 only. More models and scenarios are planned.</p><p class=\"tile-note\">Exceeding a threshold is exposure to temperatures above a measured physiological limit. It is not predicted mortality, dieback or range loss.</p><p class=\"tile-note\">Data: Calflora climate-model range maps (109 species, H3 resolution 8); LOCA2-Hybrid daily maximum temperature, UC San Diego Scripps for California's Fifth Climate Change Assessment via Cal-Adapt (CC-BY-4.0), summarised to H3 resolution 7; 30x30 conserved areas, terrestrial, 2025 (California Natural Resources Agency).</p>",
+  "overlays": [
+    {
+      "id": "conserved",
+      "url": "https://s3-west.nrp-nautilus.io/public-ca30x30/conserved-areas-terrestrial-2025.pmtiles",
+      "source_layer": "conserved-areas-terrestrial-2025",
+      "type": "line",
+      "above": true,
+      "visible": false,
+      "paint": {
+        "line-color": [
+          "match",
+          [
+            "get",
+            "reGAP"
+          ],
+          1,
+          "#14532d",
+          2,
+          "#2f7d3c",
+          3,
+          "#3b82b0",
+          4,
+          "#8a8a8a",
+          "#8a8a8a"
+        ],
+        "line-width": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          5,
+          0.6,
+          10,
+          1.6
+        ]
+      },
+      "toggle": "Show conserved areas",
+      "legend": "<div class=\"tile-note\">Outline colour is GAP status: <span style=\"color:#14532d\">■</span> 1 <span style=\"color:#2f7d3c\">■</span> 2 <span style=\"color:#3b82b0\">■</span> 3 <span style=\"color:#8a8a8a\">■</span> 4</div>"
+    }
+  ]
 }

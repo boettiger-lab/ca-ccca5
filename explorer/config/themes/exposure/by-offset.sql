@@ -16,7 +16,7 @@ periods AS (
 ),
 amax AS (
   SELECT a.h7, p.period_key, a.tmax_mean_annual_max_c
-  FROM read_parquet('s3://public-caladapt/loca2-hybrid/tasmax-annual-max/hex/h0=*/*.parquet', hive_partitioning = true) a
+  FROM read_parquet('s3://public-caladapt/loca2-hybrid/tasmax-annual-max/hex/h0=*/data_0.parquet', hive_partitioning = true) a
   JOIN periods p USING (scenario, period)
   SEMI JOIN r USING (h0, h7)
 ),
@@ -29,7 +29,7 @@ JOIN amax a ON a.h7 = r.h7 AND a.period_key = '{{PERIOD}}'
 CROSS JOIN o
 LEFT JOIN (
   SELECT e.h7, e.threshold_c, e.days_mean
-  FROM read_parquet('s3://public-caladapt/loca2-hybrid/tasmax-exceedance/hex/h0=*/*.parquet', hive_partitioning = true) e
+  FROM read_parquet('s3://public-caladapt/loca2-hybrid/tasmax-exceedance/hex/h0=*/data_0.parquet', hive_partitioning = true) e
   JOIN periods p USING (scenario, period)
   SEMI JOIN r USING (h0, h7)
   WHERE p.period_key = '{{PERIOD}}'

@@ -16,13 +16,13 @@ periods AS (
 ),
 amax AS (
   SELECT a.h7, p.period_key, a.tmax_mean_annual_max_c
-  FROM read_parquet('s3://public-caladapt/loca2-hybrid/tasmax-annual-max/hex/h0=*/*.parquet', hive_partitioning = true) a
+  FROM read_parquet('s3://public-caladapt/loca2-hybrid/tasmax-annual-max/hex/h0=*/data_0.parquet', hive_partitioning = true) a
   JOIN periods p USING (scenario, period)
   SEMI JOIN r USING (h0, h7)
 ),
 ex AS (
   SELECT e.h7, p.period_key, e.days_mean, e.days_min, e.days_max
-  FROM read_parquet('s3://public-caladapt/loca2-hybrid/tasmax-exceedance/hex/h0=*/*.parquet', hive_partitioning = true) e
+  FROM read_parquet('s3://public-caladapt/loca2-hybrid/tasmax-exceedance/hex/h0=*/data_0.parquet', hive_partitioning = true) e
   JOIN periods p USING (scenario, period)
   SEMI JOIN r USING (h0, h7)
   WHERE e.threshold_c = {{TLEAF}} - {{OFFSET}}
@@ -36,9 +36,9 @@ c AS (
   JOIN amax a ON a.h7 = r.h7 AND a.period_key = p.period_key
   LEFT JOIN ex ON ex.h7 = r.h7 AND ex.period_key = p.period_key
 )
--- Per res-6 cell: area-weighted mean days a year above the threshold over the species'
--- range cells in it, selected period.
-SELECT h3_h3_to_string(h3_cell_to_parent(h8, 6)) AS h6,
+-- Per res-7 cell, the LOCA2 grid: area-weighted mean days a year above the threshold
+-- over the species' range cells in it, selected period.
+SELECT h3_h3_to_string(h7) AS h7,
        sum(km2 * days) / sum(km2) AS mean_days
 FROM c WHERE period_key = '{{PERIOD}}'
 GROUP BY 1
