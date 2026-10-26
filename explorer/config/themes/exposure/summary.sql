@@ -1,42 +1,47 @@
 -- Range: every cell present for the species, observed or not (n_observations 0 = in range, unobserved).
--- Temperature: CHELSA 2.1 bio5, the mean daily maximum air temperature of the warmest month (°C).
+-- Climate: LOCA2-Hybrid daily maximum air temperature, three CMIP6 models (GFDL-ESM4,
+-- MPI-ESM1-2-HR, ACCESS-CM2), summarised per H3 res-7 cell as mean days a year at or
+-- above each threshold on a 0.5 °C grid.
 WITH r AS (
-  SELECT h0, h8, n_observations
+  SELECT h0, h8, h3_cell_to_parent(h8, 7) AS h7, n_observations, h3_cell_area(h8, 'km^2') AS km2
   FROM read_parquet('s3://public-ca-ccca5/calflora-ranges/hex/h0=*/data_0.parquet', hive_partitioning = true)
   WHERE species_code = '{{ID}}'
 ),
-clim AS (
-  SELECT 'obs' AS period, 'Observed 1981–2010' AS period_label, 1 AS ord, h0, h8,
-         bio5 AS t, bio5 AS t_lo, bio5 AS t_hi
-  FROM read_parquet('s3://public-bioclimate/chelsa-2-1/baseline-1981-2010/hex/h0=*/data_0.parquet', hive_partitioning = true)
-  SEMI JOIN r USING (h0, h8)
-  UNION ALL
-  SELECT 'ssp370-mid' AS period, 'SSP3-7.0 2041–2070' AS period_label, 2 AS ord, h0, h8,
-         bio5_median AS t, bio5_min AS t_lo, bio5_max AS t_hi
-  FROM read_parquet('s3://public-bioclimate/chelsa-2-1/ssp370-2041-2070/hex/h0=*/data_0.parquet', hive_partitioning = true)
-  SEMI JOIN r USING (h0, h8)
-  UNION ALL
-  SELECT 'ssp370-end' AS period, 'SSP3-7.0 2071–2100' AS period_label, 3 AS ord, h0, h8,
-         bio5_median AS t, bio5_min AS t_lo, bio5_max AS t_hi
-  FROM read_parquet('s3://public-bioclimate/chelsa-2-1/ssp370-2071-2100/hex/h0=*/data_0.parquet', hive_partitioning = true)
-  SEMI JOIN r USING (h0, h8)
-  UNION ALL
-  SELECT 'ssp585-end' AS period, 'SSP5-8.5 2071–2100' AS period_label, 4 AS ord, h0, h8,
-         bio5_median AS t, bio5_min AS t_lo, bio5_max AS t_hi
-  FROM read_parquet('s3://public-bioclimate/chelsa-2-1/ssp585-2071-2100/hex/h0=*/data_0.parquet', hive_partitioning = true)
-  SEMI JOIN r USING (h0, h8)
+periods AS (
+  SELECT * FROM (VALUES
+    ('hist', 'historical', '1985-2014', 'Historical 1985–2014', 1),
+    ('ssp370-mid', 'ssp370', '2040-2069', 'SSP3-7.0 2040–2069', 2),
+    ('ssp370-end', 'ssp370', '2070-2099', 'SSP3-7.0 2070–2099', 3)
+  ) t(period_key, scenario, period, period_label, ord)
+),
+amax AS (
+  SELECT a.h7, p.period_key, a.tmax_mean_annual_max_c
+  FROM read_parquet('s3://public-caladapt/loca2-hybrid/tasmax-annual-max/hex/h0=*/*.parquet', hive_partitioning = true) a
+  JOIN periods p USING (scenario, period)
+  SEMI JOIN r USING (h0, h7)
+),
+ex AS (
+  SELECT e.h7, p.period_key, e.days_mean, e.days_min, e.days_max
+  FROM read_parquet('s3://public-caladapt/loca2-hybrid/tasmax-exceedance/hex/h0=*/*.parquet', hive_partitioning = true) e
+  JOIN periods p USING (scenario, period)
+  SEMI JOIN r USING (h0, h7)
+  WHERE e.threshold_c = {{TLEAF}} - {{OFFSET}}
 ),
 c AS (
-  SELECT clim.*, r.n_observations, h3_cell_area(h8, 'km^2') AS km2,
+  SELECT p.period_key, p.period_label, p.ord, r.h8, r.h7, r.n_observations, r.km2,
+         a.tmax_mean_annual_max_c AS tmax,
+         coalesce(ex.days_mean, 0) AS days, coalesce(ex.days_min, 0) AS days_lo, coalesce(ex.days_max, 0) AS days_hi,
          {{TLEAF}} - {{OFFSET}} AS tau
-  FROM clim JOIN r USING (h0, h8)
+  FROM r CROSS JOIN periods p
+  JOIN amax a ON a.h7 = r.h7 AND a.period_key = p.period_key
+  LEFT JOIN ex ON ex.h7 = r.h7 AND ex.period_key = p.period_key
 )
--- The selected period. Shares are of the range cells CHELSA covers.
+-- The selected period. Means and shares are by area over the range cells LOCA2 covers.
 SELECT any_value(tau) AS tau_c,
-       (SELECT sum(h3_cell_area(h8, 'km^2')) FROM r) AS range_km2,
+       (SELECT sum(km2) FROM r) AS range_km2,
        sum(km2) AS covered_km2,
-       coalesce(sum(km2) FILTER (WHERE t > tau), 0) AS area_over_km2,
-       coalesce(sum(km2) FILTER (WHERE t > tau), 0) / sum(km2) AS share_over,
-       max(t) - any_value(tau) AS max_margin_c,
-       median(t) AS median_t
-FROM c WHERE period = '{{PERIOD}}'
+       sum(km2 * days) / sum(km2) AS mean_days,
+       coalesce(sum(km2) FILTER (WHERE days >= 1), 0) / sum(km2) AS share_1day,
+       coalesce(sum(km2) FILTER (WHERE days >= 10), 0) / sum(km2) AS share_10days,
+       max(tmax) - any_value(tau) AS max_margin_c
+FROM c WHERE period_key = '{{PERIOD}}'

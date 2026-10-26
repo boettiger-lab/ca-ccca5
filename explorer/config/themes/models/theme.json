@@ -1,8 +1,8 @@
 {
   "label": "Climate model spread",
   "color": "#6b5b95",
-  "blurb": "The future shares depend on which climate model is used. These bars repeat the calculation with the lowest and the highest of the five models' bio5 in each cell.",
-  "method": "CHELSA 2.1 provides bio5 from five CMIP6 models (GFDL-ESM4, IPSL-CM6A-LR, MPI-ESM1-2-HR, MRI-ESM2-0 and UKESM1-0-LL) with the per-cell median, minimum and maximum. The lowest and highest readings are taken cell by cell, so they bracket the five models but are not the result of any single model.",
+  "blurb": "The day counts depend on which climate model is used. These bars repeat the mean with the lowest and the highest of the three models in each cell.",
+  "method": "LOCA2-Hybrid provides daily maximum temperature from GFDL-ESM4, MPI-ESM1-2-HR and ACCESS-CM2 (member r1i1p1f1). The lowest and highest readings are taken cell by cell, so they bracket the three models but are not the result of any single model.",
   "queries": {
     "spread": {
       "file": "spread.sql"
@@ -10,28 +10,28 @@
   },
   "charts": [
     {
-      "title": "Share above threshold by model reading",
+      "title": "Mean days above threshold by model reading",
       "query": "spread",
       "category": "period_label",
-      "format": "pct",
+      "format": "num1",
+      "label_width": 200,
       "series": [
         {
-          "field": "share_lo",
+          "field": "days_lo",
           "label": "Lowest model",
           "color": "#9e9ac8"
         },
         {
-          "field": "share_median",
-          "label": "Median",
+          "field": "days_mean",
+          "label": "Model mean",
           "color": "#6b5b95"
         },
         {
-          "field": "share_hi",
+          "field": "days_hi",
           "label": "Highest model",
           "color": "#3f007d"
         }
-      ],
-      "label_width": 200
+      ]
     }
   ]
 }

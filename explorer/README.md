@@ -2,8 +2,9 @@
 
 A no-LLM explorer served at `/explorer/`, beside the map-and-chat app at `/`. Pick a species and
 set three controls: a leaf thermal threshold (the species' Tcrit or T50), a leaf-to-air offset and
-a climate period. The panel then shows how much of the species' range lies above the resulting air
-threshold, and the map colours the range by that share.
+a climate period. The panel then shows how many days a year the daily maximum air temperature
+reaches the resulting air threshold across the species' range, and the map colours the range by
+that mean.
 
 The app is configuration, SQL and a few small generated files. The machinery comes from
 [glen-charts](https://github.com/SchmidtDSE/glen-charts), pinned in `index.html` (v0.2.4). Do not
@@ -11,11 +12,12 @@ write JavaScript here: features go into glen-charts.
 
 ## Status
 
-This explorer uses the interim measure from `system-prompt.md`. The measure it is designed for, the
-mean number of days a year above the threshold, needs the LOCA2 exceedance curves
-([data-workflows#669](https://github.com/boettiger-lab/data-workflows/issues/669)). Until those
-exist, each range cell is compared on CHELSA 2.1 `bio5`, the mean daily maximum of the warmest month,
-so every share is a lower bound.
+The climate data is the LOCA2-Hybrid exceedance table from
+[data-workflows#669](https://github.com/boettiger-lab/data-workflows/issues/669), phase 1: three
+models (GFDL-ESM4, MPI-ESM1-2-HR, ACCESS-CM2) and SSP3-7.0 only. Its STAC record is not written
+yet, so the paths in `scripts/build-sql.py` come from the producing session, not the catalog.
+Check them against STAC once it exists, and add SSP2-4.5 and SSP5-8.5 to `PERIODS` when phase 2
+lands.
 
 The leaf threshold is a slider the reader sets, because the team's Tcrit and T50 table
 ([data-workflows#673](https://github.com/boettiger-lab/data-workflows/issues/673)) is not
@@ -33,24 +35,29 @@ partner (DATA-PLAN.md, question 4).
 | `{{ID}}` | species search box | six-letter Calflora code, from `data/lists/species.json` |
 | `{{TLEAF}}` | Leaf threshold in °C | 40 to 57 in steps of 1 |
 | `{{OFFSET}}` | Leaf-to-air offset in °C | 0 to 15 in steps of 1 |
-| `{{PERIOD}}` | Climate period | `obs` (1981–2010), `ssp370-mid` (2041–2070), `ssp370-end` and `ssp585-end` (2071–2100) |
+| `{{PERIOD}}` | Climate period | `hist` (1985–2014), `ssp370-mid` (2040–2069), `ssp370-end` (2070–2099) |
 
-The air threshold is `TLEAF − OFFSET`. Every query runs live on the MCP server, since 18 × 16 × 4
-parameter combinations are too many to precompute; a species takes a few seconds.
+The air threshold is `TLEAF − OFFSET`. Both are whole degrees, so it always lands on the
+exceedance table's 0.5 °C grid and is read exactly, with no interpolation. Every query runs live on
+the MCP server, since 18 × 16 × 3 parameter combinations are too many to precompute; a species
+takes a few seconds.
 
 ## Themes
 
 | Theme | Contents |
 |---|---|
-| `exposure` | Share and area of the range above the threshold in the chosen period, the air threshold and the largest margin; bars by period (whole range and recorded cells), by margin class and by offset; the map |
-| `models` | The future shares recomputed with each cell's lowest, median and highest bio5 across the five CHELSA models |
+| `exposure` | Mean days a year at or above the threshold over the range, the share of the range with at least one and with ten or more days, and the largest margin of the mean annual maximum over the threshold; bars by period (whole range and recorded cells), by class of days and by offset; the map |
+| `models` | The mean days recomputed with each cell's lowest, mean and highest of the three models |
 
-The range is every cell present in the Calflora hex for the species, zeros included. Shares are by
-area over the range cells that CHELSA covers, and numerator and denominator always use the same
+The range is every cell present in the Calflora hex for the species, zeros included. Each range
+cell (H3 resolution 8) takes the value of the LOCA2 cell (resolution 7) that contains it. A missing
+exceedance row means zero days, as the table suppresses zeros. Means and shares are weighted by
+area over the range cells inside the LOCA2 domain (98.8% of range res-7 cells; the domain ends near
+29.6°N, so some Baja California cells drop out), and numerator and denominator always use the same
 cells.
 
 **Edit `scripts/build-sql.py`, not the `.sql` files.** Every query starts with the same two CTEs
-(range cells joined to the four CHELSA periods), and the script writes them once:
+(range cells joined to the LOCA2 exceedance and annual-maximum tables), and the script writes them once:
 
 ```bash
 python3 explorer/scripts/build-sql.py
@@ -79,5 +86,5 @@ server that does (nginx, `npx http-server`) works; then open `/explorer/` from t
   (`Tcrit`, `T50`) and read the value from `thermal-tolerance/species.parquet` in the CTE. With two
   metrics and 16 offsets, all 32 combinations can be precomputed for all 109 species, which also
   allows a leaderboard tab ranking species by exposed share.
-- **Days above threshold.** When the LOCA2 curves land, swap the CHELSA CTE for the exceedance-curve
-  table, interpolating between grid thresholds, and report mean days a year.
+- **Finer thresholds.** A half-degree slider step would still land on the grid. A finer step would
+  need linear interpolation between grid rows, never extrapolation past 60 °C.

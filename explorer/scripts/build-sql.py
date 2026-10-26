@@ -1,10 +1,17 @@
 #!/usr/bin/env python3
-"""Write the theme SQL. Every query opens with the same two CTEs, kept here once:
+"""Write the theme SQL. Every query opens with the same CTEs, kept here once:
 
-  c    one row per (range cell, period): CHELSA bio5 (°C) as the five-model median
-       `t`, with the per-cell lowest (`t_lo`) and highest (`t_hi`) of the five models;
-       the observed baseline has one value, repeated in all three.
-  tau  the effective air threshold, leaf threshold minus leaf-to-air offset.
+  r       the species' range cells (H3 res 8), with their res-7 parent and area
+  cl      range cells inside the LOCA2 domain: those whose res-7 parent has an
+          annual-maximum row. Every share and mean is over these cells.
+  c       one row per (range cell, period): mean days a year with daily maximum air
+          temperature at or above the threshold, as the three-model mean `days`
+          and the per-cell lowest (`days_lo`) and highest (`days_hi`) model.
+          Exceedance rows of zero are not stored, so a missing row is 0 days.
+  amax    the mean annual maximum air temperature per range cell and period.
+
+The threshold is TLEAF − OFFSET. Both are whole degrees, so it always falls on the
+0.5 °C grid of the exceedance table and no interpolation is needed.
 
 Edit this file, not the .sql it writes:  python3 scripts/build-sql.py
 """
@@ -12,100 +19,132 @@ import re
 from pathlib import Path
 
 RANGE = "s3://public-ca-ccca5/calflora-ranges/hex/h0=*/data_0.parquet"
-CHELSA = "s3://public-bioclimate/chelsa-2-1/{}/hex/h0=*/data_0.parquet"
-PERIODS = [  # key, label, folder, temperature column, has the model envelope
-    ("obs", "Observed 1981–2010", "baseline-1981-2010", "bio5", False),
-    ("ssp370-mid", "SSP3-7.0 2041–2070", "ssp370-2041-2070", "bio5_median", True),
-    ("ssp370-end", "SSP3-7.0 2071–2100", "ssp370-2071-2100", "bio5_median", True),
-    ("ssp585-end", "SSP5-8.5 2071–2100", "ssp585-2071-2100", "bio5_median", True),
+EXCEED = "s3://public-caladapt/loca2-hybrid/tasmax-exceedance/hex/h0=*/*.parquet"
+AMAX = "s3://public-caladapt/loca2-hybrid/tasmax-annual-max/hex/h0=*/*.parquet"
+PERIODS = [  # key, scenario, period, label
+    ("hist", "historical", "1985-2014", "Historical 1985–2014"),
+    ("ssp370-mid", "ssp370", "2040-2069", "SSP3-7.0 2040–2069"),
+    ("ssp370-end", "ssp370", "2070-2099", "SSP3-7.0 2070–2099"),
 ]
 
+PERIOD_ROWS = ",\n    ".join(f"('{k}', '{s}', '{p}', '{l}', {i + 1})" for i, (k, s, p, l) in enumerate(PERIODS))
 
-def clim(key, label, folder, col, env, ord_):
-    lo, hi = ("bio5_min", "bio5_max") if env else (col, col)
-    return (f"  SELECT '{key}' AS period, '{label}' AS period_label, {ord_} AS ord, h0, h8,\n"
-            f"         {col} AS t, {lo} AS t_lo, {hi} AS t_hi\n"
-            f"  FROM read_parquet('{CHELSA.format(folder)}', hive_partitioning = true)\n"
-            f"  SEMI JOIN r USING (h0, h8)")
-
-
-PRELUDE = ("-- Range: every cell present for the species, observed or not (n_observations 0 = in range, unobserved).\n"
-           "-- Temperature: CHELSA 2.1 bio5, the mean daily maximum air temperature of the warmest month (°C).\n"
-           "WITH r AS (\n"
-           "  SELECT h0, h8, n_observations\n"
-           f"  FROM read_parquet('{RANGE}', hive_partitioning = true)\n"
-           "  WHERE species_code = '{{ID}}'\n"
-           "),\n"
-           "clim AS (\n"
-           + "\n  UNION ALL\n".join(clim(*p, i + 1) for i, p in enumerate(PERIODS)) + "\n"
-           "),\n"
-           "c AS (\n"
-           "  SELECT clim.*, r.n_observations, h3_cell_area(h8, 'km^2') AS km2,\n"
-           "         {{TLEAF}} - {{OFFSET}} AS tau\n"
-           "  FROM clim JOIN r USING (h0, h8)\n"
-           ")\n")
+PRELUDE = f"""-- Range: every cell present for the species, observed or not (n_observations 0 = in range, unobserved).
+-- Climate: LOCA2-Hybrid daily maximum air temperature, three CMIP6 models (GFDL-ESM4,
+-- MPI-ESM1-2-HR, ACCESS-CM2), summarised per H3 res-7 cell as mean days a year at or
+-- above each threshold on a 0.5 °C grid.
+WITH r AS (
+  SELECT h0, h8, h3_cell_to_parent(h8, 7) AS h7, n_observations, h3_cell_area(h8, 'km^2') AS km2
+  FROM read_parquet('{RANGE}', hive_partitioning = true)
+  WHERE species_code = '{{{{ID}}}}'
+),
+periods AS (
+  SELECT * FROM (VALUES
+    {PERIOD_ROWS}
+  ) t(period_key, scenario, period, period_label, ord)
+),
+amax AS (
+  SELECT a.h7, p.period_key, a.tmax_mean_annual_max_c
+  FROM read_parquet('{AMAX}', hive_partitioning = true) a
+  JOIN periods p USING (scenario, period)
+  SEMI JOIN r USING (h0, h7)
+),
+ex AS (
+  SELECT e.h7, p.period_key, e.days_mean, e.days_min, e.days_max
+  FROM read_parquet('{EXCEED}', hive_partitioning = true) e
+  JOIN periods p USING (scenario, period)
+  SEMI JOIN r USING (h0, h7)
+  WHERE e.threshold_c = {{{{TLEAF}}}} - {{{{OFFSET}}}}
+),
+c AS (
+  SELECT p.period_key, p.period_label, p.ord, r.h8, r.h7, r.n_observations, r.km2,
+         a.tmax_mean_annual_max_c AS tmax,
+         coalesce(ex.days_mean, 0) AS days, coalesce(ex.days_min, 0) AS days_lo, coalesce(ex.days_max, 0) AS days_hi,
+         {{{{TLEAF}}}} - {{{{OFFSET}}}} AS tau
+  FROM r CROSS JOIN periods p
+  JOIN amax a ON a.h7 = r.h7 AND a.period_key = p.period_key
+  LEFT JOIN ex ON ex.h7 = r.h7 AND ex.period_key = p.period_key
+)
+"""
 
 QUERIES = {
     "exposure/summary.sql": """
--- The selected period. Shares are of the range cells CHELSA covers.
+-- The selected period. Means and shares are by area over the range cells LOCA2 covers.
 SELECT any_value(tau) AS tau_c,
-       (SELECT sum(h3_cell_area(h8, 'km^2')) FROM r) AS range_km2,
+       (SELECT sum(km2) FROM r) AS range_km2,
        sum(km2) AS covered_km2,
-       sum(km2) FILTER (WHERE t > tau) AS area_over_km2,
-       sum(km2) FILTER (WHERE t > tau) / sum(km2) AS share_over,
-       max(t) - any_value(tau) AS max_margin_c,
-       median(t) AS median_t
-FROM c WHERE period = '{{PERIOD}}'
+       sum(km2 * days) / sum(km2) AS mean_days,
+       sum(km2) FILTER (WHERE days >= 1) / sum(km2) AS share_1day,
+       sum(km2) FILTER (WHERE days >= 10) / sum(km2) AS share_10days,
+       max(tmax) - any_value(tau) AS max_margin_c
+FROM c WHERE period_key = '{{PERIOD}}'
 """,
     "exposure/by-period.sql": """
--- Every period at the chosen threshold: the whole range, and the observed cells alone.
+-- Every period at the chosen threshold: the whole range, and the recorded cells alone.
 SELECT period_label,
-       sum(km2) FILTER (WHERE t > tau) / sum(km2) AS share_over,
-       sum(km2) FILTER (WHERE t > tau AND n_observations > 0) / sum(km2) FILTER (WHERE n_observations > 0) AS share_over_observed
+       sum(km2 * days) / sum(km2) AS mean_days,
+       sum(km2 * days) FILTER (WHERE n_observations > 0) / sum(km2) FILTER (WHERE n_observations > 0) AS mean_days_observed
 FROM c GROUP BY period_label, ord ORDER BY ord
 """,
-    "exposure/margins.sql": """
--- Share of the range in each class of bio5 minus the threshold, per period.
+    "exposure/classes.sql": """
+-- Share of the range in each class of mean days a year above the threshold, per period.
 SELECT period_label,
-       sum(km2) FILTER (WHERE t - tau <= -5) / sum(km2) AS below_5,
-       sum(km2) FILTER (WHERE t - tau > -5 AND t <= tau) / sum(km2) AS below_0,
-       sum(km2) FILTER (WHERE t > tau AND t - tau <= 2) / sum(km2) AS above_0,
-       sum(km2) FILTER (WHERE t - tau > 2 AND t - tau <= 5) / sum(km2) AS above_2,
-       sum(km2) FILTER (WHERE t - tau > 5) / sum(km2) AS above_5
+       sum(km2) FILTER (WHERE days < 0.1) / sum(km2) AS d0,
+       sum(km2) FILTER (WHERE days >= 0.1 AND days < 1) / sum(km2) AS d01,
+       sum(km2) FILTER (WHERE days >= 1 AND days < 5) / sum(km2) AS d1,
+       sum(km2) FILTER (WHERE days >= 5 AND days < 10) / sum(km2) AS d5,
+       sum(km2) FILTER (WHERE days >= 10 AND days < 30) / sum(km2) AS d10,
+       sum(km2) FILTER (WHERE days >= 30) / sum(km2) AS d30
 FROM c GROUP BY period_label, ord ORDER BY ord
-""",
-    "exposure/by-offset.sql": """
--- The selected period at a fixed set of offsets, holding the leaf threshold.
-SELECT format('Offset {} °C, air {} °C', o, {{TLEAF}} - o) AS offset_label,
-       sum(km2) FILTER (WHERE t > {{TLEAF}} - o) / sum(km2) AS share_over
-FROM c, (SELECT unnest([0, 2.5, 5, 7.5, 10, 12.5, 15]) AS o)
-WHERE period = '{{PERIOD}}'
-GROUP BY o ORDER BY o
 """,
     "exposure/map.sql": """
--- Per res-6 cell: share of the species' range cells in it above the threshold, selected period.
+-- Per res-6 cell: area-weighted mean days a year above the threshold over the species'
+-- range cells in it, selected period.
 SELECT h3_h3_to_string(h3_cell_to_parent(h8, 6)) AS h6,
-       sum(km2) FILTER (WHERE t > tau) / sum(km2) AS share_over
-FROM c WHERE period = '{{PERIOD}}'
+       sum(km2 * days) / sum(km2) AS mean_days
+FROM c WHERE period_key = '{{PERIOD}}'
 GROUP BY 1
 """,
     "models/spread.sql": """
--- Future periods: the share above the threshold using, in each cell, the lowest,
--- the median and the highest bio5 of the five CHELSA models.
+-- Mean days a year above the threshold using, in each cell, the lowest, the mean and
+-- the highest of the three models.
 SELECT period_label,
-       sum(km2) FILTER (WHERE t_lo > tau) / sum(km2) AS share_lo,
-       sum(km2) FILTER (WHERE t > tau) / sum(km2) AS share_median,
-       sum(km2) FILTER (WHERE t_hi > tau) / sum(km2) AS share_hi
-FROM c WHERE period <> 'obs'
-GROUP BY period_label, ord ORDER BY ord
+       sum(km2 * days_lo) / sum(km2) AS days_lo,
+       sum(km2 * days) / sum(km2) AS days_mean,
+       sum(km2 * days_hi) / sum(km2) AS days_hi
+FROM c GROUP BY period_label, ord ORDER BY ord
 """,
 }
 
+# The offset sweep needs every offset's threshold, so it reads the exceedance table
+# without the single-threshold filter.
+OFFSETS = "[0, 2.5, 5, 7.5, 10, 12.5, 15]"
+BY_OFFSET = PRELUDE.split("ex AS (")[0] + f"""o AS (SELECT unnest({OFFSETS}) AS o)
+-- The selected period at a fixed set of offsets, holding the leaf threshold.
+SELECT format('Offset {{}} °C, air {{}} °C', o.o, {{{{TLEAF}}}} - o.o) AS offset_label,
+       sum(r.km2 * coalesce(e.days_mean, 0)) / sum(r.km2) AS mean_days
+FROM r
+JOIN amax a ON a.h7 = r.h7 AND a.period_key = '{{{{PERIOD}}}}'
+CROSS JOIN o
+LEFT JOIN (
+  SELECT e.h7, e.threshold_c, e.days_mean
+  FROM read_parquet('{EXCEED}', hive_partitioning = true) e
+  JOIN periods p USING (scenario, period)
+  SEMI JOIN r USING (h0, h7)
+  WHERE p.period_key = '{{{{PERIOD}}}}'
+) e ON e.h7 = r.h7 AND e.threshold_c = {{{{TLEAF}}}} - o.o
+GROUP BY o.o ORDER BY o.o
+"""
+
 root = Path(__file__).resolve().parent.parent / "config" / "themes"
-for name, body in QUERIES.items():
+for f in root.glob("*/*.sql"):
+    f.unlink()
+outputs = {name: PRELUDE + body.lstrip("\n") for name, body in QUERIES.items()}
+outputs["exposure/by-offset.sql"] = BY_OFFSET
+for name, sql in outputs.items():
+    # a filtered sum over no rows is NULL; for a numerator that means none, so 0
+    sql = re.sub(r"sum\(km2\) FILTER \(WHERE ([^)]*)\)( /)", r"coalesce(sum(km2) FILTER (WHERE \1), 0)\2", sql)
     p = root / name
     p.parent.mkdir(parents=True, exist_ok=True)
-    # a filtered sum over no rows is NULL; for a numerator that means none, so 0
-    body = re.sub(r"sum\(km2\) FILTER \(WHERE ([^)]*)\)( /| AS)", r"coalesce(sum(km2) FILTER (WHERE \1), 0)\2", body)
-    p.write_text(PRELUDE + body.lstrip("\n"))
+    p.write_text(sql)
     print("wrote", p.relative_to(root.parent.parent))

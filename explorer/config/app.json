@@ -83,23 +83,19 @@
       "token": "PERIOD",
       "options": [
         {
-          "value": "obs",
-          "label": "1981–2010"
+          "value": "hist",
+          "label": "1985–2014"
         },
         {
           "value": "ssp370-mid",
-          "label": "SSP3-7.0 2041–2070"
+          "label": "SSP3-7.0 2040–2069"
         },
         {
           "value": "ssp370-end",
-          "label": "SSP3-7.0 2071–2100"
-        },
-        {
-          "value": "ssp585-end",
-          "label": "SSP5-8.5 2071–2100"
+          "label": "SSP3-7.0 2070–2099"
         }
       ],
-      "default": "obs"
+      "default": "hist"
     }
   ],
   "jurisdictions": [
@@ -131,5 +127,5 @@
     "id_prop": "h6"
   },
   "project_url": "https://github.com/boettiger-lab/ca-ccca5/tree/main/explorer",
-  "intro": "<p>Pick a species to see how much of its modelled range has warm-season air temperatures above a heat tolerance threshold. Set the leaf threshold to the species' Tcrit or T50 and choose how much warmer than the air you assume leaves run; the air threshold is the difference. The period switches between the observed climate and two emission scenarios.</p><p class=\"tile-note\"><strong>Interim measure.</strong> The intended measure is the mean number of days a year above the threshold, from the LOCA2 daily projections, which are not built yet. Until they are, each cell is compared on CHELSA's bio5, the mean daily maximum of the warmest month. Single days run hotter than that monthly mean, so every share shown here is a lower bound. It shows whether a cell's warmest month clears the threshold on average, not how often it does.</p><p class=\"tile-note\">Exceeding a threshold is exposure to temperatures above a measured physiological limit. It is not predicted mortality, dieback or range loss.</p><p class=\"tile-note\">Data: Calflora climate-model range maps (109 species, H3 resolution 8); CHELSA 2.1 bioclimate, with five-model medians for the future periods.</p>"
+  "intro": "<p>Pick a species to see how often air temperatures across its modelled range reach a heat tolerance threshold. Set the leaf threshold to the species' Tcrit or T50 and choose how much warmer than the air you assume leaves run; the air threshold is the difference. The period switches between the historical climate and SSP3-7.0 at mid and end of century.</p><p class=\"tile-note\">The measure is the mean number of days a year on which the daily maximum air temperature reaches the air threshold, from the LOCA2-Hybrid downscaled projections. Figures are means over each 30-year period and across three climate models.</p><p class=\"tile-note\"><strong>Preview.</strong> The LOCA2 tables are a three-model pilot (GFDL-ESM4, MPI-ESM1-2-HR and ACCESS-CM2) with SSP3-7.0 only. More models and scenarios are planned.</p><p class=\"tile-note\">Exceeding a threshold is exposure to temperatures above a measured physiological limit. It is not predicted mortality, dieback or range loss.</p><p class=\"tile-note\">Data: Calflora climate-model range maps (109 species, H3 resolution 8); LOCA2-Hybrid daily maximum temperature, UC San Diego Scripps for California's Fifth Climate Change Assessment via Cal-Adapt (CC-BY-4.0), summarised to H3 resolution 7.</p>"
 }
