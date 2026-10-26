@@ -15,6 +15,9 @@
     },
     "map": {
       "file": "map.sql"
+    },
+    "map_h6": {
+      "file": "map-h6.sql"
     }
   },
   "headlines": [
@@ -86,6 +89,10 @@
       "#31a354",
       "#006d2c"
     ],
-    "note": "H3 resolution 7 cells, coloured by the share of the species' range within each that is conserved under GAP 1 or 2."
+    "note": "H3 cells coloured by the share of the species' range within each that is conserved under GAP 1 or 2: resolution 6 when zoomed out, resolution 7 from zoom 7 in.",
+    "levels": {
+      "h6": "map_h6",
+      "h7": "map"
+    }
   }
 }

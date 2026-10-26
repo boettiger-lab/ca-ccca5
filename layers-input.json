@@ -1045,12 +1045,13 @@
         ]
     },
     "welcome": {
-        "message": "Ask how often air temperatures across a California plant species' range reach its measured heat tolerance. Give me a species, a Tcrit or T50 in degrees C, and how much hotter you assume leaves run than the air; I will report the mean days a year its range reaches that threshold, from the LOCA2 climate projections. You will need to supply the tolerance value, as the team's measurements are not loaded yet. To move the threshold with sliders, open the Heat exposure explorer in the header.",
+        "message": "Ask how often air temperatures across a California plant species' range reach its measured heat tolerance. Name a species and how much hotter you assume leaves run than the air; I will look up its Tcrit and T50 from the project team's provisional measurements and report the mean days a year its range reaches that threshold, from the LOCA2 climate projections. You can also give a tolerance value of your own. To change the settings with buttons and sliders, open the Heat exposure explorer in the header.",
         "examples": [
-            "How many days a year does Artemisia californica's range reach its Tcrit of 44.6 C, assuming leaves run 10 C above air?",
-            "Map the days a year above 35 C across Larrea tridentata's range for 2070-2099 under SSP3-7.0.",
-            "For coast live oak with Tcrit 47.3 C, sweep the leaf-to-air offset from 0 to 15 C and chart the mean days above threshold.",
-            "How much of Pinus ponderosa's range is in GAP 1 or 2 conserved areas, and does that land reach 37 C less often than the rest?",
+            "How many days a year does Artemisia californica's range reach its Tcrit, assuming leaves run 10 C above air?",
+            "Map the days a year above T50 minus 10 C across Larrea tridentata's range for 2070-2099 under SSP3-7.0.",
+            "For coast live oak, sweep the leaf-to-air offset from 0 to 15 C and chart the mean days above Tcrit and above T50.",
+            "Which ten species have the most days a year above Tcrit across their range by 2070-2099, with a 10 C offset?",
+            "How much of Pinus ponderosa's range is in GAP 1 or 2 conserved areas, and does that land reach its Tcrit less often than the rest?",
             "What share of Quercus douglasii's range has burned since 2000? Show the fire perimeters with the range."
         ]
     },

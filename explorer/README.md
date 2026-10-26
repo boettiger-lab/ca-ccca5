@@ -1,14 +1,14 @@
 # Plant Heat Exposure Explorer (config only)
 
 A no-LLM explorer served at `/explorer/`, beside the map-and-chat app at `/`. Pick a species and
-set three controls: a leaf thermal threshold (the species' Tcrit or T50), a leaf-to-air offset and
-a climate period. The panel then shows how many days a year the daily maximum air temperature
+set three controls: the heat tolerance (the species' measured Tcrit or T50), a leaf-to-air offset
+and a climate period. The panel then shows how many days a year the daily maximum air temperature
 reaches the resulting air threshold across the species' range, and how much of the range lies in
-30x30 conserved areas. The map colours the range by either, on the H3 resolution-7 LOCA2 grid, and
-can outline the conserved areas. A link with no `#…` opens on *Pinus ponderosa* (`default_area`).
+30x30 conserved areas. The map colours the range by either, on H3 resolution 6 when zoomed out and
+the resolution-7 LOCA2 grid from zoom 7 in, and can shade the conserved areas by GAP status. A link with no `#…` opens on *Pinus ponderosa* (`default_area`).
 
 The app is configuration, SQL and a few small generated files. The machinery comes from
-[glen-charts](https://github.com/SchmidtDSE/glen-charts), pinned in `index.html` (v0.2.5, which added `default_area` and `tracts.line_width`). Do not
+[glen-charts](https://github.com/SchmidtDSE/glen-charts), pinned in `index.html` (v0.2.6; 0.2.5 added `default_area` and `tracts.line_width`, 0.2.6 grids that swap by zoom). Do not
 write JavaScript here: features go into glen-charts.
 
 ## Status
@@ -19,34 +19,34 @@ models (GFDL-ESM4, MPI-ESM1-2-HR, ACCESS-CM2) and SSP3-7.0 only. The paths in `s
 catalog's (`loca2-hybrid-tasmax-exceedance`, `loca2-hybrid-tasmax-annual-max`). Add SSP2-4.5 and
 SSP5-8.5 to `PERIODS` when phase 2 lands.
 
-The leaf threshold is a slider the reader sets, because the team's Tcrit and T50 table
-([data-workflows#673](https://github.com/boettiger-lab/data-workflows/issues/673)) is not
-published yet. Once it is, the slider becomes a Tcrit / T50 switch read from that table (see
-*Next steps*).
+Tcrit and T50 come from the project team's table, committed at
+`../data/species_T50_Tcrit_means.csv` and read from its raw GitHub URL. It lives with the app rather
+than in the data catalog; DATA-PLAN.md section C gives the reason. The values are provisional
+pre-publication means with no reported spread, and the page says so.
 
-The offset defaults to 10 °C and the leaf threshold to 47 °C, because glen-charts needs a default
-for every param. Neither is a recommendation: the offset range is still an open question for the
-partner (DATA-PLAN.md, question 4).
+The offset defaults to 10 °C because glen-charts needs a default for every param. It is not a
+recommendation: the offset range is still an open question for the partner (DATA-PLAN.md,
+question 4).
 
 ## Controls and tokens
 
 | Token | Control | Values |
 |---|---|---|
 | `{{ID}}` | species search box | six-letter Calflora code, from `data/lists/species.json` |
-| `{{TLEAF}}` | Leaf threshold in °C | 40 to 57 in steps of 1 |
+| `{{METRIC}}` | Heat tolerance | `tcrit` or `t50`, looked up for the species |
 | `{{OFFSET}}` | Leaf-to-air offset in °C | 0 to 15 in steps of 1 |
 | `{{PERIOD}}` | Climate period | `hist` (1985–2014), `ssp370-mid` (2040–2069), `ssp370-end` (2070–2099) |
 
-The air threshold is `TLEAF − OFFSET`. Both are whole degrees, so it always lands on the
-exceedance table's 0.5 °C grid and is read exactly, with no interpolation. Every query runs live on
-the MCP server, since 18 × 16 × 3 parameter combinations are too many to precompute; a species
-takes a few seconds.
+The air threshold is the species' Tcrit or T50 minus `OFFSET`. It rarely falls on the exceedance
+table's 0.5 °C grid, so each cell's day count is interpolated linearly between the two grid rows
+around it, and a threshold outside 20–60 °C gives no value rather than an extrapolation. Every query
+runs live on the MCP server; a species takes a few seconds.
 
 ## Themes
 
 | Theme | Contents |
 |---|---|
-| `exposure` | Mean days a year at or above the threshold over the range, the share of the range with at least one and with ten or more days, and the largest margin of the mean annual maximum over the threshold; bars by period (whole range and recorded cells), by class of days and by offset; the map |
+| `exposure` | The leaf and air thresholds; mean days a year at or above the threshold over the range, the share of the range with at least one and with ten or more days, and the largest margin of the mean annual maximum over the threshold; bars by period (whole range and recorded cells), Tcrit against T50, by class of days and by offset; the map |
 | `conserved` | Share of the whole range in each GAP status (30x30 terrestrial conserved areas, 2025, `hex-weights-res8`), and mean days above the threshold on GAP 1–2 land against the rest of the range; a map of each cell's GAP 1–2 share |
 | `models` | The mean days recomputed with each cell's lowest, mean and highest of the three models |
 
@@ -68,11 +68,12 @@ python3 explorer/scripts/build-sql.py
 
 | File | Built by |
 |---|---|
-| `data/h7-grid.pmtiles` | `scripts/build-map-tiles.sh`: every H3 res-7 cell holding part of any range, keyed by `h7`, which the map colours. Res 7 is the LOCA2 grid, the finest the day counts have. The species boundary points at the same tiles with a filter that matches nothing, since overlapping range outlines made the hover name the wrong species |
+| `data/h7-grid.pmtiles` | `scripts/build-map-tiles.sh`: every H3 res-7 cell holding part of any range, keyed by `h7`, drawn from zoom 7 in. Res 7 is the LOCA2 grid, the finest the day counts have. The species boundary points at the same tiles with a filter that matches nothing, since overlapping range outlines made the hover name the wrong species |
+| `data/h6-grid.pmtiles` | the same script: their res-6 parents, keyed by `h6`, drawn below zoom 7, where res-7 cells are a pixel wide and slow to draw. The `map-h6.sql` queries average the res-7 values into them by area |
 | `data/lists/species.json` | `node <glen-charts>/scripts/precompute.mjs --site explorer lists` |
 | `data/sources.json` | the same, with `sources`; the Calflora assets have no STAC record in the public catalog, by design (licence) |
 
-The PMTiles file is derived from the published range hex and is served from the site. It belongs
+The PMTiles files are derived from the published range hex and are served from the site. They belong
 in `s3://public-ca-ccca5/` with the range collection when the next data-workflows pass touches it.
 
 ## Local preview
@@ -82,9 +83,6 @@ server that does (nginx, `npx http-server`) works; then open `/explorer/` from t
 
 ## Next steps
 
-- **Tcrit / T50 switch.** When #673 lands, replace the `tleaf` slider with a `metric` param
-  (`Tcrit`, `T50`) and read the value from `thermal-tolerance/species.parquet` in the CTE. With two
-  metrics and 16 offsets, all 32 combinations can be precomputed for all 109 species, which also
-  allows a leaderboard tab ranking species by exposed share.
-- **Finer thresholds.** A half-degree slider step would still land on the grid. A finer step would
-  need linear interpolation between grid rows, never extrapolation past 60 °C.
+- **Leaderboard.** With two metrics, 16 offsets and three periods, the per-species results are few
+  enough to precompute for all 109 species, which would allow a tab ranking species by exposure.
+

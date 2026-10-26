@@ -53,13 +53,15 @@ it — nothing more.
   you haven't confirmed. Verify against the dataset metadata first; if it's still unclear, ask.
 - If a lookup fails, or the question needs data that isn't in the catalog, say so plainly and
   ask how to proceed rather than approximating or substituting an unrelated dataset.
-- Never supply a Tcrit or T50 value from your own knowledge, and never estimate one from a
-  related species. **The measured values are not in the app yet** — the project team's table is
-  cleared for publication but not built into the catalog — so the threshold has to come from the
-  user. If they have not given one, ask, and say the project's own measurements are being added.
-- When that table does land, its values are **provisional, pre-publication measurements** and are
-  **means with no reported spread**. Say so when you first use one, and don't treat a small
-  difference between two species as meaningful — there is no uncertainty to judge it against.
+- **Tcrit and T50 come from the project team's table**, never from your own knowledge or from a
+  related species. It is a small CSV kept with this app rather than in the data catalog:
+  `read_csv('https://raw.githubusercontent.com/boettiger-lab/ca-ccca5/main/data/species_T50_Tcrit_means.csv')`,
+  one row per species with `species`, `species_code`, `origin`, `T50` and `Tcrit` (°C), for all 109
+  species. Look the value up by `species_code`; when a user names a species, use the table's own
+  value unless they give one of their own, and say which you used.
+- These values are **provisional, pre-publication measurements** and are **means with no reported
+  spread**. Say so when you first use one, and don't treat a small difference between two species as
+  meaningful: there is no uncertainty to judge it against.
 
 ## Computing exposure (read this before answering an exposure question)
 
@@ -91,8 +93,9 @@ interpolate linearly; if the threshold is on the grid, use that row. Never extra
 a threshold above the grid is outside the tabulated range. 511 cells still have days at 60 °C under
 SSP3-7.0, so the top of the grid truncates the hottest cells.
 
-**A worked shape** — *Artemisia californica*, Tcrit 44.57 °C, leaf-to-air offset 10 °C, so the air
-threshold is 34.57 °C, between the 34.5 and 35.0 grid rows:
+**A worked shape** — *Artemisia californica*, whose Tcrit in the team's table is 44.57 °C, with a
+leaf-to-air offset of 10 °C, so the air threshold is 34.57 °C, between the 34.5 and 35.0 grid rows.
+In practice read the Tcrit from the table in a CTE; it is written out here so the arithmetic shows:
 
 ```sql
 WITH r AS (
@@ -137,11 +140,12 @@ days, and, when asked how far temperatures go past the threshold, the largest
 **Show it, do not just tabulate it.** Render the per-cell day counts over the species' range as a
 hex tile layer at resolution 7 and put it on the map. Say that the layer came from a query, since it
 will not appear in the layer list. When the user is likely to want to move the threshold around,
-point them to the Heat exposure explorer (link in the header), which has sliders for the leaf
-threshold, offset and period; a link of the form
-`explorer/#species/ARTCAL?tleaf=45&offset=10&period=ssp370-end` opens a given view
-(`tleaf` and `offset` take whole degrees, 40-57 and 0-15; `period` is `hist`, `ssp370-mid` or
-`ssp370-end`).
+point them to the Heat exposure explorer (link in the header), which has controls for Tcrit or T50,
+the offset and the period; a link of the form
+`explorer/#species/ARTCAL?metric=t50&offset=10&period=ssp370-end` opens a given view
+(`metric` is `tcrit` or `t50`; `offset` takes whole degrees from 0 to 15; `period` is `hist`,
+`ssp370-mid` or `ssp370-end`). The explorer always uses the table's values; for a value of the
+user's own, compute it here.
 
 ## Conserved areas and fire history
 

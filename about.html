@@ -282,7 +282,7 @@
                     <tr>
                         <td><strong>Thermal tolerance</strong><br>Tcrit and T50</td>
                         <td>Measured by the project team for California's Fifth Climate Change Assessment</td>
-                        <td><span class="status pending">Being added</span></td>
+                        <td><span class="status interim">Provisional</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -328,25 +328,26 @@
 
         <div class="note">
             <p>
-                <strong>Thermal tolerance values are not loaded yet.</strong> The project team's
-                measurements are cleared for publication but have not been added, so you will need to give
-                a Tcrit or T50 value yourself. That is how the tool was always meant to work — different
-                populations, experiments and sources give different numbers — but until the table lands
-                there is no default to fall back on.
+                <strong>Thermal tolerance values are provisional.</strong> Tcrit and T50 for each of the
+                109 species are the project team's measured means, shared ahead of their publication. No
+                spread is reported, so two species a fraction of a degree apart should not be read as
+                different. The values are kept with this app in
+                <a href="https://github.com/boettiger-lab/ca-ccca5/blob/main/data/species_T50_Tcrit_means.csv">a
+                small table</a>, and the chat will use a value of your own if you give one.
             </p>
         </div>
 
         <h2>Running the computation</h2>
         <p>
-            The <a href="explorer/">Heat exposure explorer</a> answers the basic question with sliders:
-            pick a species, a leaf threshold, an offset and a period. The chat answers anything else in
+            The <a href="explorer/">Heat exposure explorer</a> answers the basic question with buttons
+            and a slider: pick a species, Tcrit or T50, an offset and a period. The chat answers anything else in
             plain language, for example:
         </p>
 
         <div class="askbox">
-            How many days a year does <em>Artemisia californica</em>'s range reach its Tcrit of
-            44.6&nbsp;°C, assuming leaves run 10&nbsp;°C above air?
-            <em>The air threshold is 34.6&nbsp;°C. Over the range that is 19.4 days a year in
+            How many days a year does <em>Artemisia californica</em>'s range reach its Tcrit, assuming
+            leaves run 10&nbsp;°C above air?
+            <em>Its Tcrit is 44.6&nbsp;°C, so the air threshold is 34.6&nbsp;°C. Over the range that is 19.4 days a year in
             1985–2014, 35.1 in 2040–2069 and 49.9 in 2070–2099 under SSP3-7.0.</em>
         </div>
         <div class="askbox">

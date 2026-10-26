@@ -19,13 +19,16 @@ duplicating it here**. Everything below is specific to this app.
 
 ## Current state
 
-The app shell is configured but **`collections` is empty** — no dataset for this app has been
-published yet. [DATA-PLAN.md](DATA-PLAN.md) records the ingest design, the data defects found in the
-partner's raw files, and the questions still open with the partner. Read it before touching
-`layers-input.json` or the dataset-specific parts of `system-prompt.md`.
+All three datasets the app needs are in use. The Calflora ranges (`calflora-ranges`) and the LOCA2
+day counts (`loca2-hybrid-tasmax-exceedance`, `loca2-hybrid-tasmax-annual-max`, a three-model
+SSP3-7.0 pilot) come from the catalog. The team's Tcrit/T50 table is kept here, at
+`data/species_T50_Tcrit_means.csv`, because it is app-specific and not spatial; DATA-PLAN.md section
+C explains why. The chat app also carries the 30x30 terrestrial conserved areas and CAL FIRE fire
+perimeters. [DATA-PLAN.md](DATA-PLAN.md) records the ingest design, the data defects found in the
+partner's raw files, and the questions still open with the partner.
 
-Do not invent collection ids, asset keys, or column names. Fill them in from the STAC collection and
-the MCP tools (`list_datasets`, `get_schema`) once the ingest lands.
+Do not invent collection ids, asset keys, or column names. Take them from the STAC collection and
+the MCP tools (`list_datasets`, `get_schema`).
 
 ## Heat exposure explorer — `explorer/` (glen-charts)
 

@@ -1,26 +1,26 @@
 #!/usr/bin/env python3
 """Write the theme SQL. Every query opens with the same CTEs, kept here once:
 
+  tol     the species' measured Tcrit and T50 (°C), the project team's provisional means
   r       the species' range cells (H3 res 8), with their res-7 parent and area
-  cl      range cells inside the LOCA2 domain: those whose res-7 parent has an
-          annual-maximum row. Every share and mean is over these cells.
-  c       one row per (range cell, period): mean days a year with daily maximum air
-          temperature at or above the threshold, as the three-model mean `days`
-          and the per-cell lowest (`days_lo`) and highest (`days_hi`) model.
-          Exceedance rows of zero are not stored, so a missing row is 0 days.
-  amax    the mean annual maximum air temperature per range cell and period.
-  w       (conserved-area queries only) each range cell's share in GAP status 1 to 4,
-          from the 30x30 conserved areas; cells with no row (outside California land)
-          count as not conserved.
-
-The threshold is TLEAF − OFFSET. Both are whole degrees, so it always falls on the
-0.5 °C grid of the exceedance table and no interpolation is needed.
+  r7      the range summed to res 7, the LOCA2 grid: range area, and the area recorded
+  thr     the thresholds the query needs: one row per (metric, offset), with the air
+          threshold tau = leaf threshold − offset and the 0.5 °C grid row `lo` just below it
+  amax    the mean annual maximum air temperature per res-7 cell and period; a cell with
+          a row is inside the LOCA2 domain, and every share and mean is over those cells
+  ex      the exceedance rows at the grid thresholds that bracket each tau
+  c       one row per (res-7 cell, period, metric, offset): mean days a year at or above
+          tau, interpolated linearly between the two grid rows, as the three-model mean
+          `days` and the per-cell lowest (`days_lo`) and highest (`days_hi`) model.
+          Exceedance rows of zero are not stored, so a missing row is 0 days. A tau
+          outside the 20–60 °C grid gives NULL, never an extrapolation.
 
 Edit this file, not the .sql it writes:  python3 scripts/build-sql.py
 """
 import re
 from pathlib import Path
 
+TOL = "https://raw.githubusercontent.com/boettiger-lab/ca-ccca5/main/data/species_T50_Tcrit_means.csv"
 RANGE = "s3://public-ca-ccca5/calflora-ranges/hex/h0=*/data_0.parquet"
 EXCEED = "s3://public-caladapt/loca2-hybrid/tasmax-exceedance/hex/h0=*/data_0.parquet"
 AMAX = "s3://public-caladapt/loca2-hybrid/tasmax-annual-max/hex/h0=*/data_0.parquet"
@@ -30,67 +30,110 @@ PERIODS = [  # key, scenario, period, label
     ("ssp370-mid", "ssp370", "2040-2069", "SSP3-7.0 2040–2069"),
     ("ssp370-end", "ssp370", "2070-2099", "SSP3-7.0 2070–2099"),
 ]
-
 PERIOD_ROWS = ",\n    ".join(f"('{k}', '{s}', '{p}', '{l}', {i + 1})" for i, (k, s, p, l) in enumerate(PERIODS))
 
-PRELUDE = f"""-- Range: every cell present for the species, observed or not (n_observations 0 = in range, unobserved).
+# which (metric, offset) pairs a query needs
+ONE = ("['{{METRIC}}']", "[{{OFFSET}}]")
+BOTH_METRICS = ("['tcrit', 't50']", "[{{OFFSET}}]")
+SWEEP = ("['{{METRIC}}']", "[0, 2.5, 5, 7.5, 10, 12.5, 15]")
+
+
+def prelude(metrics, offsets, conserved=False):
+    w = f"""
+w AS (
+  SELECT h0, h8, w1, w2, w3, w4
+  FROM read_parquet('{GAPW}', hive_partitioning = true)
+  SEMI JOIN r USING (h0, h8)
+),""" if conserved else ""
+    g12 = ",\n         sum(r.km2 * coalesce(w.w1 + w.w2, 0)) AS km2_g12" if conserved else ""
+    wjoin = "\n  LEFT JOIN w USING (h0, h8)" if conserved else ""
+    return f"""-- Thresholds: the project team's provisional mean Tcrit and T50 for the species (°C).
+-- Range: every cell present for the species, observed or not (n_observations 0 = in range, unobserved).
 -- Climate: LOCA2-Hybrid daily maximum air temperature, three CMIP6 models (GFDL-ESM4,
--- MPI-ESM1-2-HR, ACCESS-CM2), summarised per H3 res-7 cell as mean days a year at or
--- above each threshold on a 0.5 °C grid.
-WITH r AS (
+-- MPI-ESM1-2-HR, ACCESS-CM2), as mean days a year at or above each threshold on a
+-- 0.5 °C grid, per H3 res-7 cell.
+WITH tol AS (
+  SELECT Tcrit AS tcrit, T50 AS t50
+  FROM read_csv('{TOL}')
+  WHERE species_code = '{{{{ID}}}}'
+),
+r AS (
   SELECT h0, h8, h3_cell_to_parent(h8, 7) AS h7, n_observations, h3_cell_area(h8, 'km^2') AS km2
   FROM read_parquet('{RANGE}', hive_partitioning = true)
   WHERE species_code = '{{{{ID}}}}'
+),{w}
+r7 AS (
+  SELECT any_value(r.h0) AS h0, r.h7, sum(r.km2) AS km2,
+         sum(r.km2) FILTER (WHERE r.n_observations > 0) AS km2_obs{g12}
+  FROM r{wjoin}
+  GROUP BY r.h7
 ),
 periods AS (
   SELECT * FROM (VALUES
     {PERIOD_ROWS}
   ) t(period_key, scenario, period, period_label, ord)
 ),
+thr AS (
+  SELECT m.metric, o.offset_c, leaf, leaf - o.offset_c AS tau, floor((leaf - o.offset_c) * 2) / 2 AS lo
+  FROM (SELECT unnest({metrics}) AS metric) m, (SELECT unnest({offsets}) AS offset_c) o, tol,
+       LATERAL (SELECT CASE m.metric WHEN 'tcrit' THEN tol.tcrit ELSE tol.t50 END AS leaf)
+),
 amax AS (
-  SELECT a.h7, p.period_key, a.tmax_mean_annual_max_c
+  SELECT a.h7, p.period_key, a.tmax_mean_annual_max_c AS tmax
   FROM read_parquet('{AMAX}', hive_partitioning = true) a
   JOIN periods p USING (scenario, period)
-  SEMI JOIN r USING (h0, h7)
+  SEMI JOIN r7 USING (h0, h7)
 ),
 ex AS (
-  SELECT e.h7, p.period_key, e.days_mean, e.days_min, e.days_max
+  SELECT e.h7, p.period_key, e.threshold_c, e.days_mean, e.days_min, e.days_max
   FROM read_parquet('{EXCEED}', hive_partitioning = true) e
   JOIN periods p USING (scenario, period)
-  SEMI JOIN r USING (h0, h7)
-  WHERE e.threshold_c = {{{{TLEAF}}}} - {{{{OFFSET}}}}
+  SEMI JOIN r7 USING (h0, h7)
+  WHERE e.threshold_c IN (SELECT lo FROM thr UNION SELECT lo + 0.5 FROM thr)
 ),
 c AS (
-  SELECT p.period_key, p.period_label, p.ord, r.h8, r.h7, r.n_observations, r.km2,
-         a.tmax_mean_annual_max_c AS tmax,
-         coalesce(ex.days_mean, 0) AS days, coalesce(ex.days_min, 0) AS days_lo, coalesce(ex.days_max, 0) AS days_hi,
-         {{{{TLEAF}}}} - {{{{OFFSET}}}} AS tau
-  FROM r CROSS JOIN periods p
-  JOIN amax a ON a.h7 = r.h7 AND a.period_key = p.period_key
-  LEFT JOIN ex ON ex.h7 = r.h7 AND ex.period_key = p.period_key
+  SELECT t.metric, t.offset_c, t.leaf, t.tau, p.period_key, p.period_label, p.ord,
+         r7.*, a.tmax,
+         CASE WHEN t.lo < 20 OR t.lo + 0.5 > 60 THEN NULL ELSE
+           coalesce(e0.days_mean, 0) + (coalesce(e1.days_mean, 0) - coalesce(e0.days_mean, 0)) * (t.tau - t.lo) / 0.5 END AS days,
+         CASE WHEN t.lo < 20 OR t.lo + 0.5 > 60 THEN NULL ELSE
+           coalesce(e0.days_min, 0) + (coalesce(e1.days_min, 0) - coalesce(e0.days_min, 0)) * (t.tau - t.lo) / 0.5 END AS days_lo,
+         CASE WHEN t.lo < 20 OR t.lo + 0.5 > 60 THEN NULL ELSE
+           coalesce(e0.days_max, 0) + (coalesce(e1.days_max, 0) - coalesce(e0.days_max, 0)) * (t.tau - t.lo) / 0.5 END AS days_hi
+  FROM r7 CROSS JOIN periods p CROSS JOIN thr t
+  JOIN amax a ON a.h7 = r7.h7 AND a.period_key = p.period_key
+  LEFT JOIN ex e0 ON e0.h7 = r7.h7 AND e0.period_key = p.period_key AND e0.threshold_c = t.lo
+  LEFT JOIN ex e1 ON e1.h7 = r7.h7 AND e1.period_key = p.period_key AND e1.threshold_c = t.lo + 0.5
 )
 """
 
+
 QUERIES = {
-    "exposure/summary.sql": """
--- The selected period. Means and shares are by area over the range cells LOCA2 covers.
-SELECT any_value(tau) AS tau_c,
-       (SELECT sum(km2) FROM r) AS range_km2,
-       sum(km2) AS covered_km2,
+    "exposure/summary.sql": (ONE, False, """
+-- The selected metric, offset and period. Means and shares are by area over the range cells LOCA2 covers.
+SELECT any_value(leaf) AS leaf_c,
+       any_value(tau) AS tau_c,
        sum(km2 * days) / sum(km2) AS mean_days,
        sum(km2) FILTER (WHERE days >= 1) / sum(km2) AS share_1day,
        sum(km2) FILTER (WHERE days >= 10) / sum(km2) AS share_10days,
        max(tmax) - any_value(tau) AS max_margin_c
 FROM c WHERE period_key = '{{PERIOD}}'
-""",
-    "exposure/by-period.sql": """
+"""),
+    "exposure/by-period.sql": (ONE, False, """
 -- Every period at the chosen threshold: the whole range, and the recorded cells alone.
 SELECT period_label,
        sum(km2 * days) / sum(km2) AS mean_days,
-       sum(km2 * days) FILTER (WHERE n_observations > 0) / sum(km2) FILTER (WHERE n_observations > 0) AS mean_days_observed
+       sum(km2_obs * days) / sum(km2_obs) AS mean_days_observed
 FROM c GROUP BY period_label, ord ORDER BY ord
-""",
-    "exposure/classes.sql": """
+"""),
+    "exposure/by-metric.sql": (BOTH_METRICS, False, """
+-- Tcrit and T50 side by side in every period, at the chosen offset.
+SELECT period_label,
+       sum(km2 * days) FILTER (WHERE metric = 'tcrit') / sum(km2) FILTER (WHERE metric = 'tcrit') AS days_tcrit,
+       sum(km2 * days) FILTER (WHERE metric = 't50') / sum(km2) FILTER (WHERE metric = 't50') AS days_t50
+FROM c GROUP BY period_label, ord ORDER BY ord
+"""),
+    "exposure/classes.sql": (ONE, False, """
 -- Share of the range in each class of mean days a year above the threshold, per period.
 SELECT period_label,
        sum(km2) FILTER (WHERE days < 0.1) / sum(km2) AS d0,
@@ -100,16 +143,27 @@ SELECT period_label,
        sum(km2) FILTER (WHERE days >= 10 AND days < 30) / sum(km2) AS d10,
        sum(km2) FILTER (WHERE days >= 30) / sum(km2) AS d30
 FROM c GROUP BY period_label, ord ORDER BY ord
-""",
-    "exposure/map.sql": """
--- Per res-7 cell, the LOCA2 grid: area-weighted mean days a year above the threshold
--- over the species' range cells in it, selected period.
-SELECT h3_h3_to_string(h7) AS h7,
+"""),
+    "exposure/by-offset.sql": (SWEEP, False, """
+-- The selected metric and period at a fixed set of offsets.
+SELECT format('Offset {} °C, air {} °C', offset_c, round(any_value(tau), 1)) AS offset_label,
        sum(km2 * days) / sum(km2) AS mean_days
 FROM c WHERE period_key = '{{PERIOD}}'
+GROUP BY offset_c ORDER BY offset_c
+"""),
+    "exposure/map.sql": (ONE, False, """
+-- Per res-7 cell, the LOCA2 grid: mean days a year above the threshold, selected period.
+SELECT h3_h3_to_string(h7) AS h7, days AS mean_days
+FROM c WHERE period_key = '{{PERIOD}}'
+"""),
+    "exposure/map-h6.sql": (ONE, False, """
+-- Per res-6 cell, for the zoomed-out map: area-weighted mean days a year above the
+-- threshold over the res-7 cells in it, selected period.
+SELECT h3_h3_to_string(h3_cell_to_parent(h7, 6)) AS h6, sum(km2 * days) / sum(km2) AS mean_days
+FROM c WHERE period_key = '{{PERIOD}}'
 GROUP BY 1
-""",
-    "conserved/by-gap.sql": """
+"""),
+    "conserved/by-gap.sql": (None, True, """
 -- Share of the whole range in each GAP status, by area.
 SELECT * FROM (VALUES
   ('GAP 1', 1, (SELECT sum(r.km2 * coalesce(w.w1, 0)) / sum(r.km2) FROM r LEFT JOIN w USING (h0, h8))),
@@ -118,29 +172,35 @@ SELECT * FROM (VALUES
   ('GAP 4', 4, (SELECT sum(r.km2 * coalesce(w.w4, 0)) / sum(r.km2) FROM r LEFT JOIN w USING (h0, h8))),
   ('Not conserved', 5, (SELECT sum(r.km2 * (1 - coalesce(w.w1 + w.w2 + w.w3 + w.w4, 0))) / sum(r.km2) FROM r LEFT JOIN w USING (h0, h8)))
 ) t(gap, ord, share) ORDER BY ord
-""",
-    "conserved/summary.sql": """
+"""),
+    "conserved/summary.sql": (None, True, """
 -- Share of the whole range in GAP 1 or 2, the land California's 30x30 goal counts.
 SELECT sum(r.km2 * coalesce(w.w1 + w.w2, 0)) / sum(r.km2) AS share_gap12,
        sum(r.km2 * coalesce(w.w1 + w.w2, 0)) AS km2_gap12
 FROM r LEFT JOIN w USING (h0, h8)
-""",
-    "conserved/days.sql": """
+"""),
+    "conserved/days.sql": (ONE, True, """
 -- Mean days a year above the threshold on GAP 1-2 land and on the rest of the range, per period.
 SELECT period_label,
-       sum(km2 * g12 * days) / nullif(sum(km2 * g12), 0) AS days_gap12,
-       sum(km2 * (1 - g12) * days) / nullif(sum(km2 * (1 - g12)), 0) AS days_other
-FROM (SELECT c.*, coalesce(w.w1 + w.w2, 0) AS g12 FROM c LEFT JOIN w USING (h8))
-GROUP BY period_label, ord ORDER BY ord
-""",
-    "conserved/map.sql": """
+       sum(km2_g12 * days) / nullif(sum(km2_g12), 0) AS days_gap12,
+       sum((km2 - km2_g12) * days) / nullif(sum(km2 - km2_g12), 0) AS days_other
+FROM c GROUP BY period_label, ord ORDER BY ord
+"""),
+    "conserved/map.sql": (None, True, """
 -- Per res-7 cell: share of the species' range cells in it that is GAP 1 or 2.
 SELECT h3_h3_to_string(r.h7) AS h7,
        sum(r.km2 * coalesce(w.w1 + w.w2, 0)) / sum(r.km2) AS share_gap12
 FROM r LEFT JOIN w USING (h0, h8)
 GROUP BY 1
-""",
-    "models/spread.sql": """
+"""),
+    "conserved/map-h6.sql": (None, True, """
+-- Per res-6 cell, for the zoomed-out map: share of the species' range cells in it that is GAP 1 or 2.
+SELECT h3_h3_to_string(h3_cell_to_parent(r.h7, 6)) AS h6,
+       sum(r.km2 * coalesce(w.w1 + w.w2, 0)) / sum(r.km2) AS share_gap12
+FROM r LEFT JOIN w USING (h0, h8)
+GROUP BY 1
+"""),
+    "models/spread.sql": (ONE, False, """
 -- Mean days a year above the threshold using, in each cell, the lowest, the mean and
 -- the highest of the three models.
 SELECT period_label,
@@ -148,43 +208,34 @@ SELECT period_label,
        sum(km2 * days) / sum(km2) AS days_mean,
        sum(km2 * days_hi) / sum(km2) AS days_hi
 FROM c GROUP BY period_label, ord ORDER BY ord
-""",
+"""),
 }
 
-# The offset sweep needs every offset's threshold, so it reads the exceedance table
-# without the single-threshold filter.
-OFFSETS = "[0, 2.5, 5, 7.5, 10, 12.5, 15]"
-BY_OFFSET = PRELUDE.split("ex AS (")[0] + f"""o AS (SELECT unnest({OFFSETS}) AS o)
--- The selected period at a fixed set of offsets, holding the leaf threshold.
-SELECT format('Offset {{}} °C, air {{}} °C', o.o, {{{{TLEAF}}}} - o.o) AS offset_label,
-       sum(r.km2 * coalesce(e.days_mean, 0)) / sum(r.km2) AS mean_days
-FROM r
-JOIN amax a ON a.h7 = r.h7 AND a.period_key = '{{{{PERIOD}}}}'
-CROSS JOIN o
-LEFT JOIN (
-  SELECT e.h7, e.threshold_c, e.days_mean
-  FROM read_parquet('{EXCEED}', hive_partitioning = true) e
-  JOIN periods p USING (scenario, period)
-  SEMI JOIN r USING (h0, h7)
-  WHERE p.period_key = '{{{{PERIOD}}}}'
-) e ON e.h7 = r.h7 AND e.threshold_c = {{{{TLEAF}}}} - o.o
-GROUP BY o.o ORDER BY o.o
-"""
 
-root = Path(__file__).resolve().parent.parent / "config" / "themes"
-for f in root.glob("*/*.sql"):
-    f.unlink()
-W_CTE = f""",
+def gap_only_prelude():
+    """The conserved-area shares need only the range and the GAP weights."""
+    return f"""-- Range: every cell present for the species, observed or not.
+-- Conserved areas: 30x30 terrestrial conserved areas (2025), each res-8 cell's share of
+-- California land in GAP status 1 to 4; a range cell with no row counts as not conserved.
+WITH r AS (
+  SELECT h0, h8, h3_cell_to_parent(h8, 7) AS h7, h3_cell_area(h8, 'km^2') AS km2
+  FROM read_parquet('{RANGE}', hive_partitioning = true)
+  WHERE species_code = '{{{{ID}}}}'
+),
 w AS (
   SELECT h0, h8, w1, w2, w3, w4
   FROM read_parquet('{GAPW}', hive_partitioning = true)
   SEMI JOIN r USING (h0, h8)
 )
 """
-outputs = {name: (PRELUDE.rstrip("\n") + W_CTE if name.startswith("conserved/") else PRELUDE) + body.lstrip("\n")
-           for name, body in QUERIES.items()}
-outputs["exposure/by-offset.sql"] = BY_OFFSET
-for name, sql in outputs.items():
+
+
+root = Path(__file__).resolve().parent.parent / "config" / "themes"
+for f in root.glob("*/*.sql"):
+    f.unlink()
+for name, (thr, conserved, body) in QUERIES.items():
+    head = gap_only_prelude() if thr is None else prelude(*thr, conserved=conserved)
+    sql = head + body.lstrip("\n")
     # a filtered sum over no rows is NULL; for a numerator that means none, so 0
     sql = re.sub(r"sum\(km2\) FILTER \(WHERE ([^)]*)\)( /)", r"coalesce(sum(km2) FILTER (WHERE \1), 0)\2", sql)
     p = root / name

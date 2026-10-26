@@ -373,15 +373,19 @@ species with a raster have tolerance values. The seven CSV species with no raste
 still-missing downloads (`ERIDIS`, `HOLDIS`, `QUEGAR`, `SEQSEM`) and the three code-spelling variants,
 which are not genuinely missing. So the usable species list is governed by dataset A, not C.
 
-### Publication status — cleared to publish, served from this repository
+### Publication status — cleared to publish, kept with the app
 
 The team's paper is not out yet, but **Justin has confirmed they are not concerned about these values
 appearing in the public app before publication**; the flag was that official publication is coming
 soon, not a restriction on use. So dataset C is published as the team asked.
 
-**Decision 2026-10-26: served from this repository, not data-workflows.** The table is specific to
-this app, and at 109 rows (about 4 KB) it is small enough to serve straight from GitHub. Carl made
-this exception to the usual S3 route, so data-workflows#673 is superseded.
+**Decision 2026-10-26: this table lives in this repository, not in the data catalog.** The STAC
+catalog built by data-workflows is for general-use data: large spatial or temporal datasets that many
+apps and analyses draw on. This table is neither. It holds one pair of values per species, it is not
+spatial or temporal, and its only use is to set the thresholds behind this app's selector tools. That
+makes it closer to app code than to a catalog dataset, so it is versioned with the app, and at 109
+rows (about 4 KB) it is served directly from the public GitHub repository. data-workflows#673 is
+superseded.
 
 - The CSV is committed as delivered at `data/species_T50_Tcrit_means.csv` (columns `species`,
   `species_code`, `origin`, `T50`, `Tcrit`; °C). Queries read it from

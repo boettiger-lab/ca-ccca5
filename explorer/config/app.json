@@ -25,32 +25,21 @@
   },
   "params": [
     {
-      "id": "tleaf",
-      "label": "Leaf threshold in °C",
-      "token": "TLEAF",
-      "control": "slider",
+      "id": "metric",
+      "label": "Heat tolerance",
+      "token": "METRIC",
       "options": [
-        40,
-        41,
-        42,
-        43,
-        44,
-        45,
-        46,
-        47,
-        48,
-        49,
-        50,
-        51,
-        52,
-        53,
-        54,
-        55,
-        56,
-        57
+        {
+          "value": "tcrit",
+          "label": "Tcrit"
+        },
+        {
+          "value": "t50",
+          "label": "T50"
+        }
       ],
-      "default": 47,
-      "help": "Enter the species' Tcrit or T50. The project team's measured values are not loaded yet."
+      "default": "tcrit",
+      "help": "Tcrit is the leaf temperature at which photosynthesis is first impaired, and T50 the one at which it falls by half. Values are the project team's provisional measured means for each species."
     },
     {
       "id": "offset",
@@ -126,67 +115,78 @@
     "jurisdiction": "species",
     "id": "PINPON"
   },
-  "tracts": {
-    "url": "data/h7-grid.pmtiles",
-    "source_layer": "h7-grid",
-    "id_prop": "h7",
-    "line_width": [
-      "interpolate",
-      [
-        "linear"
-      ],
-      [
-        "zoom"
-      ],
-      6,
-      0,
-      9,
-      0.5
-    ]
-  },
+  "tracts": [
+    {
+      "id": "h6",
+      "url": "data/h6-grid.pmtiles",
+      "source_layer": "h6-grid",
+      "id_prop": "h6",
+      "maxzoom": 7
+    },
+    {
+      "id": "h7",
+      "url": "data/h7-grid.pmtiles",
+      "source_layer": "h7-grid",
+      "id_prop": "h7",
+      "minzoom": 7,
+      "line_width": [
+        "interpolate",
+        [
+          "linear"
+        ],
+        [
+          "zoom"
+        ],
+        7,
+        0.1,
+        9,
+        0.5
+      ]
+    }
+  ],
   "project_url": "https://github.com/boettiger-lab/ca-ccca5/tree/main/explorer",
-  "intro": "<p>Pick a species to see how often air temperatures across its modelled range reach a heat tolerance threshold. Set the leaf threshold to the species' Tcrit or T50 and choose how much warmer than the air you assume leaves run; the air threshold is the difference. The period switches between the historical climate and SSP3-7.0 at mid and end of century.</p><p class=\"tile-note\">The measure is the mean number of days a year on which the daily maximum air temperature reaches the air threshold, from the LOCA2-Hybrid downscaled projections. Figures are means over each 30-year period and across three climate models.</p><p class=\"tile-note\"><strong>Preview.</strong> The LOCA2 tables are a three-model pilot (GFDL-ESM4, MPI-ESM1-2-HR and ACCESS-CM2) with SSP3-7.0 only. More models and scenarios are planned.</p><p class=\"tile-note\">Exceeding a threshold is exposure to temperatures above a measured physiological limit. It is not predicted mortality, dieback or range loss.</p><p class=\"tile-note\">Data: Calflora climate-model range maps (109 species, H3 resolution 8); LOCA2-Hybrid daily maximum temperature, UC San Diego Scripps for California's Fifth Climate Change Assessment via Cal-Adapt (CC-BY-4.0), summarised to H3 resolution 7; 30x30 conserved areas, terrestrial, 2025 (California Natural Resources Agency).</p>",
+  "intro": "<p>Pick a species to see how often air temperatures across its modelled range reach a heat tolerance threshold. Choose Tcrit or T50, the species' measured heat tolerance, and how much warmer than the air you assume leaves run; the air threshold is the difference. The period switches between the historical climate and SSP3-7.0 at mid and end of century.</p><p class=\"tile-note\">The measure is the mean number of days a year on which the daily maximum air temperature reaches the air threshold, from the LOCA2-Hybrid downscaled projections. Figures are means over each 30-year period and across three climate models.</p><p class=\"tile-note\"><strong>Preview.</strong> The LOCA2 tables are a three-model pilot (GFDL-ESM4, MPI-ESM1-2-HR and ACCESS-CM2) with SSP3-7.0 only. More models and scenarios are planned.</p><p class=\"tile-note\"><strong>Provisional tolerance values.</strong> Tcrit and T50 are means measured by the project team for California's Fifth Climate Change Assessment, ahead of their publication. No spread is reported, so small differences between species are not meaningful.</p><p class=\"tile-note\">Exceeding a threshold is exposure to temperatures above a measured physiological limit. It is not predicted mortality, dieback or range loss.</p><p class=\"tile-note\">Data: Calflora climate-model range maps (109 species, H3 resolution 8); LOCA2-Hybrid daily maximum temperature, UC San Diego Scripps for California's Fifth Climate Change Assessment via Cal-Adapt (CC-BY-4.0), summarised to H3 resolution 7; 30x30 conserved areas, terrestrial, 2025 (California Natural Resources Agency).</p>",
   "overlays": [
     {
       "id": "conserved",
       "url": "https://s3-west.nrp-nautilus.io/public-ca30x30/conserved-areas-terrestrial-2025.pmtiles",
       "source_layer": "conserved-areas-terrestrial-2025",
-      "type": "line",
+      "type": "fill",
       "above": true,
       "visible": false,
       "paint": {
-        "line-color": [
+        "fill-color": [
           "match",
           [
             "get",
             "reGAP"
           ],
           1,
-          "#14532d",
+          "#26633A",
           2,
-          "#2f7d3c",
+          "#3E9C47",
           3,
-          "#3b82b0",
+          "#7EB3D3",
           4,
-          "#8a8a8a",
-          "#8a8a8a"
+          "#BDBDBD",
+          "#888888"
         ],
-        "line-width": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          5,
-          0.6,
-          10,
-          1.6
-        ]
+        "fill-opacity": 0.3,
+        "fill-outline-color": "rgba(74,74,74,0.6)"
       },
       "toggle": "Show conserved areas",
-      "legend": "<div class=\"tile-note\">Outline colour is GAP status: <span style=\"color:#14532d\">■</span> 1 <span style=\"color:#2f7d3c\">■</span> 2 <span style=\"color:#3b82b0\">■</span> 3 <span style=\"color:#8a8a8a\">■</span> 4</div>"
+      "legend": "<div class=\"tile-note\">Conserved areas by GAP status: <span style=\"color:#26633A\">■</span> 1 <span style=\"color:#3E9C47\">■</span> 2 <span style=\"color:#7EB3D3\">■</span> 3 <span style=\"color:#BDBDBD\">■</span> 4</div>",
+      "popup_title": "UNIT_NAME",
+      "popup_fields": [
+        [
+          "MNG_AGENCY",
+          "Agency"
+        ],
+        [
+          "reGAP",
+          "GAP status"
+        ]
+      ]
     }
   ]
 }
