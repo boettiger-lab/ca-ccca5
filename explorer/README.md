@@ -8,7 +8,7 @@ reaches the resulting air threshold across the species' range, and how much of t
 the resolution-7 LOCA2 grid from zoom 7 in, and can shade the conserved areas by GAP status. A link with no `#…` opens on *Pinus ponderosa* (`default_area`).
 
 The app is configuration, SQL and a few small generated files. The machinery comes from
-[glen-charts](https://github.com/SchmidtDSE/glen-charts), pinned in `index.html` (v0.2.6; 0.2.5 added `default_area` and `tracts.line_width`, 0.2.6 grids that swap by zoom). Do not
+[glen-charts](https://github.com/SchmidtDSE/glen-charts), pinned in `index.html` (v0.2.7; 0.2.5 added `default_area` and `tracts.line_width`, 0.2.6 grids that swap by zoom, 0.2.7 a search box that lists every species when one is already chosen). Do not
 write JavaScript here: features go into glen-charts.
 
 ## Status
