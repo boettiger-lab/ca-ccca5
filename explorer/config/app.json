@@ -39,7 +39,45 @@
         }
       ],
       "default": "tcrit",
-      "help": "Tcrit is the leaf temperature at which photosynthesis is first impaired, and T50 the one at which it falls by half. Values are the project team's provisional measured means for each species."
+      "help": "Tcrit is the leaf temperature at which photosynthesis is first impaired, and T50 the one at which it falls by half. Each species starts at the project team's provisional measured mean."
+    },
+    {
+      "id": "adjust",
+      "label": "Leaf threshold in °C",
+      "token": "ADJUST",
+      "control": "slider",
+      "options": [
+        -5,
+        -4.5,
+        -4,
+        -3.5,
+        -3,
+        -2.5,
+        -2,
+        -1.5,
+        -1,
+        -0.5,
+        0,
+        0.5,
+        1,
+        1.5,
+        2,
+        2.5,
+        3,
+        3.5,
+        4,
+        4.5,
+        5
+      ],
+      "default": 0,
+      "relative": {
+        "theme": "exposure",
+        "query": "base",
+        "field": "leaf_c",
+        "format": "num1",
+        "note": "The slider starts at the project team's value for this species, {} °C. Move it to try a higher or lower threshold.",
+        "offset_format": "{} °C from the team's value"
+      }
     },
     {
       "id": "offset",

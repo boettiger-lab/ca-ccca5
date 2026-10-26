@@ -1,4 +1,5 @@
--- Thresholds: the project team's provisional mean Tcrit and T50 for the species (°C).
+-- Thresholds: the project team's provisional mean Tcrit and T50 for the species (°C),
+-- plus the reader's adjustment where the query uses one.
 -- Range: every cell present for the species, observed or not (n_observations 0 = in range, unobserved).
 -- Climate: LOCA2-Hybrid daily maximum air temperature, three CMIP6 models (GFDL-ESM4,
 -- MPI-ESM1-2-HR, ACCESS-CM2), as mean days a year at or above each threshold on a
@@ -27,9 +28,10 @@ periods AS (
   ) t(period_key, scenario, period, period_label, ord)
 ),
 thr AS (
-  SELECT m.metric, o.offset_c, leaf, leaf - o.offset_c AS tau, floor((leaf - o.offset_c) * 2) / 2 AS lo
+  SELECT m.metric, o.offset_c, team, leaf, leaf - o.offset_c AS tau, floor((leaf - o.offset_c) * 2) / 2 AS lo
   FROM (SELECT unnest(['{{METRIC}}']) AS metric) m, (SELECT unnest([{{OFFSET}}]) AS offset_c) o, tol,
-       LATERAL (SELECT CASE m.metric WHEN 'tcrit' THEN tol.tcrit ELSE tol.t50 END AS leaf)
+       LATERAL (SELECT CASE m.metric WHEN 'tcrit' THEN tol.tcrit ELSE tol.t50 END AS team),
+       LATERAL (SELECT team + {{ADJUST}} AS leaf)
 ),
 amax AS (
   SELECT a.h7, p.period_key, a.tmax_mean_annual_max_c AS tmax
@@ -45,7 +47,7 @@ ex AS (
   WHERE e.threshold_c IN (SELECT lo FROM thr UNION SELECT lo + 0.5 FROM thr)
 ),
 c AS (
-  SELECT t.metric, t.offset_c, t.leaf, t.tau, p.period_key, p.period_label, p.ord,
+  SELECT t.metric, t.offset_c, t.team, t.leaf, t.tau, p.period_key, p.period_label, p.ord,
          r7.*, a.tmax,
          CASE WHEN t.lo < 20 OR t.lo + 0.5 > 60 THEN NULL ELSE
            coalesce(e0.days_mean, 0) + (coalesce(e1.days_mean, 0) - coalesce(e0.days_mean, 0)) * (t.tau - t.lo) / 0.5 END AS days,
@@ -59,7 +61,8 @@ c AS (
   LEFT JOIN ex e1 ON e1.h7 = r7.h7 AND e1.period_key = p.period_key AND e1.threshold_c = t.lo + 0.5
 )
 -- The selected metric, offset and period. Means and shares are by area over the range cells LOCA2 covers.
-SELECT any_value(leaf) AS leaf_c,
+SELECT any_value(team) AS team_c,
+       any_value(leaf) AS leaf_c,
        any_value(tau) AS tau_c,
        sum(km2 * days) / sum(km2) AS mean_days,
        coalesce(sum(km2) FILTER (WHERE days >= 1), 0) / sum(km2) AS share_1day,

@@ -4,8 +4,10 @@
   tol     the species' measured Tcrit and T50 (°C), the project team's provisional means
   r       the species' range cells (H3 res 8), with their res-7 parent and area
   r7      the range summed to res 7, the LOCA2 grid: range area, and the area recorded
-  thr     the thresholds the query needs: one row per (metric, offset), with the air
-          threshold tau = leaf threshold − offset and the 0.5 °C grid row `lo` just below it
+  thr     the thresholds the query needs: one row per (metric, offset). The leaf threshold
+          is the team's value plus the reader's adjustment (ADJUST, 0 by default; the Tcrit
+          against T50 chart leaves it out), the air threshold tau = leaf threshold − offset,
+          and `lo` is the 0.5 °C grid row just below tau
   amax    the mean annual maximum air temperature per res-7 cell and period; a cell with
           a row is inside the LOCA2 domain, and every share and mean is over those cells
   ex      the exceedance rows at the grid thresholds that bracket each tau
@@ -38,7 +40,7 @@ BOTH_METRICS = ("['tcrit', 't50']", "[{{OFFSET}}]")
 SWEEP = ("['{{METRIC}}']", "[0, 2.5, 5, 7.5, 10, 12.5, 15]")
 
 
-def prelude(metrics, offsets, conserved=False):
+def prelude(metrics, offsets, conserved=False, adjust=True):
     w = f"""
 w AS (
   SELECT h0, h8, w1, w2, w3, w4
@@ -47,7 +49,9 @@ w AS (
 ),""" if conserved else ""
     g12 = ",\n         sum(r.km2 * coalesce(w.w1 + w.w2, 0)) AS km2_g12" if conserved else ""
     wjoin = "\n  LEFT JOIN w USING (h0, h8)" if conserved else ""
-    return f"""-- Thresholds: the project team's provisional mean Tcrit and T50 for the species (°C).
+    adj = " + {{ADJUST}}" if adjust else ""
+    return f"""-- Thresholds: the project team's provisional mean Tcrit and T50 for the species (°C),
+-- plus the reader's adjustment where the query uses one.
 -- Range: every cell present for the species, observed or not (n_observations 0 = in range, unobserved).
 -- Climate: LOCA2-Hybrid daily maximum air temperature, three CMIP6 models (GFDL-ESM4,
 -- MPI-ESM1-2-HR, ACCESS-CM2), as mean days a year at or above each threshold on a
@@ -74,9 +78,10 @@ periods AS (
   ) t(period_key, scenario, period, period_label, ord)
 ),
 thr AS (
-  SELECT m.metric, o.offset_c, leaf, leaf - o.offset_c AS tau, floor((leaf - o.offset_c) * 2) / 2 AS lo
+  SELECT m.metric, o.offset_c, team, leaf, leaf - o.offset_c AS tau, floor((leaf - o.offset_c) * 2) / 2 AS lo
   FROM (SELECT unnest({metrics}) AS metric) m, (SELECT unnest({offsets}) AS offset_c) o, tol,
-       LATERAL (SELECT CASE m.metric WHEN 'tcrit' THEN tol.tcrit ELSE tol.t50 END AS leaf)
+       LATERAL (SELECT CASE m.metric WHEN 'tcrit' THEN tol.tcrit ELSE tol.t50 END AS team),
+       LATERAL (SELECT team{adj} AS leaf)
 ),
 amax AS (
   SELECT a.h7, p.period_key, a.tmax_mean_annual_max_c AS tmax
@@ -92,7 +97,7 @@ ex AS (
   WHERE e.threshold_c IN (SELECT lo FROM thr UNION SELECT lo + 0.5 FROM thr)
 ),
 c AS (
-  SELECT t.metric, t.offset_c, t.leaf, t.tau, p.period_key, p.period_label, p.ord,
+  SELECT t.metric, t.offset_c, t.team, t.leaf, t.tau, p.period_key, p.period_label, p.ord,
          r7.*, a.tmax,
          CASE WHEN t.lo < 20 OR t.lo + 0.5 > 60 THEN NULL ELSE
            coalesce(e0.days_mean, 0) + (coalesce(e1.days_mean, 0) - coalesce(e0.days_mean, 0)) * (t.tau - t.lo) / 0.5 END AS days,
@@ -111,7 +116,8 @@ c AS (
 QUERIES = {
     "exposure/summary.sql": (ONE, False, """
 -- The selected metric, offset and period. Means and shares are by area over the range cells LOCA2 covers.
-SELECT any_value(leaf) AS leaf_c,
+SELECT any_value(team) AS team_c,
+       any_value(leaf) AS leaf_c,
        any_value(tau) AS tau_c,
        sum(km2 * days) / sum(km2) AS mean_days,
        sum(km2) FILTER (WHERE days >= 1) / sum(km2) AS share_1day,
@@ -127,7 +133,7 @@ SELECT period_label,
 FROM c GROUP BY period_label, ord ORDER BY ord
 """),
     "exposure/by-metric.sql": (BOTH_METRICS, False, """
--- Tcrit and T50 side by side in every period, at the chosen offset.
+-- Tcrit and T50 side by side in every period, at the team's values and the chosen offset.
 SELECT period_label,
        sum(km2 * days) FILTER (WHERE metric = 'tcrit') / sum(km2) FILTER (WHERE metric = 'tcrit') AS days_tcrit,
        sum(km2 * days) FILTER (WHERE metric = 't50') / sum(km2) FILTER (WHERE metric = 't50') AS days_t50
@@ -233,8 +239,14 @@ w AS (
 root = Path(__file__).resolve().parent.parent / "config" / "themes"
 for f in root.glob("*/*.sql"):
     f.unlink()
+BASE = f"""-- The team's provisional mean for the selected metric (°C): the base the threshold slider adjusts.
+SELECT CASE '{{{{METRIC}}}}' WHEN 'tcrit' THEN Tcrit ELSE T50 END AS leaf_c
+FROM read_csv('{TOL}')
+WHERE species_code = '{{{{ID}}}}'
+"""
+
 for name, (thr, conserved, body) in QUERIES.items():
-    head = gap_only_prelude() if thr is None else prelude(*thr, conserved=conserved)
+    head = gap_only_prelude() if thr is None else prelude(*thr, conserved=conserved, adjust=name != "exposure/by-metric.sql")
     sql = head + body.lstrip("\n")
     # a filtered sum over no rows is NULL; for a numerator that means none, so 0
     sql = re.sub(r"sum\(km2\) FILTER \(WHERE ([^)]*)\)( /)", r"coalesce(sum(km2) FILTER (WHERE \1), 0)\2", sql)
@@ -242,3 +254,5 @@ for name, (thr, conserved, body) in QUERIES.items():
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(sql)
     print("wrote", p.relative_to(root.parent.parent))
+(root / "exposure" / "base.sql").write_text(BASE)
+print("wrote config/themes/exposure/base.sql")
