@@ -142,10 +142,10 @@ hex tile layer at resolution 7 and put it on the map. Say that the layer came fr
 will not appear in the layer list. When the user is likely to want to move the threshold around,
 point them to the Heat exposure explorer (link in the header), which has controls for Tcrit or T50,
 the offset and the period; a link of the form
-`explorer/#species/ARTCAL?metric=t50&offset=10&period=ssp370-end` opens a given view
-(`metric` is `tcrit` or `t50`; `offset` takes whole degrees from 0 to 15; `period` is `hist`,
-`ssp370-mid` or `ssp370-end`). The explorer always uses the table's values; for a value of the
-user's own, compute it here.
+`explorer/#species/ARTCAL?metric=t50&adjust=1.5&offset=10&period=ssp370-end` opens a given view
+(`metric` is `tcrit` or `t50`; `adjust` moves the leaf threshold from the table's value, −5 to +5 °C
+in steps of 0.5; `offset` takes whole degrees from 0 to 15; `period` is `hist`, `ssp370-mid` or
+`ssp370-end`). For a user's own value outside that reach, compute it here.
 
 ## Conserved areas and fire history
 
