@@ -32,8 +32,8 @@ the MCP tools (`list_datasets`, `get_schema`).
 
 ## Heat exposure explorer — `explorer/` (glen-charts)
 
-A second, no-LLM app at `/explorer/`: pick a species, set the leaf threshold, offset and period,
-and see the share of its range above the threshold, with a map. It is built on
+A second, no-LLM app at `/explorer/`: pick a species, Tcrit or T50, an offset and a period, and see
+the days a year its range reaches the threshold and how much of it is conserved, with a map. It is built on
 [glen-charts](https://github.com/SchmidtDSE/glen-charts), pinned in `explorer/index.html`, and is
 config, SQL and small generated files only. See `explorer/README.md`.
 
