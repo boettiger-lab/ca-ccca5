@@ -1,0 +1,135 @@
+{
+  "id": "ca-ccca5-explorer",
+  "title": "Plant Heat Exposure Explorer",
+  "mcp_url": "https://duckdb-mcp.nrp-nautilus.io/mcp",
+  "view": {
+    "center": [
+      -119.4,
+      37.2
+    ],
+    "zoom": 5.2
+  },
+  "basemap": "light-gray",
+  "themes": [
+    "exposure",
+    "models"
+  ],
+  "labels": {
+    "area": "Species",
+    "sections": "Sections",
+    "map_chips": "Color the range by"
+  },
+  "format": {
+    "nodata": "no data"
+  },
+  "params": [
+    {
+      "id": "tleaf",
+      "label": "Leaf threshold in °C",
+      "token": "TLEAF",
+      "control": "slider",
+      "options": [
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57
+      ],
+      "default": 47,
+      "help": "Enter the species' Tcrit or T50. The project team's measured values are not loaded yet."
+    },
+    {
+      "id": "offset",
+      "label": "Leaf-to-air offset in °C",
+      "token": "OFFSET",
+      "control": "slider",
+      "options": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "default": 10,
+      "help": "The assumed amount by which leaves run warmer than the air. The air threshold is the leaf threshold minus this offset."
+    },
+    {
+      "id": "period",
+      "label": "Climate period",
+      "token": "PERIOD",
+      "options": [
+        {
+          "value": "obs",
+          "label": "1981–2010"
+        },
+        {
+          "value": "ssp370-mid",
+          "label": "SSP3-7.0 2041–2070"
+        },
+        {
+          "value": "ssp370-end",
+          "label": "SSP3-7.0 2071–2100"
+        },
+        {
+          "value": "ssp585-end",
+          "label": "SSP5-8.5 2071–2100"
+        }
+      ],
+      "default": "obs"
+    }
+  ],
+  "jurisdictions": [
+    {
+      "id": "species",
+      "label": "Species",
+      "singular": "Species",
+      "peer_label": "species",
+      "aoi": "SELECT h0, h8 FROM read_parquet('s3://public-ca-ccca5/calflora-ranges/hex/h0=*/data_0.parquet', hive_partitioning = true) WHERE species_code = '{{ID}}'",
+      "list": "WITH r AS (SELECT species_code, h3_cell_to_lng(h7) AS x, h3_cell_to_lat(h7) AS y FROM read_parquet('s3://public-ca-ccca5/calflora-ranges/hex/h0=*/data_0.parquet', hive_partitioning = true)) SELECT s.species_code AS id, s.scientific_name || ' (' || s.species_code || ')' AS name, min(x) - 0.1 AS xmin, min(y) - 0.1 AS ymin, max(x) + 0.1 AS xmax, max(y) + 0.1 AS ymax FROM r JOIN read_parquet('s3://public-ca-ccca5/calflora-ranges/species.parquet') s USING (species_code) GROUP BY ALL ORDER BY name",
+      "boundary": {
+        "url": "data/species-ranges.pmtiles",
+        "source_layer": "species-ranges",
+        "id_prop": "species_code",
+        "name_prop": "scientific_name",
+        "style": {
+          "opacity": 0,
+          "hover_opacity": 0,
+          "line_opacity": 0,
+          "selected": "#3b2f2a",
+          "selected_width": 1.6
+        }
+      }
+    }
+  ],
+  "tracts": {
+    "url": "data/h6-grid.pmtiles",
+    "source_layer": "h6-grid",
+    "id_prop": "h6"
+  },
+  "project_url": "https://github.com/boettiger-lab/ca-ccca5/tree/main/explorer",
+  "intro": "<p>Pick a species to see how much of its modelled range has warm-season air temperatures above a heat tolerance threshold. Set the leaf threshold to the species' Tcrit or T50 and choose how much warmer than the air you assume leaves run; the air threshold is the difference. The period switches between the observed climate and two emission scenarios.</p><p class=\"tile-note\"><strong>Interim measure.</strong> The intended measure is the mean number of days a year above the threshold, from the LOCA2 daily projections, which are not built yet. Until they are, each cell is compared on CHELSA's bio5, the mean daily maximum of the warmest month. Single days run hotter than that monthly mean, so every share shown here is a lower bound. It shows whether a cell's warmest month clears the threshold on average, not how often it does.</p><p class=\"tile-note\">Exceeding a threshold is exposure to temperatures above a measured physiological limit. It is not predicted mortality, dieback or range loss.</p><p class=\"tile-note\">Data: Calflora climate-model range maps (109 species, H3 resolution 8); CHELSA 2.1 bioclimate, with five-model medians for the future periods.</p>"
+}

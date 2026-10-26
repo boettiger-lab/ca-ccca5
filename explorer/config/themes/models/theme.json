@@ -1,0 +1,37 @@
+{
+  "label": "Climate model spread",
+  "color": "#6b5b95",
+  "blurb": "The future shares depend on which climate model is used. These bars repeat the calculation with the lowest and the highest of the five models' bio5 in each cell.",
+  "method": "CHELSA 2.1 provides bio5 from five CMIP6 models (GFDL-ESM4, IPSL-CM6A-LR, MPI-ESM1-2-HR, MRI-ESM2-0 and UKESM1-0-LL) with the per-cell median, minimum and maximum. The lowest and highest readings are taken cell by cell, so they bracket the five models but are not the result of any single model.",
+  "queries": {
+    "spread": {
+      "file": "spread.sql"
+    }
+  },
+  "charts": [
+    {
+      "title": "Share above threshold by model reading",
+      "query": "spread",
+      "category": "period_label",
+      "format": "pct",
+      "series": [
+        {
+          "field": "share_lo",
+          "label": "Lowest model",
+          "color": "#9e9ac8"
+        },
+        {
+          "field": "share_median",
+          "label": "Median",
+          "color": "#6b5b95"
+        },
+        {
+          "field": "share_hi",
+          "label": "Highest model",
+          "color": "#3f007d"
+        }
+      ],
+      "label_width": 200
+    }
+  ]
+}

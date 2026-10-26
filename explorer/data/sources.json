@@ -1,0 +1,198 @@
+{
+ "generated": "2026-10-26T17:20:33.694Z",
+ "catalog": "https://s3-west.nrp-nautilus.io/public-data/stac/catalog.json",
+ "datasets": [
+  {
+   "id": "chelsa-2-1-baseline-1981-2010",
+   "prefixes": [
+    "s3://public-bioclimate/chelsa-2-1/baseline-1981-2010/hex"
+   ],
+   "stac": {
+    "id": "chelsa-2-1-baseline-1981-2010",
+    "title": "CHELSA 2.1 Bioclimate — observed baseline, 1981-2010 (global land)",
+    "license": "CC0-1.0",
+    "providers": [
+     {
+      "name": "CHELSA (Swiss Federal Institute for Forest, Snow and Landscape Research WSL)",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://chelsa-climate.org/"
+     },
+     {
+      "name": "Boettiger Lab, UC Berkeley",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://s3-west.nrp-nautilus.io/public-bioclimate/"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-bioclimate/chelsa-2-1/baseline-1981-2010/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "license",
+      "href": "https://chelsa-climate.org/terms-of-use/",
+      "type": "text/html",
+      "title": "CHELSA terms of use (CC0 1.0)"
+     },
+     {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.1038/sdata.2017.122",
+      "type": "text/html",
+      "title": "Karger et al. 2017, Climatologies at high resolution for the earth's land surface areas"
+     }
+    ]
+   }
+  },
+  {
+   "id": "chelsa-2-1-ssp370-2041-2070",
+   "prefixes": [
+    "s3://public-bioclimate/chelsa-2-1/ssp370-2041-2070/hex"
+   ],
+   "stac": {
+    "id": "chelsa-2-1-ssp370-2041-2070",
+    "title": "CHELSA 2.1 Future Bioclimate — SSP3-7.0, 2041-2070 (global land)",
+    "license": "CC0-1.0",
+    "providers": [
+     {
+      "name": "CHELSA (Swiss Federal Institute for Forest, Snow and Landscape Research WSL)",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://chelsa-climate.org/"
+     },
+     {
+      "name": "Boettiger Lab, UC Berkeley",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://s3-west.nrp-nautilus.io/public-bioclimate/"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-bioclimate/chelsa-2-1/ssp370-2041-2070/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "license",
+      "href": "https://chelsa-climate.org/terms-of-use/",
+      "type": "text/html",
+      "title": "CHELSA terms of use (CC0 1.0)"
+     },
+     {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.1038/sdata.2017.122",
+      "type": "text/html",
+      "title": "Karger et al. 2017, Climatologies at high resolution for the earth's land surface areas"
+     }
+    ]
+   }
+  },
+  {
+   "id": "chelsa-2-1-ssp370-2071-2100",
+   "prefixes": [
+    "s3://public-bioclimate/chelsa-2-1/ssp370-2071-2100/hex"
+   ],
+   "stac": {
+    "id": "chelsa-2-1-ssp370-2071-2100",
+    "title": "CHELSA 2.1 Future Bioclimate — SSP3-7.0, 2071-2100 (global land)",
+    "license": "CC0-1.0",
+    "providers": [
+     {
+      "name": "CHELSA (Swiss Federal Institute for Forest, Snow and Landscape Research WSL)",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://chelsa-climate.org/"
+     },
+     {
+      "name": "Boettiger Lab, UC Berkeley",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://s3-west.nrp-nautilus.io/public-bioclimate/"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-bioclimate/chelsa-2-1/ssp370-2071-2100/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "license",
+      "href": "https://chelsa-climate.org/terms-of-use/",
+      "type": "text/html",
+      "title": "CHELSA terms of use (CC0 1.0)"
+     },
+     {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.1038/sdata.2017.122",
+      "type": "text/html",
+      "title": "Karger et al. 2017, Climatologies at high resolution for the earth's land surface areas"
+     }
+    ]
+   }
+  },
+  {
+   "id": "chelsa-2-1-ssp585-2071-2100",
+   "prefixes": [
+    "s3://public-bioclimate/chelsa-2-1/ssp585-2071-2100/hex"
+   ],
+   "stac": {
+    "id": "chelsa-2-1-ssp585-2071-2100",
+    "title": "CHELSA 2.1 Future Bioclimate — SSP5-8.5, 2071-2100 (global land)",
+    "license": "CC0-1.0",
+    "providers": [
+     {
+      "name": "CHELSA (Swiss Federal Institute for Forest, Snow and Landscape Research WSL)",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://chelsa-climate.org/"
+     },
+     {
+      "name": "Boettiger Lab, UC Berkeley",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://s3-west.nrp-nautilus.io/public-bioclimate/"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-bioclimate/chelsa-2-1/ssp585-2071-2100/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "license",
+      "href": "https://chelsa-climate.org/terms-of-use/",
+      "type": "text/html",
+      "title": "CHELSA terms of use (CC0 1.0)"
+     },
+     {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.1038/sdata.2017.122",
+      "type": "text/html",
+      "title": "Karger et al. 2017, Climatologies at high resolution for the earth's land surface areas"
+     }
+    ]
+   }
+  }
+ ]
+}

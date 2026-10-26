@@ -1,0 +1,148 @@
+{
+  "label": "Range above threshold",
+  "color": "#c2410c",
+  "blurb": "The share of the range whose warmest-month mean daily maximum is above the air threshold.",
+  "method": "Every cell of the species' Calflora range is included, whether or not the species has been recorded there. The air threshold is the leaf threshold minus the leaf-to-air offset. A cell counts as above the threshold when its CHELSA bio5 (the mean daily maximum air temperature of the warmest month) is greater than the air threshold; future periods use the median of five CHELSA climate models. Shares are by area over the range cells that CHELSA covers, and the numerator and denominator always use the same cells.",
+  "queries": {
+    "summary": {
+      "file": "summary.sql"
+    },
+    "by_period": {
+      "file": "by-period.sql"
+    },
+    "margins": {
+      "file": "margins.sql"
+    },
+    "by_offset": {
+      "file": "by-offset.sql"
+    },
+    "map": {
+      "file": "map.sql"
+    }
+  },
+  "headlines": [
+    {
+      "query": "summary",
+      "field": "share_over",
+      "label": "Share of range above threshold",
+      "format": "pct",
+      "note": "This is a lower bound, since bio5 is a monthly mean."
+    },
+    {
+      "query": "summary",
+      "field": "area_over_km2",
+      "label": "Range area above threshold",
+      "format": "km2"
+    },
+    {
+      "query": "summary",
+      "field": "tau_c",
+      "label": "Air threshold",
+      "format": "tempC",
+      "note": "This is the leaf threshold minus the offset."
+    },
+    {
+      "query": "summary",
+      "field": "max_margin_c",
+      "label": "Largest margin above threshold",
+      "format": "degC",
+      "note": "The hottest range cell's bio5 minus the air threshold. A negative value means no cell reaches it."
+    }
+  ],
+  "charts": [
+    {
+      "title": "Share above threshold by period",
+      "subtitle": "The share is shown for the whole range and for the cells where the species has been recorded.",
+      "query": "by_period",
+      "category": "period_label",
+      "format": "pct",
+      "series": [
+        {
+          "field": "share_over",
+          "label": "Whole range",
+          "color": "#c2410c"
+        },
+        {
+          "field": "share_over_observed",
+          "label": "Recorded cells",
+          "color": "#7c8a99"
+        }
+      ],
+      "label_width": 200
+    },
+    {
+      "title": "Range by margin above threshold",
+      "subtitle": "Each bar splits the range by how far its warmest-month mean falls below or above the air threshold.",
+      "query": "margins",
+      "category": "period_label",
+      "format": "pct",
+      "stacked": true,
+      "wide": true,
+      "series": [
+        {
+          "field": "below_5",
+          "label": "More than 5 °C below",
+          "color": "#2c7bb6"
+        },
+        {
+          "field": "below_0",
+          "label": "0 to 5 °C below",
+          "color": "#abd9e9"
+        },
+        {
+          "field": "above_0",
+          "label": "0 to 2 °C above",
+          "color": "#fdae61"
+        },
+        {
+          "field": "above_2",
+          "label": "2 to 5 °C above",
+          "color": "#e8603c"
+        },
+        {
+          "field": "above_5",
+          "label": "More than 5 °C above",
+          "color": "#a50f15"
+        }
+      ],
+      "label_width": 200
+    },
+    {
+      "title": "Share above threshold by offset",
+      "subtitle": "The leaf threshold and period are held fixed while the offset varies.",
+      "query": "by_offset",
+      "category": "offset_label",
+      "format": "pct",
+      "label_width": 200,
+      "series": [
+        {
+          "field": "share_over",
+          "label": "Share of range above threshold",
+          "color": "#c2410c"
+        }
+      ],
+      "label_lines": 2
+    }
+  ],
+  "map": {
+    "query": "map",
+    "id_field": "h6",
+    "value_field": "share_over",
+    "label": "Share of range above threshold",
+    "format": "pct",
+    "breaks": [
+      0.01,
+      0.25,
+      0.5,
+      0.75
+    ],
+    "ramp": [
+      "#e7e1d6",
+      "#fdbe85",
+      "#fd8d3c",
+      "#e6550d",
+      "#a63603"
+    ],
+    "note": "H3 resolution 6 cells, coloured by the share of the species' range within each cell that is above the threshold in the selected period."
+  }
+}

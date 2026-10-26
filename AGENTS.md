@@ -27,6 +27,17 @@ partner's raw files, and the questions still open with the partner. Read it befo
 Do not invent collection ids, asset keys, or column names. Fill them in from the STAC collection and
 the MCP tools (`list_datasets`, `get_schema`) once the ingest lands.
 
+## Heat exposure explorer — `explorer/` (glen-charts)
+
+A second, no-LLM app at `/explorer/`: pick a species, set the leaf threshold, offset and period,
+and see the share of its range above the threshold, with a map. It is built on
+[glen-charts](https://github.com/SchmidtDSE/glen-charts), pinned in `explorer/index.html`, and is
+config, SQL and small generated files only. See `explorer/README.md`.
+
+- Edit `explorer/scripts/build-sql.py`, then run it; do not hand-edit the theme `.sql` files.
+- The domain rules below apply to the explorer's labels and notes as much as to the system prompt.
+- The init container copies `explorer/` by name (`k8s/deployment.yaml`).
+
 ## Domain rules that shape every answer
 
 These are the app's substance, not decoration. They are stated in `system-prompt.md` and any change
