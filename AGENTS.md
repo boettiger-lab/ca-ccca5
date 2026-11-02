@@ -76,5 +76,5 @@ four together, and verify jsDelivr serves the new tag before merging to `main`.
 | Symptom | Repo |
 |---|---|
 | Config/schema mistake here (`collection_id`, asset key, filter syntax) | here |
-| Map/chat/agent behaviour, missing renderer capability | `boettiger-lab/geo-agent` |
+| Map/chat/agent behaviour, missing renderer capability | `SchmidtDSE/glen` |
 | Published data or STAC is wrong (bad COG, bogus metadata) | `boettiger-lab/data-workflows` |

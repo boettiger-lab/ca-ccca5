@@ -4,7 +4,7 @@ An AI-powered interactive map of **thermal exposure for California plant species
 species' current range, projected daily maximum air temperatures approach or exceed its measured
 photosynthetic heat tolerance.
 
-Built on [geo-agent](https://github.com/boettiger-lab/geo-agent) from
+Built on [geo-agent](https://github.com/SchmidtDSE/glen) from
 [geo-agent-template](https://github.com/boettiger-lab/geo-agent-template) — the map, chat, agent and
 tool modules load from CDN; this repo configures which data to show and how the agent should behave.
 
@@ -76,6 +76,6 @@ the server-injected `config.json` takes precedence in the Kubernetes deployment.
 
 ## Documentation
 
-- [geo-agent docs](https://boettiger-lab.github.io/geo-agent/docs/) — configuration reference,
+- [geo-agent docs](https://schmidtdse.github.io/glen/) — configuration reference,
   deployment guide, agent internals
 - [AGENTS.md](AGENTS.md) — guidance for AI agents working in this repo

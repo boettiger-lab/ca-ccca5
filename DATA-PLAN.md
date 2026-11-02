@@ -442,7 +442,7 @@ two user assumptions without a chat round trip per step.
 geo-agent's `control` slider binds only to `filter`, a MapLibre predicate over vector feature
 properties; `style` and `query` binds are documented as reserved. Our layers are COGs and hex parquet,
 so no config expresses "recompute exceedance at a new threshold". Filed as
-[geo-agent#362](https://github.com/boettiger-lab/geo-agent/issues/362), with two parts:
+[geo-agent#362](https://github.com/SchmidtDSE/glen/issues/362), with two parts:
 
 - a slider bound to a **query parameter** (Tcrit, or the leaf-to-air offset) rather than a filter;
 - a smaller, separable `>=` slider mode — today `cumulative` is `<=` and `step` is `==`, so a
