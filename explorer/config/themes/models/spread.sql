@@ -44,21 +44,23 @@ ex AS (
   FROM read_parquet('s3://public-caladapt/loca2-hybrid/tasmax-exceedance/hex/h0=*/data_0.parquet', hive_partitioning = true) e
   JOIN periods p USING (scenario, period)
   SEMI JOIN r7 USING (h0, h7)
-  WHERE e.threshold_c IN (SELECT lo FROM thr UNION SELECT lo + 0.5 FROM thr)
+  WHERE e.threshold_c IN (SELECT lo FROM thr UNION SELECT lo + 0.5 FROM thr UNION SELECT 60)
 ),
 c AS (
   SELECT t.metric, t.offset_c, t.team, t.leaf, t.tau, p.period_key, p.period_label, p.ord,
          r7.*, a.tmax,
-         CASE WHEN t.lo < 20 OR t.lo + 0.5 > 60 THEN NULL ELSE
+         bool_or(e60.h7 IS NOT NULL) OVER (PARTITION BY p.period_key) AS any60,
+         CASE WHEN t.tau < 20 THEN NULL WHEN t.tau > 60 THEN CASE WHEN NOT any60 THEN 0 END ELSE
            coalesce(e0.days_mean, 0) + (coalesce(e1.days_mean, 0) - coalesce(e0.days_mean, 0)) * (t.tau - t.lo) / 0.5 END AS days,
-         CASE WHEN t.lo < 20 OR t.lo + 0.5 > 60 THEN NULL ELSE
+         CASE WHEN t.tau < 20 THEN NULL WHEN t.tau > 60 THEN CASE WHEN NOT any60 THEN 0 END ELSE
            coalesce(e0.days_min, 0) + (coalesce(e1.days_min, 0) - coalesce(e0.days_min, 0)) * (t.tau - t.lo) / 0.5 END AS days_lo,
-         CASE WHEN t.lo < 20 OR t.lo + 0.5 > 60 THEN NULL ELSE
+         CASE WHEN t.tau < 20 THEN NULL WHEN t.tau > 60 THEN CASE WHEN NOT any60 THEN 0 END ELSE
            coalesce(e0.days_max, 0) + (coalesce(e1.days_max, 0) - coalesce(e0.days_max, 0)) * (t.tau - t.lo) / 0.5 END AS days_hi
   FROM r7 CROSS JOIN periods p CROSS JOIN thr t
   JOIN amax a ON a.h7 = r7.h7 AND a.period_key = p.period_key
   LEFT JOIN ex e0 ON e0.h7 = r7.h7 AND e0.period_key = p.period_key AND e0.threshold_c = t.lo
   LEFT JOIN ex e1 ON e1.h7 = r7.h7 AND e1.period_key = p.period_key AND e1.threshold_c = t.lo + 0.5
+  LEFT JOIN ex e60 ON e60.h7 = r7.h7 AND e60.period_key = p.period_key AND e60.threshold_c = 60
 )
 -- Mean days a year above the threshold using, in each cell, the lowest, the mean and
 -- the highest of the three models.

@@ -160,6 +160,63 @@ the provenance of the published preview is reconstructible.
    job so A and C join cleanly, and carry `scientific_name` in both tables as a check — the codes are
    a convenience, the binomial is the real key.
 
+### Suspected stray observations — reported 2026-11-02, not yet handled
+
+The team saw range cells, in some species, where the species is unlikely to occur, and suspects
+erroneous Calflora observations. A bad record has two effects on a climate-modelled range: it adds
+its own cell, and it widens the climate envelope, so whole patches of "suitable, unobserved" range
+can appear far from any real record. We checked both in the published hex (2026-11-02), on H3
+res 6 (about 36 km² a cell). "Far from any observation" means more than five res-6 rings, about
+30 km, from every cell with an observation.
+
+**Range area far from any observation.** Most species are under 5%. These are not:
+
+| code | species | range km² | far from any observation | where the far area lies |
+|---|---|---:|---:|---|
+| JUSCAL | *Justicia californica* | 18,285 | 42.5% | eastern Mojave, 33.2–37.1° N |
+| ATRTOR | *Atriplex torreyi* | 16,816 | 41.4% | western Mojave and Owens Valley, 34.5–37.2° N |
+| BETOCC | *Betula occidentalis* | 8,703 | 29.6% | spread from 35.3 to 42° N, mostly east of the Sierra |
+| ARCPRI | *Arctostaphylos pringlei* | 5,528 | 21.8% | Transverse Ranges, 34.2–34.9° N |
+| CHILIN | *Chilopsis linearis* | 71,903 | 19.5% | Mojave, 33.5–37.3° N |
+| CHAMIL | *Chamaebatiaria millefolium* | 19,262 | 13.6% | spread from 35.4 to 42° N |
+| CONEMO | *Condea emoryi* | 24,080 | 11.8% | Mojave, 34.4–37.1° N |
+| PARFLO | *Parkinsonia florida* | 40,783 | 11.7% | Mojave, 32.6–37.1° N |
+| HESMAC | *Hesperocyparis macnabiana* | 10,998 | 7.9% | |
+| ALNINC | *Alnus incana* | 29,353 | 6.7% | |
+| OLNTES | *Olneya tesota* | 15,043 | 6.4% | |
+| ENCACT | *Encelia actoni* | 55,762 | 5.2% | |
+
+**Isolated observations**, res-6 cells with an observation and no other observed cell within about
+30 km. These are the candidate bad records; some will be real disjunct populations.
+
+| code | species | observed res-6 cells | isolated |
+|---|---|---:|---:|
+| SALEXI | *Salix exigua* | 1,568 | 17 |
+| ATRTOR | *Atriplex torreyi* | 67 | 12 |
+| POPFRE | *Populus fremontii* | 1,616 | 12 |
+| QUEAGR | *Quercus agrifolia* | 1,300 | 12 |
+| ROSWOO | *Rosa woodsii* | 452 | 12 |
+| RIBCER | *Ribes cereum* | 708 | 11 |
+| MONODO | *Monardella odoratissima* | 860 | 11 |
+| SALLAE | *Salix laevigata* | 1,525 | 11 |
+| SALDOR | *Salvia dorrii* | 486 | 10 |
+
+Eleven more species have 8 or 9 isolated cells: *Arctostaphylos manzanita*, *A. patula*,
+*Artemisia californica*, *Cleomella arborea*, *Encelia farinosa*, *Eriogonum fasciculatum*,
+*E. umbellatum*, *Larrea tridentata*, *Lupinus albifrons*, *Neltuma odorata* and *Pseudotsuga
+menziesii*. *Chilopsis linearis* and *Parkinsonia florida* also have 8 each and are in the first
+table.
+
+The desert species dominate the first table. That fits sparse sampling in the Mojave as well as bad
+records, so a high share far from any observation is a flag to look at, not proof of an error.
+These are screening measures from the published hex; they do not say which records are wrong.
+
+Options for trimming, none applied yet: a distance cutoff (keep range cells within some distance of
+an observation), the same after first dropping isolated observations, or a per-species list of
+regions the team marks as wrong. Any of them changes the denominator of every percentage, so the
+choice must be visible in the app and stated with each result. The team should pick the rule and the
+distance (open question 8).
+
 ### Resolved: the values are observation counts, and the range is every non-NaN cell
 
 Calflora's own documentation of these climate-modelled range maps, relayed by the team 2026-09-15:
@@ -478,3 +535,7 @@ Still open:
 7. **Is the Calflora observation count capped at 9?** No pixel in any of the 107 files exceeds 9, and
    nines are commoner than eights — which reads as a "9 or more" clamp. If so we will label the top
    class as censored. One for Calflora, alongside the stray-pixel report.
+8. **Which species and places look wrong to you, and how should we trim?** The 2026-11-02
+   screen (section A, suspected stray observations) lists the species with the most range far from
+   any observation and the most isolated records. Do the flagged areas match what you saw? Would you
+   rather have a distance cutoff, dropped isolated records, or regions you mark by hand?

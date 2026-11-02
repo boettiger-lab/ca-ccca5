@@ -91,7 +91,10 @@ so when it matters.
 **Interpolate between grid thresholds.** Take the two grid rows around the air threshold and
 interpolate linearly; if the threshold is on the grid, use that row. Never extrapolate past 60 °C:
 a threshold above the grid is outside the tabulated range. 511 cells still have days at 60 °C under
-SSP3-7.0, so the top of the grid truncates the hottest cells.
+SSP3-7.0, so the top of the grid truncates the hottest cells. A negative offset (leaves cooler than
+the air) can push the air threshold past 60 °C. If no range cell has a row at 60 °C for that
+period, every cell has 0 days at any higher threshold, and that is exact. If any range cell has one,
+say that the threshold is above the tabulated grid and give no figure.
 
 **A worked shape** — *Artemisia californica*, whose Tcrit in the team's table is 44.57 °C, with a
 leaf-to-air offset of 10 °C, so the air threshold is 34.57 °C, between the 34.5 and 35.0 grid rows.
@@ -143,9 +146,9 @@ will not appear in the layer list. When the user is likely to want to move the t
 point them to the Heat exposure explorer (link in the header), which has controls for Tcrit or T50,
 the offset and the period; a link of the form
 `explorer/#species/ARTCAL?metric=t50&adjust=1.5&offset=10&period=ssp370-end` opens a given view
-(`metric` is `tcrit` or `t50`; `adjust` moves the leaf threshold from the table's value, −5 to +5 °C
-in steps of 0.5; `offset` takes whole degrees from 0 to 15; `period` is `hist`, `ssp370-mid` or
-`ssp370-end`). For a user's own value outside that reach, compute it here.
+(`metric` is `tcrit` or `t50`; `adjust` moves the leaf threshold from the table's value, −10 to +10 °C
+in steps of 0.01; `offset` takes even whole degrees from −20 to 20, a negative offset meaning leaves
+cooler than the air; `period` is `hist`, `ssp370-mid` or `ssp370-end`). For a user's own value outside that reach, compute it here.
 
 ## Conserved areas and fire history
 

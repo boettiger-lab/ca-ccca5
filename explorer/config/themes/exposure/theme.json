@@ -2,7 +2,7 @@
   "label": "Days above threshold",
   "color": "#c2410c",
   "blurb": "The mean number of days a year on which the daily maximum air temperature reaches the air threshold, across the species' range.",
-  "method": "Every cell of the species' Calflora range is included, whether or not the species has been recorded there. Each range cell (H3 resolution 8) takes the value of the LOCA2 cell (resolution 7) that contains it. The leaf threshold is the species' Tcrit or T50, the project team's provisional measured mean, plus any adjustment set with the slider. The air threshold is the leaf threshold minus the leaf-to-air offset; a day counts when its maximum air temperature is at or above it. Values are mean days a year over the 30-year period, averaged across three climate models. Day counts are tabulated on a 0.5 °C grid, so the threshold is interpolated linearly between the two grid rows around it. Means and shares are weighted by area over the range cells inside the LOCA2 domain, which ends near 29.6°N, so a few range cells in Baja California are left out; numerator and denominator always use the same cells.",
+  "method": "Every cell of the species' Calflora range is included, whether or not the species has been recorded there. Each range cell (H3 resolution 8) takes the value of the LOCA2 cell (resolution 7) that contains it. The leaf threshold is the species' Tcrit or T50, the project team's provisional measured mean, plus any value typed in the leaf threshold box. The air threshold is the leaf threshold minus the leaf-to-air offset; a day counts when its maximum air temperature is at or above it. Values are mean days a year over the 30-year period, averaged across three climate models. Day counts are tabulated on a 0.5 °C grid, so the threshold is interpolated linearly between the two grid rows around it. Below 20 °C there is no value. Above 60 °C, which a negative offset reaches, the count is 0 when no range cell has any days at 60 °C, and otherwise there is no value for the whole range. Means and shares are weighted by area over the range cells inside the LOCA2 domain, which ends near 29.6°N, so a few range cells in Baja California are left out; numerator and denominator always use the same cells.",
   "queries": {
     "base": {
       "file": "base.sql"
@@ -96,7 +96,7 @@
     },
     {
       "title": "Mean days above Tcrit and T50 by period",
-      "subtitle": "Both are at the team's values and the chosen offset; the threshold slider does not apply.",
+      "subtitle": "Both are at the team's values and the chosen offset; the leaf threshold box does not apply.",
       "query": "by_metric",
       "category": "period_label",
       "format": "num1",

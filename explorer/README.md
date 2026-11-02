@@ -2,14 +2,14 @@
 
 A no-LLM explorer served at `/explorer/`, beside the map-and-chat app at `/`. Pick a species and
 set the heat tolerance (Tcrit or T50), the leaf threshold, a leaf-to-air offset and a climate
-period. The leaf threshold slider starts at the team's measured value for the species and can be
-moved 5 °C either way. The panel then shows how many days a year the daily maximum air temperature
+period. The leaf threshold is a box for a typed value, which starts at the team's measured value for the
+species and can be set up to 10 °C either way. The panel then shows how many days a year the daily maximum air temperature
 reaches the resulting air threshold across the species' range, and how much of the range lies in
 30x30 conserved areas. The map colours the range by either, on H3 resolution 6 when zoomed out and
 the resolution-7 LOCA2 grid from zoom 7 in, and can shade the conserved areas by GAP status. A link with no `#…` opens on *Pinus ponderosa* (`default_area`).
 
 The app is configuration, SQL and a few small generated files. The machinery comes from
-[glen-charts](https://github.com/SchmidtDSE/glen-charts), pinned in `index.html` (v0.2.8; 0.2.5 added `default_area` and `tracts.line_width`, 0.2.6 grids that swap by zoom, 0.2.7 a search box that lists every species when one is already chosen, 0.2.8 sliders relative to an area's own value). Do not
+[glen-charts](https://github.com/SchmidtDSE/glen-charts), pinned in `index.html` (v0.8.0; 0.2.5 added `default_area` and `tracts.line_width`, 0.2.6 grids that swap by zoom, 0.2.7 a search box that lists every species when one is already chosen, 0.2.8 sliders relative to an area's own value, 0.8.0 a number box for a typed value). Do not
 write JavaScript here: features go into glen-charts.
 
 ## Status
@@ -35,13 +35,16 @@ question 4).
 |---|---|---|
 | `{{ID}}` | species search box | six-letter Calflora code, from `data/lists/species.json` |
 | `{{METRIC}}` | Heat tolerance | `tcrit` or `t50`, looked up for the species |
-| `{{ADJUST}}` | Leaf threshold in °C | an offset from the team's value, −5 to +5 in steps of 0.5, default 0. The slider is labelled in absolute degrees (glen-charts `relative` param, base from `exposure/base.sql`); the Tcrit against T50 chart ignores it |
-| `{{OFFSET}}` | Leaf-to-air offset in °C | 0 to 15 in steps of 1 |
+| `{{ADJUST}}` | Leaf threshold in °C | an offset from the team's value, −10 to +10 in steps of 0.01, default 0. The control is a number box (glen-charts `"control": "number"`) that shows and takes absolute degrees (`relative` param, base from `exposure/base.sql`); a typed value is held to the nearest step and to the ends. The Tcrit against T50 chart ignores it |
+| `{{OFFSET}}` | Leaf-to-air offset in °C | −20 to 20 in steps of 2; a negative offset means leaves cooler than the air |
 | `{{PERIOD}}` | Climate period | `hist` (1985–2014), `ssp370-mid` (2040–2069), `ssp370-end` (2070–2099) |
 
 The air threshold is the species' Tcrit or T50, plus `ADJUST`, minus `OFFSET`. It rarely falls on the exceedance
 table's 0.5 °C grid, so each cell's day count is interpolated linearly between the two grid rows
-around it, and a threshold outside 20–60 °C gives no value rather than an extrapolation. Every query
+around it. A threshold below 20 °C gives no value rather than an extrapolation. Above 60 °C, which a
+negative offset reaches, the count is 0 when no range cell has any days at 60 °C in that period, since
+none can then have days at a higher threshold; otherwise it is no value for the whole range, so the
+numerator and denominator still cover the same cells. Every query
 runs live on the MCP server; a species takes a few seconds.
 
 ## Themes
