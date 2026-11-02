@@ -1,7 +1,7 @@
 # AI Agent Guide — ca-ccca5
 
 This is a **geo-agent client app**, created from
-[`boettiger-lab/geo-agent-template`](https://github.com/boettiger-lab/geo-agent-template). The
+[`SchmidtDSE/glen-template`](https://github.com/SchmidtDSE/glen-template). The
 template's `AGENTS.md` is the full reference for the `layers-input.json` schema, collection/asset
 lookup, MapLibre filter syntax, deployment, and bug routing — **read it there rather than
 duplicating it here**. Everything below is specific to this app.
@@ -11,7 +11,7 @@ duplicating it here**. Everything below is specific to this app.
 | Repo | Purpose |
 |---|---|
 | `geo-agent` | Core library (map, chat, agent, tools), loaded from CDN. Never modified here. |
-| `geo-agent-template` | The starter this repo was created from; authoritative for config schema. |
+| `glen-template` | The starter this repo was created from; authoritative for config schema. |
 | `data-workflows` | Where the datasets this app depends on are built and published. |
 | `ca-ccca5` (here) | `index.html`, `layers-input.json`, `system-prompt.md`, `k8s/`. |
 

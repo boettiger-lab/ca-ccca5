@@ -5,7 +5,7 @@ species' current range, projected daily maximum air temperatures approach or exc
 photosynthetic heat tolerance.
 
 Built on [geo-agent](https://github.com/SchmidtDSE/glen) from
-[geo-agent-template](https://github.com/boettiger-lab/geo-agent-template) — the map, chat, agent and
+[glen-template](https://github.com/SchmidtDSE/glen-template) — the map, chat, agent and
 tool modules load from CDN; this repo configures which data to show and how the agent should behave.
 
 > **Status: species ranges published, climate data pending.** All **109** Calflora species range
