@@ -1,7 +1,7 @@
 {
   "id": "ca-ccca5-explorer",
   "title": "Plant Heat Exposure Explorer",
-  "mcp_url": "https://duckdb-mcp.nrp-nautilus.io/mcp",
+  "mcp_url": "https://ca-ccca5.nrp-nautilus.io/api/mcp",
   "view": {
     "center": [
       -119.4,
