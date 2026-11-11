@@ -46,872 +46,654 @@
                     "id": "abibra-cog",
                     "display_name": "Abies bracteata (ABIBRA)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "abicon-cog",
                     "display_name": "Abies concolor (ABICON)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "abimag-cog",
                     "display_name": "Abies magnifica (ABIMAG)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "acemac-cog",
                     "display_name": "Acer macrophyllum (ACEMAC)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "acmgla-cog",
                     "display_name": "Acmispon glaber (ACMGLA)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "aescal-cog",
                     "display_name": "Aesculus californica (AESCAL)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "alninc-cog",
                     "display_name": "Alnus incana (ALNINC)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "alnrho-cog",
                     "display_name": "Alnus rhombifolia (ALNRHO)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "ambdum-cog",
                     "display_name": "Ambrosia dumosa (AMBDUM)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "arbmen-cog",
                     "display_name": "Arbutus menziesii (ARBMEN)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "arcgla-cog",
                     "display_name": "Arctostaphylos glandulosa (ARCGLA)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "arcglu-cog",
                     "display_name": "Arctostaphylos glauca (ARCGLU)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "arcman-cog",
                     "display_name": "Arctostaphylos manzanita (ARCMAN)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "arcpat-cog",
                     "display_name": "Arctostaphylos patula (ARCPAT)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "arcpri-cog",
                     "display_name": "Arctostaphylos pringlei (ARCPRI)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "arcvis-cog",
                     "display_name": "Arctostaphylos viscida (ARCVIS)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "artcal-cog",
                     "display_name": "Artemisia californica (ARTCAL)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "arttri-cog",
                     "display_name": "Artemisia tridentata (ARTTRI)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "atrtor-cog",
                     "display_name": "Atriplex torreyi (ATRTOR)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "bacpil-cog",
                     "display_name": "Baccharis pilularis (BACPIL)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "bebjun-cog",
                     "display_name": "Bebbia juncea (BEBJUN)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "betocc-cog",
                     "display_name": "Betula occidentalis (BETOCC)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "caldec-cog",
                     "display_name": "Calocedrus decurrens (CALDEC)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "ceacor-cog",
                     "display_name": "Ceanothus cordulatus (CEACOR)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "ceafol-cog",
                     "display_name": "Ceanothus foliosus (CEAFOL)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "ceainc-cog",
                     "display_name": "Ceanothus incanus (CEAINC)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "ceaint-cog",
                     "display_name": "Ceanothus integerrimus (CEAINT)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "ceaoli-cog",
                     "display_name": "Ceanothus oliganthus (CEAOLI)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "ceavel-cog",
                     "display_name": "Ceanothus velutinus (CEAVEL)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "cerbet-cog",
                     "display_name": "Cercocarpus betuloides (CERBET)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "chamil-cog",
                     "display_name": "Chamaebatiaria millefolium (CHAMIL)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "chilin-cog",
                     "display_name": "Chilopsis linearis (CHILIN)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "clearb-cog",
                     "display_name": "Cleomella arborea (CLEARB)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "conemo-cog",
                     "display_name": "Condea emoryi (CONEMO)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "cornut-cog",
                     "display_name": "Cornus nuttallii (CORNUT)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "corcor-cog",
                     "display_name": "Corylus cornuta (CORCOR)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "encact-cog",
                     "display_name": "Encelia actoni (ENCACT)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "encfar-cog",
                     "display_name": "Encelia farinosa (ENCFAR)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "eridis-cog",
                     "display_name": "Ericameria discoidea (ERIDIS)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "erinau-cog",
                     "display_name": "Ericameria nauseosa (ERINAU)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "erical-cog",
                     "display_name": "Eriodictyon californicum (ERICAL)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "erifas-cog",
                     "display_name": "Eriogonum fasciculatum (ERIFAS)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "eriumb-cog",
                     "display_name": "Eriogonum umbellatum (ERIUMB)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "fouspl-cog",
                     "display_name": "Fouquieria splendens (FOUSPL)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "fracal-cog",
                     "display_name": "Frangula californica (FRACAL)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "fralat-cog",
                     "display_name": "Fraxinus latifolia (FRALAT)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "hazsqu-cog",
                     "display_name": "Hazardia squarrosa (HAZSQU)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "hesmac-cog",
                     "display_name": "Hesperocyparis macnabiana (HESMAC)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "hessar-cog",
                     "display_name": "Hesperocyparis sargentii (HESSAR)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "heswhi-cog",
                     "display_name": "Hesperoyucca whipplei (HESWHI)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "hetarb-cog",
                     "display_name": "Heteromeles arbutifolia (HETARB)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "holdis-cog",
                     "display_name": "Holodiscus discolor (HOLDIS)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "jughin-cog",
                     "display_name": "Juglans hindsii (JUGHIN)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "juscal-cog",
                     "display_name": "Justicia californica (JUSCAL)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "lartri-cog",
                     "display_name": "Larrea tridentata (LARTRI)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "lonint-cog",
                     "display_name": "Lonicera interrupta (LONINT)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "lonsub-cog",
                     "display_name": "Lonicera subspicata (LONSUB)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "lupalb-cog",
                     "display_name": "Lupinus albifrons (LUPALB)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "lyccoo-cog",
                     "display_name": "Lycium cooperi (LYCCOO)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "mallau-cog",
                     "display_name": "Malosma laurina (MALLAU)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "monodo-cog",
                     "display_name": "Monardella odoratissima (MONODO)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "nelodo-cog",
                     "display_name": "Neltuma odorata (NELODO)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "notden-cog",
                     "display_name": "Notholithocarpus densiflorus (NOTDEN)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "olntes-cog",
                     "display_name": "Olneya tesota (OLNTES)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "parflo-cog",
                     "display_name": "Parkinsonia florida (PARFLO)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "pincou-cog",
                     "display_name": "Pinus coulteri (PINCOU)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "pinfle-cog",
                     "display_name": "Pinus flexilis (PINFLE)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "pinlam-cog",
                     "display_name": "Pinus lambertiana (PINLAM)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "pinlon-cog",
                     "display_name": "Pinus longaeva (PINLON)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "pinpon-cog",
                     "display_name": "Pinus ponderosa (PINPON)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "pinsab-cog",
                     "display_name": "Pinus sabiniana (PINSAB)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "plarac-cog",
                     "display_name": "Platanus racemosa (PLARAC)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "popfre-cog",
                     "display_name": "Populus fremontii (POPFRE)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "poptre-cog",
                     "display_name": "Populus tremuloides (POPTRE)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "poptri-cog",
                     "display_name": "Populus trichocarpa (POPTRI)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "psemen-cog",
                     "display_name": "Pseudotsuga menziesii (PSEMEN)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "psosch-cog",
                     "display_name": "Psorothamnus schottii (PSOSCH)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "purtri-cog",
                     "display_name": "Purshia tridentata (PURTRI)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "queagr-cog",
                     "display_name": "Quercus agrifolia (QUEAGR)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "queber-cog",
                     "display_name": "Quercus berberidifolia (QUEBER)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "quechr-cog",
                     "display_name": "Quercus chrysolepis (QUECHR)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "quedou-cog",
                     "display_name": "Quercus douglasii (QUEDOU)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "quedur-cog",
                     "display_name": "Quercus durata (QUEDUR)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "quegar-cog",
                     "display_name": "Quercus garryana (QUEGAR)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "quekel-cog",
                     "display_name": "Quercus kelloggii (QUEKEL)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "quelob-cog",
                     "display_name": "Quercus lobata (QUELOB)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "quewis-cog",
                     "display_name": "Quercus wislizeni (QUEWIS)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "rhaili-cog",
                     "display_name": "Rhamnus ilicifolia (RHAILI)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "rhoocc-cog",
                     "display_name": "Rhododendron occidentale (RHOOCC)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "ribcer-cog",
                     "display_name": "Ribes cereum (RIBCER)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "ribser-cog",
                     "display_name": "Ribes sericeum (RIBSER)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "roscal-cog",
                     "display_name": "Rosa californica (ROSCAL)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "roswoo-cog",
                     "display_name": "Rosa woodsii (ROSWOO)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "rubpar-cog",
                     "display_name": "Rubus parviflorus (RUBPAR)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "salexi-cog",
                     "display_name": "Salix exigua (SALEXI)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "salgoo-cog",
                     "display_name": "Salix gooddingii (SALGOO)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "sallae-cog",
                     "display_name": "Salix laevigata (SALLAE)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "saldor-cog",
                     "display_name": "Salvia dorrii (SALDOR)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "salleu-cog",
                     "display_name": "Salvia leucophylla (SALLEU)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "senfla-cog",
                     "display_name": "Senecio flaccidus (SENFLA)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "sengre-cog",
                     "display_name": "Senegalia greggii (SENGRE)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "seqsem-cog",
                     "display_name": "Sequoia sempervirens (SEQSEM)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "seqgig-cog",
                     "display_name": "Sequoiadendron giganteum (SEQGIG)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "simchi-cog",
                     "display_name": "Simmondsia chinensis (SIMCHI)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "tetste-cog",
                     "display_name": "Tetradymia stenolepis (TETSTE)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "umbcal-cog",
                     "display_name": "Umbellularia californica (UMBCAL)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "vitcal-cog",
                     "display_name": "Vitis californica (VITCAL)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "wasfil-cog",
                     "display_name": "Washingtonia filifera (WASFIL)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 },
                 {
                     "id": "yucsch-cog",
                     "display_name": "Yucca schidigera (YUCSCH)",
                     "visible": false,
-                    "colormap": "reds",
-                    "rescale": "0,3",
                     "legend_label": "Observations recorded per cell (0 = in range, not yet observed)"
                 }
             ]
