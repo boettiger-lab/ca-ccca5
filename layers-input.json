@@ -925,30 +925,6 @@
                     "display_name": "Conserved areas, terrestrial (2025)",
                     "group": "Conserved areas",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": [
-                            "match",
-                            [
-                                "get",
-                                "reGAP"
-                            ],
-                            1,
-                            "#26633A",
-                            2,
-                            "#3E9C47",
-                            3,
-                            "#7EB3D3",
-                            4,
-                            "#BDBDBD",
-                            "#888888"
-                        ],
-                        "fill-opacity": 0.7
-                    },
-                    "outline_style": {
-                        "line-color": "#4A4A4A",
-                        "line-width": 0.3,
-                        "line-opacity": 0.5
-                    },
                     "tooltip_fields": [
                         "UNIT_NAME",
                         "MNG_AGENCY",
@@ -956,25 +932,6 @@
                         "reGAP",
                         "ACCESS_TYP",
                         "Acres"
-                    ],
-                    "legend_type": "categorical",
-                    "legend_classes": [
-                        {
-                            "label": "GAP 1 — managed for biodiversity (strict)",
-                            "color": "#26633A"
-                        },
-                        {
-                            "label": "GAP 2 — managed for biodiversity",
-                            "color": "#3E9C47"
-                        },
-                        {
-                            "label": "GAP 3 — multiple use",
-                            "color": "#7EB3D3"
-                        },
-                        {
-                            "label": "GAP 4 — no protection mandate",
-                            "color": "#BDBDBD"
-                        }
                     ]
                 }
             ]
@@ -988,34 +945,6 @@
                     "display_name": "Historic fire perimeters (1878–2025)",
                     "group": "Fire history",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": [
-                            "interpolate",
-                            [
-                                "linear"
-                            ],
-                            [
-                                "get",
-                                "YEAR_"
-                            ],
-                            1878,
-                            "#fee5d9",
-                            1950,
-                            "#fcae91",
-                            1990,
-                            "#fb6a4a",
-                            2010,
-                            "#de2d26",
-                            2025,
-                            "#a50f15"
-                        ],
-                        "fill-opacity": 0.55
-                    },
-                    "outline_style": {
-                        "line-color": "#7f0000",
-                        "line-width": 0.3,
-                        "line-opacity": 0.5
-                    },
                     "tooltip_fields": [
                         "FIRE_NAME",
                         "YEAR_",
