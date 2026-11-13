@@ -735,7 +735,9 @@
                     ]
                 }
             ]
-        }
+        },
+        { "collection_id": "loca2-hybrid-tasmax-exceedance", "collection_url": "https://s3-west.nrp-nautilus.io/public-caladapt/loca2-hybrid/tasmax-exceedance/stac-collection.json", "assets": [] },
+        { "collection_id": "loca2-hybrid-tasmax-annual-max", "collection_url": "https://s3-west.nrp-nautilus.io/public-caladapt/loca2-hybrid/tasmax-annual-max/stac-collection.json", "assets": [] }
     ],
     "llm": {
         "user_provided": true,
